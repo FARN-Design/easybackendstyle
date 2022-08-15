@@ -11,45 +11,59 @@
  * Author:            Farn
  * Text Domain:       Marvin Taube - Farn
 */
- 
+
 // Default = #1d2327
-$GLOBALS['backgroundMenuColor'] = '#111336';
+$GLOBALS['backgroundMenuColor'] = '#1d2327';
 // Default = #2271b1
-$GLOBALS['selectedMenuColor'] = '#14185c';
+$GLOBALS['selectedMenuColor'] = '#2271b1';
 // Default = #1d2327
-$GLOBALS['hoverMenuColor'] = '#14185c';
+$GLOBALS['hoverMenuColor'] = '#1d2327';
 // Icon and text primary color, Default = #f0f0f1
-$GLOBALS['menuIconColor'] = '#ffffff';
+$GLOBALS['menuTextColor'] = '#f0f0f1';
 // Icon and text secondary color. Used wheb hover. Default = #72aee6
-$GLOBALS['menuIconHoverColor'] = '#00ff00';
-/**
- * Display the content on the Page
- */
-function display_hello_world_page() {
-    echo "<h1>Hello World & Farn!</h1>";
-    
-    echo $GLOBALS['backgroundMenuColor'];
+$GLOBALS['menuTextHoverColor'] = '#72aee6';
+
+
+//-----Database Setup------
+
+require_once('ebs_DatabaseConnector.php');
+
+function init_database(){
+
+
+  
+  setup_Database();
 }
+register_activation_hook( __FILE__, 'init_database' );
+
+
+//-----Settings Sub Menu------
+
 
 /**
  * Creates a new submenu page in the general settings.
  */
-function test_settings_page()
-{
+function test_settings_page(){
     add_submenu_page(
         'options-general.php', //name of the general settings file.
-        'Hello World',// page title
-        'Hello World',// menu title
+        'EasyBackendStyle',// page title
+        'EasyBackendStyle',// menu title
         'manage_options',// capability
-        'hello-world',// menu slug
-        'display_hello_world_page' // callback function
+        'easyBackendStyle',// menu slug
+        'display_settings_page' // callback function
     );
 }
-//Execute the method in the admin_menu loop
 add_action('admin_menu', 'test_settings_page');
 
+/**
+ * Display the content on the Page
+ */
+function display_settings_page() {
+    include_once plugin_dir_path( dirname( __FILE__ ) ) . 'easyBackendStyle/ebs_SettingsSubMenu.php';
+}
 
-add_action('admin_head', 'my_custom_fonts');
+
+//-----CSS Changes------
 
 function my_custom_fonts() {
   echo '<style>
@@ -59,13 +73,13 @@ function my_custom_fonts() {
   #wpadminbar .quicklinks .menupop ul.ab-sub-secondary, #wpadminbar .quicklinks .menupop ul.ab-sub-secondary .ab-submenu
   {
     background-color: '.$GLOBALS['backgroundMenuColor'].';
-    color: '.$GLOBALS['menuIconColor'].' !important;
+    color: '.$GLOBALS['menuTextColor'].' !important;
   }
 
   #wpadminbar>#wp-toolbar span.ab-label,
   #wpadminbar #adminbarsearch:before, #wpadminbar .ab-icon:before, #wpadminbar .ab-item:before 
   {
-    color: '.$GLOBALS['menuIconColor'].';
+    color: '.$GLOBALS['menuTextColor'].';
   }
 
   #wpadminbar ul li:hover, #wpadminbar a.ab-item:hover,
@@ -73,7 +87,7 @@ function my_custom_fonts() {
   #wpadminbar:not(.mobile) .ab-top-menu>li:hover>.ab-item, #wpadminbar:not(.mobile) .ab-top-menu>li>.ab-item:focus
   {
     background-color: '.$GLOBALS['hoverMenuColor'].';
-    color: '.$GLOBALS['menuIconHoverColor'].'!important;
+    color: '.$GLOBALS['menuTextHoverColor'].'!important;
   }
 
   #wpadminbar .quicklinks .ab-sub-wrapper .menupop.hover>a, #wpadminbar .quicklinks .menupop ul li a:focus, 
@@ -89,11 +103,8 @@ function my_custom_fonts() {
   #wpadminbar:not(.mobile)>#wp-toolbar a:focus span.ab-label, #wpadminbar:not(.mobile)>#wp-toolbar li:hover span.ab-label, 
   #wpadminbar>#wp-toolbar li.hover span.ab-label 
   {
-    color: '.$GLOBALS['menuIconHoverColor'].'!important;
+    color: '.$GLOBALS['menuTextHoverColor'].'!important;
   }
-
-/*------------------------*/
-
 
   /* admin menu */
   #adminmenu, #adminmenu .wp-submenu, #adminmenuback, #adminmenuwrap
@@ -103,7 +114,7 @@ function my_custom_fonts() {
   #adminmenu div.wp-menu-image:before, #adminmenu .wp-has-current-submenu div.wp-menu-image:before, #collapse-button, #collapse-button:focus, #adminmenu a,
   #adminmenu .wp-submenu li.current a, #adminmenu .wp-submenu a
   {
-    color: '.$GLOBALS['menuIconColor'].';
+    color: '.$GLOBALS['menuTextColor'].';
   }
 
   /* selected admin menu */
@@ -115,7 +126,7 @@ function my_custom_fonts() {
   #adminmenu li.wp-has-current-submenu:hover div.wp-menu-image:before
   {
     background-color: '.$GLOBALS['selectedMenuColor'].';
-    color: '.$GLOBALS['menuIconColor'].';
+    color: '.$GLOBALS['menuTextColor'].';
   }
 
   /* Hover admin menu */
@@ -130,9 +141,10 @@ function my_custom_fonts() {
   #adminmenu li a:focus div.wp-menu-image:before, #adminmenu li.opensub div.wp-menu-image:before, #adminmenu li:hover div.wp-menu-image:before,
   #adminmenu li.menu-top:hover, #adminmenu li.opensub>a.menu-top, #adminmenu li>a.menu-top:focus
   {
-    color: '.$GLOBALS['menuIconHoverColor'].';
+    color: '.$GLOBALS['menuTextHoverColor'].';
   }
   </style>
   ';
 }
+add_action('admin_head', 'my_custom_fonts');
 ?>
