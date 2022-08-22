@@ -29,8 +29,6 @@ $GLOBALS['menuTextHoverColor'] = '#72aee6';
 require_once('ebs_DatabaseConnector.php');
 
 function init_database(){
-
-
   
   setup_Database();
 }
@@ -72,22 +70,22 @@ function my_custom_fonts() {
   #wpadminbar .shortlink-input, #wpadminbar .menupop .ab-sub-wrapper,
   #wpadminbar .quicklinks .menupop ul.ab-sub-secondary, #wpadminbar .quicklinks .menupop ul.ab-sub-secondary .ab-submenu
   {
-    background-color: '.$GLOBALS['backgroundMenuColor'].';
-    color: '.$GLOBALS['menuTextColor'].' !important;
+    background-color: '.getColorValueFromDB("backgroundMenuColor")[0][0].';
+    color: '.getColorValueFromDB("menuTextColor")[0][0].' !important;
   }
 
   #wpadminbar>#wp-toolbar span.ab-label,
   #wpadminbar #adminbarsearch:before, #wpadminbar .ab-icon:before, #wpadminbar .ab-item:before 
   {
-    color: '.$GLOBALS['menuTextColor'].';
+    color: '.getColorValueFromDB("menuTextColor")[0][0].';
   }
 
   #wpadminbar ul li:hover, #wpadminbar a.ab-item:hover,
   #wpadminbar .ab-top-menu>li.hover>.ab-item, #wpadminbar.nojq .quicklinks .ab-top-menu>li>.ab-item:focus, 
   #wpadminbar:not(.mobile) .ab-top-menu>li:hover>.ab-item, #wpadminbar:not(.mobile) .ab-top-menu>li>.ab-item:focus
   {
-    background-color: '.$GLOBALS['hoverMenuColor'].';
-    color: '.$GLOBALS['menuTextHoverColor'].'!important;
+    background-color: '.getColorValueFromDB("hoverMenuColor")[0][0].';
+    color: '.getColorValueFromDB("menuTextHoverColor")[0][0].'!important;
   }
 
   #wpadminbar .quicklinks .ab-sub-wrapper .menupop.hover>a, #wpadminbar .quicklinks .menupop ul li a:focus, 
@@ -103,18 +101,18 @@ function my_custom_fonts() {
   #wpadminbar:not(.mobile)>#wp-toolbar a:focus span.ab-label, #wpadminbar:not(.mobile)>#wp-toolbar li:hover span.ab-label, 
   #wpadminbar>#wp-toolbar li.hover span.ab-label 
   {
-    color: '.$GLOBALS['menuTextHoverColor'].'!important;
+    color: '.getColorValueFromDB("menuTextHoverColor")[0][0].'!important;
   }
 
   /* admin menu */
   #adminmenu, #adminmenu .wp-submenu, #adminmenuback, #adminmenuwrap
   { 
-      background-color: '.$GLOBALS['backgroundMenuColor'].';
+      background-color: '.getColorValueFromDB("backgroundMenuColor")[0][0].';
   }
   #adminmenu div.wp-menu-image:before, #adminmenu .wp-has-current-submenu div.wp-menu-image:before, #collapse-button, #collapse-button:focus, #adminmenu a,
   #adminmenu .wp-submenu li.current a, #adminmenu .wp-submenu a
   {
-    color: '.$GLOBALS['menuTextColor'].';
+    color: '.getColorValueFromDB("menuTextColor")[0][0].';
   }
 
   /* selected admin menu */
@@ -125,15 +123,15 @@ function my_custom_fonts() {
   #adminmenu li.wp-has-current-submenu a:focus div.wp-menu-image:before, #adminmenu li.wp-has-current-submenu.opensub div.wp-menu-image:before, 
   #adminmenu li.wp-has-current-submenu:hover div.wp-menu-image:before
   {
-    background-color: '.$GLOBALS['selectedMenuColor'].';
-    color: '.$GLOBALS['menuTextColor'].';
+    background-color: '.getColorValueFromDB("selectedMenuColor")[0][0].';
+    color: '.getColorValueFromDB("menuTextColor")[0][0].';
   }
 
   /* Hover admin menu */
   #adminmenu li.menu-top:hover, #adminmenu li.opensub>a.menu-top, #adminmenu li>a.menu-top:focus
   {
     /* Color of the Field */
-    background-color: '.$GLOBALS['hoverMenuColor'].';
+    background-color: '.getColorValueFromDB("hoverMenuColor")[0][0].';
   }
 
   /* Admin menu color of the image or text */
@@ -141,7 +139,7 @@ function my_custom_fonts() {
   #adminmenu li a:focus div.wp-menu-image:before, #adminmenu li.opensub div.wp-menu-image:before, #adminmenu li:hover div.wp-menu-image:before,
   #adminmenu li.menu-top:hover, #adminmenu li.opensub>a.menu-top, #adminmenu li>a.menu-top:focus
   {
-    color: '.$GLOBALS['menuTextHoverColor'].';
+    color: '.getColorValueFromDB("menuTextHoverColor")[0][0].';
   }
   </style>
   ';
