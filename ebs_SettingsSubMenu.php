@@ -1,6 +1,7 @@
 <?php
 
 require_once('easyBackendStyle.php');
+require_once('ebs_DatabaseConnector.php');
 
 if (isset($_REQUEST['submit'])) {
     $GLOBALS['backgroundMenuColor'] = $_REQUEST['backgroundMenuColor'];
@@ -8,6 +9,13 @@ if (isset($_REQUEST['submit'])) {
     $GLOBALS['hoverMenuColor'] = $_REQUEST['hoverMenuColor'];
     $GLOBALS['menuTextColor'] = $_REQUEST['menuTextColor'];
     $GLOBALS['menuTextHoverColor'] = $_REQUEST['menuTextHoverColor'];
+
+
+    saveColorValueInDB($_REQUEST['backgroundMenuColor'],'backgroundMenuColor');
+    saveColorValueInDB($_REQUEST['selectedMenuColor'], 'selectedMenuColor');
+    saveColorValueInDB($_REQUEST['hoverMenuColor'], 'hoverMenuColor');
+    saveColorValueInDB($_REQUEST['menuTextColor'], 'menuTextColor');
+    saveColorValueInDB($_REQUEST['menuTextHoverColor'], 'menuTextHoverColor');
 
     my_custom_fonts();
 
@@ -29,7 +37,7 @@ if (isset($_REQUEST['submit'])) {
                     <th scope="row"><label for="backgroundMenuColor">backgroundMenuColor</label></th>
                     <td>
                         <input type="color" name="backgroundMenuColor" id="backgroundMenuColor" class="small-text"
-                        value="<?php echo $GLOBALS['backgroundMenuColor'];?>">
+                        value="<?php echo getColorValueFromDB("backgroundMenuColor")[0][0];?>">
                     </td>
                 </tr>
 
@@ -37,7 +45,7 @@ if (isset($_REQUEST['submit'])) {
                     <th scope="row"><label for="selectedMenuColor">selectedMenuColor</label></th>
                     <td>
                         <input type="color" name="selectedMenuColor" id="selectedMenuColor" class="small-text"
-                        value="<?php echo $GLOBALS['selectedMenuColor']; ?>">
+                        value="<?php echo getColorValueFromDB("selectedMenuColor")[0][0]; ?>">
                     </td>
                 </tr>
 
@@ -45,7 +53,7 @@ if (isset($_REQUEST['submit'])) {
                     <th scope="row"><label for="hoverMenuColor">hoverMenuColor</label></th>
                     <td>
                         <input type="color" name="hoverMenuColor" id="hoverMenuColor" class="small-text"
-                        value="<?php echo $GLOBALS['hoverMenuColor']; ?>">
+                        value="<?php echo getColorValueFromDB("hoverMenuColor")[0][0];?>">
                     </td>
                 </tr>
 
@@ -53,7 +61,7 @@ if (isset($_REQUEST['submit'])) {
                     <th scope="row"><label for="menuTextColor">menuTextColor</label></th>
                     <td>
                         <input type="color" name="menuTextColor" id="menuTextColor" class="small-text"
-                        value="<?php echo $GLOBALS['menuTextColor']; ?>">
+                        value="<?php echo getColorValueFromDB("menuTextColor")[0][0];?>">
                     </td>
                 </tr>
 
@@ -61,7 +69,7 @@ if (isset($_REQUEST['submit'])) {
                     <th scope="row"><label for="menuTextHoverColor">menuTextHoverColor</label></th>
                     <td>
                         <input type="color" name="menuTextHoverColor" id="menuTextHoverColor" class="small-text"
-                        value="<?php echo $GLOBALS['menuTextHoverColor']; ?>">
+                        value="<?php echo getColorValueFromDB("menuTextHoverColor")[0][0];?>">
                     </td>
                 </tr>
             </tbody>
@@ -70,3 +78,14 @@ if (isset($_REQUEST['submit'])) {
     <?php submit_button( $name = 'Save' ); ?> </form>
 
 </div><!-- .wrap -->
+
+<?php
+
+
+
+//error_log(getColorValueFromDB('menuTextColor')[0][0]);
+
+error_log();
+
+//echo getColorValueFromDB('menuTextColor');
+
