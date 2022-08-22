@@ -19,6 +19,7 @@ if (isset($_REQUEST['submit'])) {
 
     my_custom_fonts();
 
+    trigger_error("error_msg");
 }
 ?>
 
@@ -78,14 +79,4 @@ if (isset($_REQUEST['submit'])) {
     <?php submit_button( $name = 'Save' ); ?> </form>
 
 </div><!-- .wrap -->
-
-<?php
-
-
-
-//error_log(getColorValueFromDB('menuTextColor')[0][0]);
-
-error_log();
-
-//echo getColorValueFromDB('menuTextColor');
 
