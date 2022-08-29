@@ -4,21 +4,18 @@ require_once('easyBackendStyle.php');
 require_once('ebs_DatabaseConnector.php');
 
 if (isset($_REQUEST['submit'])) {
-    $GLOBALS['backgroundMenuColor'] = $_REQUEST['backgroundMenuColor'];
-    $GLOBALS['selectedMenuColor'] = $_REQUEST['selectedMenuColor'];
-    $GLOBALS['hoverMenuColor'] = $_REQUEST['hoverMenuColor'];
-    $GLOBALS['menuTextColor'] = $_REQUEST['menuTextColor'];
-    $GLOBALS['menuTextHoverColor'] = $_REQUEST['menuTextHoverColor'];
 
-
-    saveColorValueInDB($_REQUEST['backgroundMenuColor'],'backgroundMenuColor');
-    saveColorValueInDB($_REQUEST['selectedMenuColor'], 'selectedMenuColor');
-    saveColorValueInDB($_REQUEST['hoverMenuColor'], 'hoverMenuColor');
-    saveColorValueInDB($_REQUEST['menuTextColor'], 'menuTextColor');
-    saveColorValueInDB($_REQUEST['menuTextHoverColor'], 'menuTextHoverColor');
+    saveColorValueInDB($_REQUEST['menuText'],'menuText');
+    saveColorValueInDB($_REQUEST['baseMenu'], 'baseMenu');
+    saveColorValueInDB($_REQUEST['subMenu'], 'subMenu');
+    saveColorValueInDB($_REQUEST['highlight'], 'highlight');
+    saveColorValueInDB($_REQUEST['notification'], 'notification');
+    saveColorValueInDB($_REQUEST['background'], 'background');
+    saveColorValueInDB($_REQUEST['links'], 'links');
+    saveColorValueInDB($_REQUEST['buttons'], 'buttons');
+    saveColorValueInDB($_REQUEST['formInputs'], 'formInputs');
 
     my_custom_fonts();
-
 }
 ?>
 
@@ -34,42 +31,74 @@ if (isset($_REQUEST['submit'])) {
         <table>
             <tbody>
                 <tr>
-                    <th scope="row"><label for="backgroundMenuColor">backgroundMenuColor</label></th>
+                    <th scope="row"><label for="menuText">menuText</label></th>
                     <td>
-                        <input type="color" name="backgroundMenuColor" id="backgroundMenuColor" class="small-text"
-                        value="<?php echo getColorValueFromDB("backgroundMenuColor")[0][0];?>">
+                        <input type="color" name="menuText" id="menuText" class="small-text"
+                        value="<?php echo getColorValueFromDB("menuText")[0][0];?>">
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><label for="selectedMenuColor">selectedMenuColor</label></th>
+                    <th scope="row"><label for="baseMenu">baseMenu</label></th>
                     <td>
-                        <input type="color" name="selectedMenuColor" id="selectedMenuColor" class="small-text"
-                        value="<?php echo getColorValueFromDB("selectedMenuColor")[0][0]; ?>">
+                        <input type="color" name="baseMenu" id="baseMenu" class="small-text"
+                        value="<?php echo getColorValueFromDB("baseMenu")[0][0]; ?>">
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><label for="hoverMenuColor">hoverMenuColor</label></th>
+                    <th scope="row"><label for="subMenu">subMenu</label></th>
                     <td>
-                        <input type="color" name="hoverMenuColor" id="hoverMenuColor" class="small-text"
-                        value="<?php echo getColorValueFromDB("hoverMenuColor")[0][0];?>">
+                        <input type="color" name="subMenu" id="subMenu" class="small-text"
+                        value="<?php echo getColorValueFromDB("subMenu")[0][0];?>">
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><label for="menuTextColor">menuTextColor</label></th>
+                    <th scope="row"><label for="highlight">highlight</label></th>
                     <td>
-                        <input type="color" name="menuTextColor" id="menuTextColor" class="small-text"
-                        value="<?php echo getColorValueFromDB("menuTextColor")[0][0];?>">
+                        <input type="color" name="highlight" id="highlight" class="small-text"
+                        value="<?php echo getColorValueFromDB("highlight")[0][0];?>">
                     </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><label for="menuTextHoverColor">menuTextHoverColor</label></th>
+                    <th scope="row"><label for="notification">notification</label></th>
                     <td>
-                        <input type="color" name="menuTextHoverColor" id="menuTextHoverColor" class="small-text"
-                        value="<?php echo getColorValueFromDB("menuTextHoverColor")[0][0];?>">
+                        <input type="color" name="notification" id="notification" class="small-text"
+                        value="<?php echo getColorValueFromDB("notification")[0][0];?>">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="background">background</label></th>
+                    <td>
+                        <input type="color" name="background" id="background" class="small-text"
+                        value="<?php echo getColorValueFromDB("background")[0][0];?>">
+                    </td>
+                </tr>
+               
+                <tr>
+                    <th scope="row"><label for="links">links</label></th>
+                    <td>
+                        <input type="color" name="links" id="links" class="small-text"
+                        value="<?php echo getColorValueFromDB("links")[0][0];?>">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="buttons">buttons</label></th>
+                    <td>
+                        <input type="color" name="buttons" id="buttons" class="small-text"
+                        value="<?php echo getColorValueFromDB("buttons")[0][0];?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><label for="formInputs">formInputs</label></th>
+                    <td>
+                        <input type="color" name="formInputs" id="formInputs" class="small-text"
+                        value="<?php echo getColorValueFromDB("formInputs")[0][0];?>">
                     </td>
                 </tr>
             </tbody>
@@ -78,14 +107,4 @@ if (isset($_REQUEST['submit'])) {
     <?php submit_button( $name = 'Save' ); ?> </form>
 
 </div><!-- .wrap -->
-
-<?php
-
-
-
-//error_log(getColorValueFromDB('menuTextColor')[0][0]);
-
-error_log();
-
-//echo getColorValueFromDB('menuTextColor');
 
