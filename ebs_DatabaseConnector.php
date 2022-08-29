@@ -25,36 +25,64 @@ function setup_Database(){
   	 */ 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'backgroundMenuColor',
-	      'colorValue' => $GLOBALS['backgroundMenuColor']
+	      'colorVariable' => 'menuText',
+	      'colorValue' => '#f0f0f1'
 	    )
 	  );
 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'selectedMenuColor',
-	      'colorValue' => $GLOBALS['selectedMenuColor']
+	      'colorVariable' => 'baseMenu',
+	      'colorValue' => '#1d2327'
 	    )
 	  );
 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'hoverMenuColor',
-	      'colorValue' => $GLOBALS['hoverMenuColor']
+	      'colorVariable' => 'subMenu',
+	      'colorValue' => '#2c3338'
 	    )
 	  );
 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'menuTextColor',
-	      'colorValue' => $GLOBALS['menuTextColor']
+	      'colorVariable' => 'highlight',
+	      'colorValue' => '#2271b1'
 	    )
 	  );
 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'menuTextHoverColor',
-	      'colorValue' => $GLOBALS['menuTextHoverColor']
+	      'colorVariable' => 'notification',
+	      'colorValue' => '#d63638'
+	    )
+	  );
+
+  	  $wpdb->insert($table_name, 
+	    array( 
+	      'colorVariable' => 'background',
+	      'colorValue' => '#f0f0f1'
+	    )
+	  );
+
+  	  $wpdb->insert($table_name, 
+	    array( 
+	      'colorVariable' => 'links',
+	      'colorValue' => '#2271b1'
+	    )
+	  );
+
+  	  $wpdb->insert($table_name, 
+	    array( 
+	      'colorVariable' => 'buttons',
+	      'colorValue' => '#2271b1'
+	    )
+	  );
+
+  	  $wpdb->insert($table_name, 
+	    array( 
+	      'colorVariable' => 'formInputs',
+	      'colorValue' => '#3582c4'
 	    )
 	  );
     }
