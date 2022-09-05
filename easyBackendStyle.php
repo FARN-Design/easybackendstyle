@@ -12,7 +12,6 @@
  * Text Domain:       Marvin Taube - Farn
 */
 
-
 /*getValueFromDB("menuText")[0][0] = '#f0f0f1'; //default f0f0f1
 getValueFromDB("baseMenu")[0][0] = '#1d2327'; //default 1d2327
 getValueFromDB("subMenu")[0][0] = '#2c3338'; //default 2c3338
@@ -36,7 +35,6 @@ register_activation_hook( __FILE__, 'init_database' );
 
 
 //-----Settings Sub Menu------
-
 
 /**
  * Creates a new submenu page in the general settings.
@@ -62,15 +60,19 @@ function display_settings_page() {
 
 //-----Custom Changes------
 function add_custom_css(){
-  error_log(getValueFromDB("customCSS")[0][0]);
-  echo getValueFromDB("customCSS")[0][0];
-
+  if (get_user_option( 'admin_color' ) != 'fresh'){
+    return;
+  }
+  echo '<style>'.getValueFromDB("customCSS")[0][0].'</style>';
 }
 add_action('admin_footer', 'add_custom_css');
 
 //-----CSS Changes------
 
 function my_custom_fonts() {
+  if (get_user_option( 'admin_color' ) != 'fresh'){
+    return;
+  }
 
   echo '<style>
   body {
