@@ -12,8 +12,8 @@ function setup_Database(){
   	if ($wpdb->get_var("show tables like '" . $table_name . "'") != $table_name) {
   		$sql = "CREATE TABLE $table_name (
   		id mediumint(9) NOT NULL AUTO_INCREMENT,
-    	colorVariable varchar(255) NOT NULL,
-    	colorValue varchar(255) NOT NULL,
+    	Variable varchar(255) NOT NULL,
+    	Value varchar(255) NOT NULL,
     	UNIQUE KEY id (id)
   	) $charset_collate;";
 
@@ -25,86 +25,93 @@ function setup_Database(){
   	 */ 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'menuText',
-	      'colorValue' => '#f0f0f1'
+	      'Variable' => 'menuText',
+	      'Value' => '#f0f0f1'
 	    )
 	  );
 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'baseMenu',
-	      'colorValue' => '#1d2327'
+	      'Variable' => 'baseMenu',
+	      'Value' => '#1d2327'
 	    )
 	  );
 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'subMenu',
-	      'colorValue' => '#2c3338'
+	      'Variable' => 'subMenu',
+	      'Value' => '#2c3338'
 	    )
 	  );
 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'highlight',
-	      'colorValue' => '#2271b1'
+	      'Variable' => 'highlight',
+	      'Value' => '#2271b1'
 	    )
 	  );
 
 	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'notification',
-	      'colorValue' => '#d63638'
+	      'Variable' => 'notification',
+	      'Value' => '#d63638'
 	    )
 	  );
 
   	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'background',
-	      'colorValue' => '#f0f0f1'
+	      'Variable' => 'background',
+	      'Value' => '#f0f0f1'
 	    )
 	  );
 
   	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'links',
-	      'colorValue' => '#2271b1'
+	      'Variable' => 'links',
+	      'Value' => '#2271b1'
 	    )
 	  );
 
   	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'buttons',
-	      'colorValue' => '#2271b1'
+	      'Variable' => 'buttons',
+	      'Value' => '#2271b1'
 	    )
 	  );
 
   	  $wpdb->insert($table_name, 
 	    array( 
-	      'colorVariable' => 'formInputs',
-	      'colorValue' => '#3582c4'
+	      'Variable' => 'formInputs',
+	      'Value' => '#3582c4'
+	    )
+	  );
+
+	  $wpdb->insert($table_name, 
+	    array( 
+	      'Variable' => 'customCSS',
+	      'Value' => '<style></style>'
 	    )
 	  );
     }
 }
 
-function getColorValueFromDB($ebs_var){
+function getValueFromDB($ebs_var){
 
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'easyBackendStyle';
 
-	$sql = "SELECT colorValue FROM wp_easyBackendStyle WHERE colorVariable = \"" . $ebs_var ."\";";
+	$sql = "SELECT Value FROM wp_easyBackendStyle WHERE Variable = \"" . $ebs_var ."\";";
 
 	$result = $wpdb->get_results($sql, ARRAY_N);
 
 	return $result;
 }
 
-function saveColorValueInDB($ebs_value, $ebs_var){
+function saveValueInDB($ebs_value, $ebs_var){
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'easyBackendStyle';
 
-	$sql = "UPDATE wp_easyBackendStyle SET colorValue = \"". $ebs_value ."\" WHERE colorVariable = \"". $ebs_var ."\";";
+	$sql = "UPDATE wp_easyBackendStyle SET Value = \"". $ebs_value ."\" WHERE Variable = \"". $ebs_var ."\";";
 
 	$result = $wpdb->get_results($sql, ARRAY_N);
 
