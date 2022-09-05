@@ -19,14 +19,19 @@ if (isset($_REQUEST['submit'])) {
 }
 
 if (isset($_REQUEST['submitCustomCSS'])) {
-
-    saveValueInDB($_REQUEST['customCSS'], 'customCSS');
+    
+    if(!str_starts_with($_REQUEST['customCSS'], '<style>') && !str_ends_with($_REQUEST['customCSS'], '</style>')){
+        saveValueInDB($_REQUEST['customCSS'], 'customCSS');
+    }
+    else{
+        echo '<h5 style="color: #CC0000"> Wrong input. Please make sure to remove < style > and < /style >.</h5>';
+    }
 
     add_custom_css();
 }
     
 if (get_user_option( 'admin_color' ) != 'fresh'){
-    echo '<h1 style="color: #CC0000"> Please select the default admin color scheme and reload the site to apply changes. </h1>';
+    echo '<h5 style="color: #CC0000"> Please select the default admin color scheme and reload the site to apply changes. </h5>';
 }
 
 ?>
@@ -120,17 +125,28 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
     <form action="" method="post">
         <table>
             <tbody>
-                <tr>
-                    <th scope="row"><label for="customCSS">customCSS</label></th>
-                    <td>
-                        <textarea name="customCSS" id="customCSS"
-                        value=""><?php echo getValueFromDB("customCSS")[0][0];?></textarea>
-                    </td>
-                </tr>
+                    <tr>
+                        <th scope="row"><label for="customCSS">customCSS</label></th>
+                        <td>
+                            <textarea name="customCSS" id="customCSS" rows="12" cols="90"><?php echo getValueFromDB("customCSS")[0][0];?></textarea>
+                        </td>
+                    </tr>
             </tbody>
         </table>
         <input type="submit" class="button button-primary" name="submitCustomCSS" id="submitCustomCSS">
     </form>
 
 </div><!-- .wrap -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/css/css.min.js"></script>
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("customCSS"), {
+        extraKeys: {"Ctrl-Space": "autocomplete"}
+    });
+
+    document.getElementsByClassName('CodeMirror').style.width = "400px";
+</script>
+<style>.CodeMirror {min-width: 400px;}</style>
 
