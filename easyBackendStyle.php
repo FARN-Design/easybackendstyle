@@ -62,15 +62,19 @@ function display_settings_page() {
 
 //-----Custom Changes------
 function add_custom_css(){
-  error_log(getValueFromDB("customCSS")[0][0]);
+  if (get_user_option( 'admin_color' ) != 'fresh'){
+    return;
+  }
   echo getValueFromDB("customCSS")[0][0];
-
 }
 add_action('admin_footer', 'add_custom_css');
 
 //-----CSS Changes------
 
 function my_custom_fonts() {
+  if (get_user_option( 'admin_color' ) != 'fresh'){
+    return;
+  }
 
   echo '<style>
   body {

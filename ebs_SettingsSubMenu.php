@@ -25,6 +25,10 @@ if (isset($_REQUEST['submitCustomCSS'])) {
     add_custom_css();
 }
     
+if (get_user_option( 'admin_color' ) != 'fresh'){
+    echo '<h1 style="color: #CC0000"> Please select the default admin color scheme and reload the site to apply changes. </h1>';
+}
+
 ?>
 
 <div class="wrap">
