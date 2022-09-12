@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*/**
  * @link              https://farn.de
  * @since             0.0.1
  * @package           EasyBackendStyle
@@ -77,17 +77,26 @@ function my_custom_fonts() {
   //Own CSS  !!!TODO EDIT COLOR SHIFT!!! TODO BORDER COLOR
   echo '<style>
   :root{
-    --wp-admin-theme-color: '.getValueFromDB("highlight")[0][0].',
-    --wp-admin-theme-color-darker-10: '.getValueFromDB("highlight")[0][0].',
-    --wp-admin-theme-color-darker-20: '.getValueFromDB("highlight")[0][0].',
+    --wp-admin-theme-color: '.getValueFromDB("highlight")[0][0].';
+    --wp-admin-theme-color-darker-10: '.getValueFromDB("highlight")[0][0].';
+    --wp-admin-theme-color-darker-20: '.getValueFromDB("highlight")[0][0].';
   }
 
   .wp-core-ui .button-link{
     color: '.getValueFromDB("links")[0][0].'
   }
 
-  .wrap .page-title-action{
-    color: '.getValueFromDB("buttons")[0][0].',
+  .wrap .page-title-action, .components-button.is-primary{
+    color: '.getValueFromDB("menuText")[0][0].';
+    background-color: '.getValueFromDB("buttons")[0][0].';
+  }
+
+  .components-button.is-primary:disabled, .components-button.is-primary:disabled:active:enabled, 
+  .components-button.is-primary[aria-disabled=true], .components-button.is-primary[aria-disabled=true]:active:enabled,
+  .components-button.is-primary[aria-disabled=true]:enabled,
+  .edit-post-header-toolbar.edit-post-header-toolbar__left>.edit-post-header-toolbar__inserter-toggle.has-icon{
+    color: '.getValueFromDB("menuText")[0][0].';
+    background-color: '.getValueFromDB("buttons")[0][0].';
   }
 
   </style>';
