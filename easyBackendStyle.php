@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*/**
  * @link              https://farn.de
  * @since             0.0.1
  * @package           EasyBackendStyle
@@ -66,6 +66,7 @@ function add_custom_css(){
   echo '<style>'.getValueFromDB("customCSS")[0][0].'</style>';
 }
 add_action('admin_footer', 'add_custom_css');
+add_action('wp_footer', 'add_custom_css');
 
 //-----CSS Changes------
 
@@ -73,7 +74,35 @@ function my_custom_fonts() {
   if (get_user_option( 'admin_color' ) != 'fresh'){
     return;
   }
+  //Own CSS  !!!TODO EDIT COLOR SHIFT!!! TODO BORDER COLOR
+  echo '<style>
+  :root{
+    --wp-admin-theme-color: '.getValueFromDB("highlight")[0][0].';
+    --wp-admin-theme-color-darker-10: '.getValueFromDB("highlight")[0][0].';
+    --wp-admin-theme-color-darker-20: '.getValueFromDB("highlight")[0][0].';
+  }
 
+  .wp-core-ui .button-link{
+    color: '.getValueFromDB("links")[0][0].'
+  }
+
+  .wrap .page-title-action, .components-button.is-primary{
+    color: '.getValueFromDB("menuText")[0][0].';
+    background-color: '.getValueFromDB("buttons")[0][0].';
+  }
+
+  .components-button.is-primary:disabled, .components-button.is-primary:disabled:active:enabled, 
+  .components-button.is-primary[aria-disabled=true], .components-button.is-primary[aria-disabled=true]:active:enabled,
+  .components-button.is-primary[aria-disabled=true]:enabled,
+  .edit-post-header-toolbar.edit-post-header-toolbar__left>.edit-post-header-toolbar__inserter-toggle.has-icon{
+    color: '.getValueFromDB("menuText")[0][0].';
+    background-color: '.getValueFromDB("buttons")[0][0].';
+  }
+
+  </style>';
+
+
+  //Template CSS
   echo '<style>
   body {
     background: '.getValueFromDB("background")[0][0].';
@@ -655,5 +684,6 @@ function my_custom_fonts() {
   }</style>';
 }
 add_action('admin_head', 'my_custom_fonts');
+add_action('wp_head', 'my_custom_fonts');
 
 ?>
