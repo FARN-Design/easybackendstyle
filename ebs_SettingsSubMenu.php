@@ -15,7 +15,8 @@ if (isset($_REQUEST['submit'])) {
     saveValueInDB($_REQUEST['buttons'], 'buttons');
     saveValueInDB($_REQUEST['formInputs'], 'formInputs');
 
-    my_custom_fonts();
+    $GLOBALS['ebsPlugin']->ebs_backend_css();
+    $GLOBALS['ebsPlugin']->ebs_custom_user_css();
 }
 
 if (isset($_REQUEST['submitCustomCSS'])) {
@@ -27,7 +28,8 @@ if (isset($_REQUEST['submitCustomCSS'])) {
         echo '<h5 style="color: #CC0000"> Wrong input. Please make sure to remove < style > and < /style >.</h5>';
     }
 
-    add_custom_css();
+    $GLOBALS['ebsPlugin']->ebs_backend_css();
+    $GLOBALS['ebsPlugin']->ebs_custom_user_css();
 }
     
 if (get_user_option( 'admin_color' ) != 'fresh'){

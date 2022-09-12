@@ -1,10 +1,12 @@
 <?php
 
+class ebsDatabaseConnector{
+
+}
+
 function setup_Database(){
 
 	global $wpdb;
-
-	$wpdb->show_errors();
 
 	$charset_collate = $wpdb->get_charset_collate();
 	$table_name = $wpdb->prefix . 'easyBackendStyle';
