@@ -36,6 +36,8 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
     echo '<h5 style="color: #CC0000"> Please select the default admin color scheme and reload the site to apply changes. </h5>';
 }
 
+echo checkFields();
+
 ?>
 
 <div class="wrap">

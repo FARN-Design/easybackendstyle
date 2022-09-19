@@ -1,5 +1,6 @@
 <?php
 
+//TODO Refactor to classr
 class ebsDatabaseConnector{
 
 }
@@ -14,7 +15,7 @@ function setup_Database(){
   	if ($wpdb->get_var("show tables like '" . $table_name . "'") != $table_name) {
   		$sql = "CREATE TABLE $table_name (
   		id mediumint(9) NOT NULL AUTO_INCREMENT,
-    	Variable varchar(255) NOT NULL,
+    	Variable varchar(255) NOT NULL UNIQUE,
     	Value varchar(255) NOT NULL,
     	UNIQUE KEY id (id)
   	) $charset_collate;";
@@ -94,7 +95,38 @@ function setup_Database(){
 	      'Value' => '<style></style>'
 	    )
 	  );
+
+	  $wpdb->insert($table_name, 
+	    array( 
+	      'Variable' => 'customCSS',
+	      'Value' => '<style></style>'
+	    )
+	  );
     }
+}
+
+
+//TODO NEEDS COMPLETION
+function checkFields(){
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'easyBackendStyle';
+
+	$results = $wpdb->get_results('SELECT * FROM wp_easyBackendStyle', ARRAY_N);
+
+	$databaseVariables = array();
+
+	for ($x = 0; $x < count($results); $x++) {
+  		//$out .= $results[$x][1].'<br>';
+		$databaseVariables[] = $results[$x][1];
+	}
+
+	$defaultsMap = [
+		'menuText' => '#f0f0f1',
+		'baseMenu' => '#1d2327'];
+		//Add other values
+
+	return var_dump($databaseVariables);
+
 }
 
 function getValueFromDB($ebs_var){

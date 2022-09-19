@@ -69,6 +69,7 @@ class EasyBackendStyle
   function activate(){
     $this->sub_settings_page();
     flush_rewrite_rules();
+    setup_Database();
   }
 
   function deactivate(){
@@ -76,7 +77,7 @@ class EasyBackendStyle
   }
 
   function uninstall(){
-
+    //TODO
   }
 
   /**
