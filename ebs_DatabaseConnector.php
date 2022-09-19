@@ -95,18 +95,11 @@ function setup_Database(){
 	      'Value' => '<style></style>'
 	    )
 	  );
-
-	  $wpdb->insert($table_name, 
-	    array( 
-	      'Variable' => 'customCSS',
-	      'Value' => '<style></style>'
-	    )
-	  );
     }
 }
 
 
-//TODO NEEDS COMPLETION
+//TODO NEEDS COMPLETION (check if it works!)
 function checkFields(){
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'easyBackendStyle';
@@ -122,10 +115,26 @@ function checkFields(){
 
 	$defaultsMap = [
 		'menuText' => '#f0f0f1',
-		'baseMenu' => '#1d2327'];
-		//Add other values
+		'baseMenu' => '#1d2327',
+		'subMenu' => '#2c3338',
+		'highlight' => '#2271b1',
+		'notification' => '#d63638',
+		'background' => '#f0f0f1',
+		'links' => '#2271b1',
+		'buttons' => '#2271b1',
+		'formInputs' => '#3582c4',
+		'customCSS' => '<style></style>'];
 
-	return var_dump($databaseVariables);
+	foreach ($defaultsMap as $key => $value) {
+		if(!in_array($key, $databaseVariables)){
+		  $wpdb->insert($table_name, 
+	    	array( 
+	      	'Variable' => $key,
+	      	'Value' => $value ));
+		}
+	}
+
+	//return var_dump($defaultsMap);
 
 }
 
