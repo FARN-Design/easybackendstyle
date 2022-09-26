@@ -33,12 +33,16 @@ class DatabaseConnector{
 		  require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		  dbDelta( $sql );
 
-		  checkFields();
+		  $this->checkFields();
 		}
 	}
 
 	// TODO Check if Database exists
 	public function checkFields(){
+
+		if ($this->wpdb->get_var("show tables like '" . $this->tableName . "'") != $this->tableName){
+			$this->setup_Database();
+		}
 
 		$results = $this->wpdb->get_results('SELECT * FROM wp_easyBackendStyle', ARRAY_N);
 
