@@ -1,39 +1,54 @@
 <?php
 
-require_once('easyBackendStyle.php');
-require_once('ebs_DatabaseConnector.php');
-
-if (isset($_REQUEST['submit'])) {
-
-    saveValueInDB($_REQUEST['menuText'],'menuText');
-    saveValueInDB($_REQUEST['baseMenu'], 'baseMenu');
-    saveValueInDB($_REQUEST['subMenu'], 'subMenu');
-    saveValueInDB($_REQUEST['highlight'], 'highlight');
-    saveValueInDB($_REQUEST['notification'], 'notification');
-    saveValueInDB($_REQUEST['background'], 'background');
-    saveValueInDB($_REQUEST['links'], 'links');
-    saveValueInDB($_REQUEST['buttons'], 'buttons');
-    saveValueInDB($_REQUEST['formInputs'], 'formInputs');
-
-    $GLOBALS['ebsPlugin']->ebs_backend_css();
-    $GLOBALS['ebsPlugin']->ebs_custom_user_css();
+if (!class_exists('ebsSettingsSubMenu')){
+  $GLOBALS['ebsSettingsSubMenu'] = new SettingsSubMenu();
 }
 
-if (isset($_REQUEST['submitCustomCSS'])) {
-    
-    if(!str_starts_with($_REQUEST['customCSS'], '<style>') && !str_ends_with($_REQUEST['customCSS'], '</style>')){
-        saveValueInDB($_REQUEST['customCSS'], 'customCSS');
-    }
-    else{
-        echo '<h5 style="color: #CC0000"> Wrong input. Please make sure to remove < style > and < /style >.</h5>';
+$GLOBALS['ebsSettingsSubMenu']->handleRequest();
+
+class SettingsSubMenu{
+
+    private $dbc;
+    private $ebs;
+
+    function __construct(){
+        $this->ebs = $GLOBALS['ebsPlugin'];
+        $this->dbc = $GLOBALS['ebsPlugin']->dbc;
     }
 
-    $GLOBALS['ebsPlugin']->ebs_backend_css();
-    $GLOBALS['ebsPlugin']->ebs_custom_user_css();
-}
-    
-if (get_user_option( 'admin_color' ) != 'fresh'){
-    echo '<h5 style="color: #CC0000"> Please select the default admin color scheme and reload the site to apply changes. </h5>';
+    public function handleRequest(){
+
+        if (isset($_REQUEST['submit'])) {
+
+            $this->dbc->saveValueInDB($_REQUEST['menuText'],'menuText');
+            $this->dbc->saveValueInDB($_REQUEST['baseMenu'], 'baseMenu');
+            $this->dbc->saveValueInDB($_REQUEST['subMenu'], 'subMenu');
+            $this->dbc->saveValueInDB($_REQUEST['highlight'], 'highlight');
+            $this->dbc->saveValueInDB($_REQUEST['notification'], 'notification');
+            $this->dbc->saveValueInDB($_REQUEST['background'], 'background');
+            $this->dbc->saveValueInDB($_REQUEST['links'], 'links');
+            $this->dbc->saveValueInDB($_REQUEST['buttons'], 'buttons');
+            $this->dbc->saveValueInDB($_REQUEST['formInputs'], 'formInputs');
+        }
+
+        if (isset($_REQUEST['submitCustomCSS'])) {
+            
+            if(!str_starts_with($_REQUEST['customCSS'], '<style>') && !str_ends_with($_REQUEST['customCSS'], '</style>')){
+                $this->dbc->saveValueInDB($_REQUEST['customCSS'], 'customCSS');
+            }
+            else{
+                echo '<h5 style="color: #CC0000"> Wrong input. Please make sure to remove < style > and < /style >.</h5>';
+            }
+        }
+            
+        if (get_user_option( 'admin_color' ) != 'fresh'){
+            echo '<h5 style="color: #CC0000"> Please select the default admin color scheme and reload the site to apply changes. </h5>';
+        }
+
+        $this->ebs->ebs_backend_css();
+        $this->ebs->ebs_custom_user_css();
+
+    }
 }
 
 ?>
@@ -52,7 +67,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="menuText">menuText</label></th>
                     <td>
                         <input type="color" name="menuText" id="menuText" class="small-text"
-                        value="<?php echo getValueFromDB("menuText")[0][0];?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("menuText")[0][0];?>">
                     </td>
                 </tr>
 
@@ -60,7 +75,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="baseMenu">baseMenu</label></th>
                     <td>
                         <input type="color" name="baseMenu" id="baseMenu" class="small-text"
-                        value="<?php echo getValueFromDB("baseMenu")[0][0]; ?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("baseMenu")[0][0]; ?>">
                     </td>
                 </tr>
 
@@ -68,7 +83,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="subMenu">subMenu</label></th>
                     <td>
                         <input type="color" name="subMenu" id="subMenu" class="small-text"
-                        value="<?php echo getValueFromDB("subMenu")[0][0];?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("subMenu")[0][0];?>">
                     </td>
                 </tr>
 
@@ -76,7 +91,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="highlight">highlight</label></th>
                     <td>
                         <input type="color" name="highlight" id="highlight" class="small-text"
-                        value="<?php echo getValueFromDB("highlight")[0][0];?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("highlight")[0][0];?>">
                     </td>
                 </tr>
 
@@ -84,7 +99,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="notification">notification</label></th>
                     <td>
                         <input type="color" name="notification" id="notification" class="small-text"
-                        value="<?php echo getValueFromDB("notification")[0][0];?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("notification")[0][0];?>">
                     </td>
                 </tr>
                 
@@ -92,7 +107,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="background">background</label></th>
                     <td>
                         <input type="color" name="background" id="background" class="small-text"
-                        value="<?php echo getValueFromDB("background")[0][0];?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("background")[0][0];?>">
                     </td>
                 </tr>
                
@@ -100,7 +115,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="links">links</label></th>
                     <td>
                         <input type="color" name="links" id="links" class="small-text"
-                        value="<?php echo getValueFromDB("links")[0][0];?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("links")[0][0];?>">
                     </td>
                 </tr>
                 
@@ -108,7 +123,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="buttons">buttons</label></th>
                     <td>
                         <input type="color" name="buttons" id="buttons" class="small-text"
-                        value="<?php echo getValueFromDB("buttons")[0][0];?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttons")[0][0];?>">
                     </td>
                 </tr>
 
@@ -116,7 +131,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <th scope="row"><label for="formInputs">formInputs</label></th>
                     <td>
                         <input type="color" name="formInputs" id="formInputs" class="small-text"
-                        value="<?php echo getValueFromDB("formInputs")[0][0];?>">
+                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("formInputs")[0][0];?>">
                     </td>
                 </tr>
             </tbody>
@@ -130,7 +145,7 @@ if (get_user_option( 'admin_color' ) != 'fresh'){
                     <tr>
                         <th scope="row"><label for="customCSS">customCSS</label></th>
                         <td>
-                            <textarea name="customCSS" id="customCSS" rows="12" cols="90"><?php echo getValueFromDB("customCSS")[0][0];?></textarea>
+                            <textarea name="customCSS" id="customCSS" rows="12" cols="90"><?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("customCSS")[0][0];?></textarea>
                         </td>
                     </tr>
             </tbody>
