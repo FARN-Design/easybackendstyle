@@ -14,6 +14,8 @@ class SettingsSubMenu{
     function __construct(){
         $this->ebs = $GLOBALS['ebsPlugin'];
         $this->dbc = $GLOBALS['ebsPlugin']->dbc;
+
+        $this->dbc->checkFields();
     }
 
     public function handleRequest(){
