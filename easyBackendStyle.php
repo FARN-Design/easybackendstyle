@@ -57,27 +57,32 @@ register_deactivation_hook(__FILE__, array($GLOBALS['ebsPlugin'], 'deactivate'))
 
 class EasyBackendStyle
 {
+  public $dbc;
 
   function __construct(){
+
     add_action('admin_menu', array($this, 'sub_settings_page'));
     add_action('admin_head', array($this, 'ebs_backend_css'));
     add_action('admin_footer', array($this, 'ebs_custom_user_css'));
     add_action('wp_head', array($this, 'ebs_backend_css'));
     add_action('wp_footer', array($this, 'ebs_custom_user_css'));
+
+    if (!class_exists('ebsDatabaseConnector')){
+      $this->dbc = new DatabaseConnector();
+    }else{
+      // TODO Error out
+    }
+    $this->dbc->checkFields();
   }
 
   function activate(){
+    $this->dbc->setup_Database();
     $this->sub_settings_page();
     flush_rewrite_rules();
-    setup_Database();
   }
 
   function deactivate(){
     flush_rewrite_rules();
-  }
-
-  function uninstall(){
-    //TODO
   }
 
   /**
@@ -108,11 +113,12 @@ class EasyBackendStyle
     if (get_user_option( 'admin_color' ) != 'fresh'){
       return;
     }
-    echo '<style>'.getValueFromDB("customCSS")[0][0].'</style>';
+    echo '<style>'.$this->dbc->getValueFromDB("customCSS")[0][0].'</style>';
   }
 
+  //TODO Implement Color Shifts here?
   function getColor($name){
-    return getValueFromDB($name)[0][0];
+    return $this->dbc->getValueFromDB($name)[0][0];
   }
 
   /**
