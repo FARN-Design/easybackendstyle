@@ -55,6 +55,9 @@ register_deactivation_hook(__FILE__, array($GLOBALS['ebsPlugin'], 'deactivate'))
 
 //------------------------------------------Plugin Main Class--------------------------------------
 
+/**
+ * Main ebs plugin class. Manages the Plugin.
+ */
 class EasyBackendStyle
 {
   public $dbc;
@@ -75,12 +78,14 @@ class EasyBackendStyle
     $this->dbc->checkFields();
   }
 
+  //On activation of the plugin
   function activate(){
     $this->dbc->setup_Database();
     $this->sub_settings_page();
     flush_rewrite_rules();
   }
 
+  //On deactivation of the plugin
   function deactivate(){
     flush_rewrite_rules();
   }
@@ -116,7 +121,7 @@ class EasyBackendStyle
     echo '<style>'.$this->dbc->getValueFromDB("customCSS")[0][0].'</style>';
   }
 
-  //TODO Implement Color Shifts here?
+  //In class function that calls the getValueFromDB() function from the Databaseconector.
   function getColor($name){
     return $this->dbc->getValueFromDB($name)[0][0];
   }

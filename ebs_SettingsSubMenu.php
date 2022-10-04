@@ -6,18 +6,31 @@ if (!class_exists('ebsSettingsSubMenu')){
 
 $GLOBALS['ebsSettingsSubMenu']->handleRequest();
 
+/**
+ * This class manages the content and Requests on the SubSetting page of the plugin.
+ */
 class SettingsSubMenu{
 
+    //An object of the ebs_DatabaseConnector class
     private $dbc;
+    //An object of the main ebs plugin class
     private $ebs;
 
     function __construct(){
         $this->ebs = $GLOBALS['ebsPlugin'];
         $this->dbc = $GLOBALS['ebsPlugin']->dbc;
 
+        //Runs a check if all fields in the database are set correctly
         $this->dbc->checkFields();
     }
 
+    /**
+     * Handels all possible Request that can appear on the settings page. 
+     * 
+     * Writes an Error on the page if 
+     *  1. The wrong scheme is loaded
+     *  2. if the custom CSS field is not filled out correctly
+     */
     public function handleRequest(){
 
         if (isset($_REQUEST['submit'])) {
@@ -58,7 +71,7 @@ class SettingsSubMenu{
 }
 
 ?>
-
+<!-- HTML content for the settings page -->
 <div class="wrap">
 
     <h1>Settings for EasyBackendStyle Plugin</h1>
