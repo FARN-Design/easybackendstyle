@@ -42,6 +42,10 @@ class SettingsSubMenu{
                 echo '<h5 style="color: #CC0000"> Wrong input. Please make sure to remove < style > and < /style >.</h5>';
             }
         }
+
+        if (isset($_REQUEST['resetDefaults'])){
+            $this->dbc->resetDefaults();
+        }
             
         if (get_user_option( 'admin_color' ) != 'fresh'){
             echo '<h5 style="color: #CC0000"> Please select the default admin color scheme and reload the site to apply changes. </h5>';
@@ -139,6 +143,8 @@ class SettingsSubMenu{
             </tbody>
         </table>
         <input type="submit" class="button button-primary" name="submit" id="submit">
+        <input type="submit" class="button button-primary" name="resetDefaults" id="resetDefaults" value="resetDefaults">
+
     </form>
 
     <form action="" method="post">
