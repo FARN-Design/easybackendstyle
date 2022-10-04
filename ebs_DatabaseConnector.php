@@ -7,6 +7,19 @@ class DatabaseConnector{
 	var $tableName;
 	var $charset_collate;
 
+	//add new option here to check if its in the database
+	var	$defaultsMap = [
+			'menuText' => '#f0f0f1',
+			'baseMenu' => '#1d2327',
+			'subMenu' => '#2c3338',
+			'highlight' => '#2271b1',
+			'notification' => '#d63638',
+			'background' => '#f0f0f1',
+			'links' => '#2271b1',
+			'buttons' => '#2271b1',
+			'formInputs' => '#3582c4',
+			'customCSS' => '<style></style>'];
+
 	function __construct(){
 
 		global $wpdb;
@@ -52,20 +65,7 @@ class DatabaseConnector{
 			$databaseVariables[] = $results[$x][1];
 		}
 
-		//add new option here to check if its in the database
-		$defaultsMap = [
-			'menuText' => '#f0f0f1',
-			'baseMenu' => '#1d2327',
-			'subMenu' => '#2c3338',
-			'highlight' => '#2271b1',
-			'notification' => '#d63638',
-			'background' => '#f0f0f1',
-			'links' => '#2271b1',
-			'buttons' => '#2271b1',
-			'formInputs' => '#3582c4',
-			'customCSS' => '<style></style>'];
-
-		foreach ($defaultsMap as $key => $value) {
+		foreach ($this->defaultsMap as $key => $value) {
 			if(!in_array($key, $databaseVariables)){
 			  $this->wpdb->insert($this->tableName, 
 		    	array( 
@@ -89,6 +89,14 @@ class DatabaseConnector{
 		$result = $this->wpdb->get_results($sql, ARRAY_N);
 
 		return $result;
+	}
+
+	public function resetDefaults(){
+
+		foreach ($this->defaultsMap as $key => $value) {
+			$this->saveValueInDB($value, $key);
+		}
+
 	}
 }
 ?>
