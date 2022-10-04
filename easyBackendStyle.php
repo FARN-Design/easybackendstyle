@@ -11,7 +11,8 @@
  * Author:            Farn - Digital Brand Design 
  * Author URI:        https://farn.de
  * License:           ToDo
- * Text Domain:       Marvin Taube - Farn
+ * Text Domain:       ebs
+ * Domain Path:       /languages
 */
 
 /*  Licence Placeholder
@@ -52,6 +53,12 @@ register_activation_hook( __FILE__, array($GLOBALS['ebsPlugin'], 'activate'));
 
 //deactivation
 register_deactivation_hook(__FILE__, array($GLOBALS['ebsPlugin'], 'deactivate'));
+
+function ebsTextDomainLoad(){
+  load_plugin_textdomain("ebs", false, 'easyBackendStyle/languages');
+}
+
+add_action('init', 'ebsTextDomainLoad');
 
 //------------------------------------------Plugin Main Class--------------------------------------
 

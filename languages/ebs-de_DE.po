@@ -1,0 +1,104 @@
+# Copyright (C) 2022 Farn - Digital Brand Design
+# This file is distributed under the ToDo.
+msgid ""
+msgstr ""
+"Project-Id-Version: EasyBackendStyle 0.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ebs\n"
+"POT-Creation-Date: 2022-10-04T11:45:16+00:00\n"
+"PO-Revision-Date: 2022-10-04 13:57+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Domain: ebs\n"
+
+#. Plugin Name of the plugin
+msgid "EasyBackendStyle"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://farn.de"
+msgstr ""
+
+#. Description of the plugin
+msgid "Changing the background of the Backend in WordPress"
+msgstr "Settings for EasyBackendStyle plugin "
+
+#. Author of the plugin
+msgid "Farn - Digital Brand Design"
+msgstr ""
+
+#: ebs_SettingsSubMenu.php:55
+msgid "Wrong input. Please make sure to remove < style > and < /style >."
+msgstr ""
+"Falsche Eingabe. Bitte stellen Sie sicher, dass Sie < style > und < /"
+"style > entfernen."
+
+#: ebs_SettingsSubMenu.php:64
+msgid ""
+"Please select the default admin color scheme and reload the site to apply "
+"changes."
+msgstr ""
+"Bitte wählen Sie das Standard-Admin-Farbschema aus und laden Sie die "
+"Seite neu, um die Änderungen zu übernehmen."
+
+#: ebs_SettingsSubMenu.php:77
+msgid "Settings for EasyBackendStyle Plugin "
+msgstr "Einstellungen für EasyBackendStyle Plugin "
+
+#: ebs_SettingsSubMenu.php:79
+msgid "This is the settings Page for the EasyBackendStyle Plugin."
+msgstr "Dies ist die Einstellungsseite für das EasyBackendStyle Plugin."
+
+#: ebs_SettingsSubMenu.php:86
+msgid "Menu Text"
+msgstr "Menu Textfarbe"
+
+#: ebs_SettingsSubMenu.php:94
+msgid "Base Menu"
+msgstr "Basis Menu Farbe"
+
+#: ebs_SettingsSubMenu.php:102
+msgid "Sub Menu"
+msgstr "Sub Menu Farbe"
+
+#: ebs_SettingsSubMenu.php:110
+msgid "Highlight"
+msgstr ""
+
+#: ebs_SettingsSubMenu.php:118
+msgid "Notification"
+msgstr "Benachrichtigung"
+
+#: ebs_SettingsSubMenu.php:126
+msgid "Background"
+msgstr "Hintergrund"
+
+#: ebs_SettingsSubMenu.php:134
+msgid "Links"
+msgstr ""
+
+#: ebs_SettingsSubMenu.php:142
+msgid "Buttons"
+msgstr ""
+
+#: ebs_SettingsSubMenu.php:150
+msgid "Form Inputs"
+msgstr "Formular Inputs"
+
+#: ebs_SettingsSubMenu.php:158 ebs_SettingsSubMenu.php:174
+msgid "Save"
+msgstr "Speichern"
+
+#: ebs_SettingsSubMenu.php:159
+msgid "Reset Defaults"
+msgstr "Basiswerte Zurücksetzen"
+
+#: ebs_SettingsSubMenu.php:167
+msgid "Custom CSS"
+msgstr "Eigenes CSS"
