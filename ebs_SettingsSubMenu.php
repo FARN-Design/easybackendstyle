@@ -75,6 +75,9 @@ class SettingsSubMenu{
 <div class="wrap">
 
     <h1><?php _e('Settings for EasyBackendStyle Plugin ', 'ebs')?></h1>
+
+    <img src="<?php echo plugin_dir_url( __FILE__ ) . 'images/EasyBackendStyle-Logo 500x500.jpg'; ?>" alt="Logo" width="200" height="200" align="right">
+
     <p class="description">
         <?php _e('This is the settings Page for the EasyBackendStyle Plugin.', 'ebs')?>
     </p>
