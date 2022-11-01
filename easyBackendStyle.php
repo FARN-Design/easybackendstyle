@@ -10,28 +10,14 @@
  * Version:           0.0.1
  * Author:            Farn - Digital Brand Design 
  * Author URI:        https://farn.de
- * License:           ToDo
+ * License:           GNU GENERAL PUBLIC LICENSE Version 3
  * Text Domain:       ebs
  * Domain Path:       /languages
 */
 
 /*  Licence Placeholder
-
---Put Licence here--
-
+	See LICENCE.md file.
 */
-
-/*$this->getColor("menuText") = '#f0f0f1'; //default f0f0f1
-$this->getColor("baseMenu") = '#1d2327'; //default 1d2327
-$this->getColor("subMenu") = '#2c3338'; //default 2c3338
-$this->getColor("highlight") = '#2271b1'; //default 2271b1
-$this->getColor("notification") = '#d63638'; //default d63638
-$GLOBALS['background']= '#f0f0f1'; //default f0f0f1
-$this->getColor("links") = '#2271b1'; //default 2271b1
-$this->getColor("buttons") = '#2271b1'; //default 2271b1
-$this->getColor("formInputs") = '#3582c4'; //default 3582c4
-*/
-
 //------------------------------------------Plugin Security----------------------------------------
 
 if (! defined('ABSPATH')){
@@ -45,7 +31,7 @@ require_once('ebs_DatabaseConnector.php');
 //------------------------------------------Plugin Code--------------------------------------------
 
 if (!class_exists('ebsPlugin')){
-  $GLOBALS['ebsPlugin'] = new EasyBackendStyle();
+  $GLOBALS['ebsPlugin'] = new easyBackendStyle();
 }
 
 //activation
@@ -54,7 +40,7 @@ register_activation_hook( __FILE__, array($GLOBALS['ebsPlugin'], 'activate'));
 //deactivation
 register_deactivation_hook(__FILE__, array($GLOBALS['ebsPlugin'], 'deactivate'));
 
-function ebsTextDomainLoad(){
+function ebsTextDomainLoad(): void {
   load_plugin_textdomain("ebs", false, 'easyBackendStyle/languages');
 }
 
@@ -65,9 +51,9 @@ add_action('init', 'ebsTextDomainLoad');
 /**
  * Main ebs plugin class. Manages the Plugin.
  */
-class EasyBackendStyle
+class easyBackendStyle
 {
-  public $dbc;
+  public ebs_DatabaseConnector $dbc;
 
   function __construct(){
 
@@ -78,29 +64,27 @@ class EasyBackendStyle
     add_action('wp_footer', array($this, 'ebs_custom_user_css'));
 
     if (!class_exists('ebsDatabaseConnector')){
-      $this->dbc = new DatabaseConnector();
-    }else{
-      // TODO Error out
+      $this->dbc = new ebs_DatabaseConnector();
     }
     $this->dbc->checkFields();
   }
 
   //On activation of the plugin
-  function activate(){
+  function activate(): void {
     $this->dbc->setup_Database();
     $this->sub_settings_page();
     flush_rewrite_rules();
   }
 
   //On deactivation of the plugin
-  function deactivate(){
+  function deactivate(): void {
     flush_rewrite_rules();
   }
 
   /**
    * Creates a new submenu page in the general settings.
   */
-  public function sub_settings_page(){
+  public function sub_settings_page(): void {
     add_submenu_page(
         'options-general.php', //name of the general settings file.
         'EasyBackendStyle',// page title
@@ -114,21 +98,21 @@ class EasyBackendStyle
   /**
    * Import of the conent file for the setting page.
   */
-  function settings_page() {
+  function settings_page(): void {
     include_once plugin_dir_path( dirname( __FILE__ ) ) . 'easyBackendStyle/ebs_SettingsSubMenu.php';
   }
 
   /**
    * Inlude the custom user css, added in the settings page of the plugin.
   */
-  function ebs_custom_user_css(){
+  function ebs_custom_user_css(): void {
     if (get_user_option( 'admin_color' ) != 'fresh'){
       return;
     }
     echo '<style>'.$this->dbc->getValueFromDB("customCSS")[0][0].'</style>';
   }
 
-  //In class function that calls the getValueFromDB() function from the Databaseconector.
+  //In class function that calls the getValueFromDB() function from the DatabaseConnector.
   function getColor($name){
     return $this->dbc->getValueFromDB($name)[0][0];
   }
@@ -136,11 +120,10 @@ class EasyBackendStyle
   /**
    * Main CSS injection of the selected colors from the database.
   */
-  function ebs_backend_css() {
+  function ebs_backend_css(): void {
     if (get_user_option( 'admin_color' ) != 'fresh'){
       return;
     }
-    //Own CSS  !!!TODO EDIT COLOR SHIFT!!! TODO BORDER COLOR
     echo '<style>
     :root{
       --wp-admin-theme-color: '.$this->getColor("highlight").';
@@ -751,4 +734,3 @@ class EasyBackendStyle
   }
 }
 
-?>

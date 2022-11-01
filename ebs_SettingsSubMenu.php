@@ -1,7 +1,7 @@
 <?php
 
 if (!class_exists('ebsSettingsSubMenu')){
-  $GLOBALS['ebsSettingsSubMenu'] = new SettingsSubMenu();
+  $GLOBALS['ebsSettingsSubMenu'] = new ebs_SettingsSubMenu();
 }
 
 $GLOBALS['ebsSettingsSubMenu']->handleRequest();
@@ -9,13 +9,14 @@ $GLOBALS['ebsSettingsSubMenu']->handleRequest();
 /**
  * This class manages the content and Requests on the SubSetting page of the plugin.
  */
-class SettingsSubMenu{
+class ebs_SettingsSubMenu{
 
     //An object of the ebs_DatabaseConnector class
-    private $dbc;
+    private ebs_DatabaseConnector $dbc;
     //An object of the main ebs plugin class
-    private $ebs;
+    private easyBackendStyle $ebs;
 
+    //Set a reference to the ebs plugin main php class and the ebs databaseConnector class.
     function __construct(){
         $this->ebs = $GLOBALS['ebsPlugin'];
         $this->dbc = $GLOBALS['ebsPlugin']->dbc;

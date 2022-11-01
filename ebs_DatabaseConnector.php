@@ -3,16 +3,15 @@
 /**
  * This is the DatabaseConnector class wich controls the interaction with the Database.
  */
-class DatabaseConnector{
+class ebs_DatabaseConnector{
 
-	var $test = 'test';
-	private $wpdb;
-	var $tableName;
-	var $charset_collate;
+	private wpdb $wpdb;
+	var string $tableName;
+	var string $charset_collate;
 
 	//Defaults Values for the Database
 	//If a new Variable is needed, just add the variable and default value in this map.
-	var	$defaultsMap = [
+	var array $defaultsMap = [
 			'menuText' => '#f0f0f1',
 			'baseMenu' => '#1d2327',
 			'subMenu' => '#2c3338',
@@ -36,7 +35,7 @@ class DatabaseConnector{
 	/***
 	 * This function sets up the Database. This function checks if the database table from the plugin exists and if not create it. 
 	 */
-	public function setup_Database(){
+	public function setup_Database(): void {
 
 	  	if ($this->wpdb->get_var("show tables like '" . $this->tableName . "'") != $this->tableName) {
 	  		$sql = "CREATE TABLE $this->tableName (
@@ -53,8 +52,11 @@ class DatabaseConnector{
 		}
 	}
 
-	// This function checks if all field in the database are present. If not it will fill the mising field with the default values.
-	public function checkFields(){
+	/***
+	 * This function checks if all field in the database are present.
+	 * If not it will fill the missing field with the default values.
+	 */
+	public function checkFields(): void {
 
 		if ($this->wpdb->get_var("show tables like '" . $this->tableName . "'") != $this->tableName){
 			$this->setup_Database();
@@ -70,7 +72,7 @@ class DatabaseConnector{
 
 		foreach ($this->defaultsMap as $key => $value) {
 			if(!in_array($key, $databaseVariables)){
-			  $this->wpdb->insert($this->tableName, 
+			  $this->wpdb->insert($this->tableName,
 		    	array( 
 		      	'Variable' => $key,
 		      	'Value' => $value ));
@@ -82,9 +84,9 @@ class DatabaseConnector{
 	 * A helper function that gets a value from a variable out of the ebs database table.
 	 * 
 	 * @param string $ebs_var A String name of a variable present in the database table.
-	 * @return returns the result in a 2D array. $results[0][0] contains the value of the variable.
+	 * @return array returns the result in a 2D array. $results[0][0] contains the value of the variable.
 	 */
-	public function getValueFromDB($ebs_var){
+	public function getValueFromDB($ebs_var): array {
 
 		$sql = "SELECT Value FROM wp_easyBackendStyle WHERE Variable = \"" . $ebs_var ."\";";
 		$result = $this->wpdb->get_results($sql, ARRAY_N);
@@ -98,14 +100,14 @@ class DatabaseConnector{
 	 * @param string $ebs_var A String name of a variable present in the database table.
 	 * @param string $ebs_value The value as a String to store in the database table.
 	 */
-	public function saveValueInDB($ebs_value, $ebs_var){
+	public function saveValueInDB($ebs_value, $ebs_var): void {
 	
 		$sql = "UPDATE wp_easyBackendStyle SET Value = \"". $ebs_value ."\" WHERE Variable = \"". $ebs_var ."\";";
 		$this->wpdb->get_results($sql, ARRAY_N);
 	}
 
-	//A reset function that writes evry default value to the corresponding datable table field. 
-	public function resetDefaults(){
+	//A reset function that writes every default value to the corresponding datable table field.
+	public function resetDefaults(): void {
 
 		foreach ($this->defaultsMap as $key => $value) {
 			$this->saveValueInDB($value, $key);
@@ -113,4 +115,3 @@ class DatabaseConnector{
 
 	}
 }
-?>
