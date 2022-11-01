@@ -5,7 +5,7 @@
  * @since             1.0.0
  * @package           EasyBackendStyle
  * Plugin Name:       EasyBackendStyle
- * Plugin URI:        https://farn.de
+ * Plugin URI:        https://github.com/farndesign/easyBackendStyle
  * Description:       Changing the background of the Backend in WordPress
  * Version:           1.0.0
  * Author:            Farn - Digital Brand Design 
