@@ -84,9 +84,10 @@ class ebs_DatabaseConnector{
 	 * A helper function that gets a value from a variable out of the ebs database table.
 	 * 
 	 * @param string $ebs_var A String name of a variable present in the database table.
+	 *
 	 * @return array returns the result in a 2D array. $results[0][0] contains the value of the variable.
 	 */
-	public function getValueFromDB($ebs_var): array {
+	public function getValueFromDB( string $ebs_var): array {
 
 		$sql = "SELECT Value FROM wp_easyBackendStyle WHERE Variable = \"" . $ebs_var ."\";";
 		$result = $this->wpdb->get_results($sql, ARRAY_N);
@@ -100,7 +101,7 @@ class ebs_DatabaseConnector{
 	 * @param string $ebs_var A String name of a variable present in the database table.
 	 * @param string $ebs_value The value as a String to store in the database table.
 	 */
-	public function saveValueInDB($ebs_value, $ebs_var): void {
+	public function saveValueInDB( string $ebs_value, string $ebs_var): void {
 	
 		$sql = "UPDATE wp_easyBackendStyle SET Value = \"". $ebs_value ."\" WHERE Variable = \"". $ebs_var ."\";";
 		$this->wpdb->get_results($sql, ARRAY_N);

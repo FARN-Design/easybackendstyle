@@ -32,7 +32,7 @@ class ebs_SettingsSubMenu{
      *  1. The wrong scheme is loaded
      *  2. if the custom CSS field is not filled out correctly
      */
-    public function handleRequest(){
+    public function handleRequest(): void {
 
         if (isset($_REQUEST['submit'])) {
 

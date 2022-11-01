@@ -1,6 +1,6 @@
 <?php
 
-/*/**
+/**
  * @link              https://farn.de
  * @since             1.0.0
  * @package           EasyBackendStyle
@@ -96,14 +96,14 @@ class easyBackendStyle
   }
 
   /**
-   * Import of the conent file for the setting page.
+   * Import of the content file for the setting page.
   */
   function settings_page(): void {
     include_once plugin_dir_path( dirname( __FILE__ ) ) . 'easyBackendStyle/ebs_SettingsSubMenu.php';
   }
 
   /**
-   * Inlude the custom user css, added in the settings page of the plugin.
+   * Include the custom user css, added in the settings page of the plugin.
   */
   function ebs_custom_user_css(): void {
     if (get_user_option( 'admin_color' ) != 'fresh'){
