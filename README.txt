@@ -1,0 +1,61 @@
+=== EasyBackendStyle ===
+Contributors: farndesign
+Tags: tag1, tag2
+Requires at least: 1.0
+Tested up to: 1.0
+Stable tag: 1.0
+Requires PHP: 8.0
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
+
+This plugin allows you to easily customize the colors in the backend. The changes are easily made via predefined fields, as well as custom CSS.
+
+== Description ==
+
+This Wordpress plugin allows you to easily customize the colors in the backend of wordpress. The changes are easily possible via predefined fields, as well as via custom CSS.
+
+== Frequently Asked Questions ==
+
+= How to install the plugin? =
+
+1. Clone the repo or download the .zip archive
+   ```sh
+   git clone https://github.com/farndesign/easyBackendStyle.git
+   ```
+   or
+   Download: https://github.com/farndesign/easyBackendStyle/archive/refs/heads/main.zip
+
+2. Add the plugin files to the Wordpress instance.
+  - Create a new Folder in: `/wp-content/plugins/easyBackendStyle`
+  - Move all files into the new `easyBackendStyle` folder
+
+3. Activate the plugin at the Wordpress plugin page http://localhost/wp-admin/plugins.php
+
+#### Via Wordpress Plugin Store
+
+1. Added later when plugin is released
+
+= How to use the plugin? =
+
+After activating, the settings page can be found as a subpage of the settings section.
+
+At the settings page you can change the color of the different elements. The changes are applied after saving.
+
+In addition, custom CSS can be added. This is always executed additionally and overwrites other content.
+
+== Roadmap ==
+
+- [ ] Live preview of the changes
+- [ ] Think about more Features
+
+See the [open issues](https://github.com/farndesign/easyBackendStyle/issues) for a full list of proposed features (and known issues).
+
+== Changelog ==
+
+= 1.0 =
+* First release
+
+== Upgrade Notice ==
+
+= 1.0 =
+* Download to use the first version of the plugin. Should download the update.
