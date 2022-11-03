@@ -1,10 +1,7 @@
 <?php
 
 /**
- * @link              https://farn.de
- * @since             1.0.0
- * @package           EasyBackendStyle
- * Plugin Name:       EasyBackendStyle
+ * Plugin Name: EasyBackendStyle
  * Plugin URI:        https://github.com/farndesign/easyBackendStyle
  * Description:       Changing the background of the Backend in WordPress
  * Version:           1.0.0
@@ -13,6 +10,9 @@
  * License:           GNU GENERAL PUBLIC LICENSE Version 3
  * Text Domain:       ebs
  * Domain Path:       /languages
+ * @link              https://farn.de
+ * @since             1.0.0
+ * @package           EasyBackendStyle
 */
 
 /*  Licence Placeholder
