@@ -102,16 +102,6 @@ class easyBackendStyle
     include_once plugin_dir_path( dirname( __FILE__ ) ) . 'easyBackendStyle/ebs_SettingsSubMenu.php';
   }
 
-  /**
-   * Include the custom user css, added in the settings page of the plugin.
-  */
-  function ebs_custom_user_css(): void {
-    if (get_user_option( 'admin_color' ) != 'fresh'){
-      return;
-    }
-    echo '<style>'.$this->dbc->getValueFromDB("customCSS")[0][0].'</style>';
-  }
-
   //In class function that calls the getValueFromDB() function from the DatabaseConnector.
   function getColor($name){
     return $this->dbc->getValueFromDB($name)[0][0];
@@ -126,26 +116,26 @@ class easyBackendStyle
     }
     echo '<style>
     :root{
-      --wp-admin-theme-color: '.$this->getColor("highlight").';
-      --wp-admin-theme-color-darker-10: '.$this->getColor("highlight").';
-      --wp-admin-theme-color-darker-20: '.$this->getColor("highlight").';
+      --wp-admin-theme-color: '.esc_attr(esc_attr($this->getColor("highlight"))).';
+      --wp-admin-theme-color-darker-10: '.esc_attr(esc_attr($this->getColor("highlight"))).';
+      --wp-admin-theme-color-darker-20: '.esc_attr(esc_attr($this->getColor("highlight"))).';
     }
 
     .wp-core-ui .button-link{
-      color: '.$this->getColor("links").'
+      color: '.esc_attr(esc_attr($this->getColor("links"))).'
     }
 
     .wrap .page-title-action, .components-button.is-primary{
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("buttons").';
+      color: '.esc_attr(esc_attr($this->getColor("menuText"))).';
+      background-color: '.esc_attr(esc_attr($this->getColor("buttons"))).';
     }
 
     .components-button.is-primary:disabled, .components-button.is-primary:disabled:active:enabled, 
     .components-button.is-primary[aria-disabled=true], .components-button.is-primary[aria-disabled=true]:active:enabled,
     .components-button.is-primary[aria-disabled=true]:enabled,
     .edit-post-header-toolbar.edit-post-header-toolbar__left>.edit-post-header-toolbar__inserter-toggle.has-icon{
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("buttons").';
+      color: '.esc_attr(esc_attr($this->getColor("menuText"))).';
+      background-color: '.esc_attr(esc_attr($this->getColor("buttons"))).';
     }
 
     </style>';
@@ -154,16 +144,16 @@ class easyBackendStyle
     //Template CSS
     echo '<style>
     body {
-      background: '.$this->getColor("background").';
+      background: '.esc_attr($this->getColor("background")).';
     }
 
     /* Links */
     a {
-      color: '.$this->getColor("links").';
+      color: '.esc_attr($this->getColor("links")).';
     }
 
     a:hover, a:active, a:focus {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("links"),1)) + 13061),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("links")),1)) + 13061),-6).';
     }
 
     #post-body .misc-pub-post-status:before,
@@ -180,12 +170,12 @@ class easyBackendStyle
     }
 
     input[type=radio]:checked::before {
-      background: '.$this->getColor("formInputs").';
+      background: '.esc_attr($this->getColor("formInputs")).';
     }
 
     .wp-core-ui input[type="reset"]:hover,
     .wp-core-ui input[type="reset"]:active {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("links"),1)) + 13061),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("links")),1)) + 13061),-6).';
     }
 
     input[type="text"]:focus,
@@ -207,15 +197,15 @@ class easyBackendStyle
     input[type="radio"]:focus,
     select:focus,
     textarea:focus {
-      border-color: '.$this->getColor("highlight").';
-      box-shadow: 0 0 0 1px '.$this->getColor("highlight").';
+      border-color: '.esc_attr($this->getColor("highlight")).';
+      box-shadow: 0 0 0 1px '.esc_attr($this->getColor("highlight")).';
     }
 
     /* Core UI */
     .wp-core-ui .button,
     .wp-core-ui .button-secondary {
-      color: '.$this->getColor("buttons").';
-      border-color: '.$this->getColor("buttons").';
+      color: '.esc_attr($this->getColor("buttons")).';
+      border-color: '.esc_attr($this->getColor("buttons")).';
     }
 
     .wp-core-ui .button.hover,
@@ -225,150 +215,150 @@ class easyBackendStyle
     .wp-core-ui .button:focus,
     .wp-core-ui .button-secondary:focus {
       border-color: #;
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
     }
 
     .wp-core-ui .button.focus,
     .wp-core-ui .button:focus,
     .wp-core-ui .button-secondary:focus {
-      border-color: '.$this->getColor("buttons").';
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
-      box-shadow: 0 0 0 1px '.$this->getColor("buttons").';
+      border-color: '.esc_attr($this->getColor("buttons")).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
+      box-shadow: 0 0 0 1px '.esc_attr($this->getColor("buttons")).';
     }
 
     .wp-core-ui .button:active {
-      background: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
-      border-color: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
+      background: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
+      border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
     }
 
     .wp-core-ui .button.active,
     .wp-core-ui .button.active:focus,
     .wp-core-ui .button.active:hover {
-      border-color: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
-      box-shadow: inset 0 2px 5px -3px #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
+      border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
+      box-shadow: inset 0 2px 5px -3px #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
     }
 
     .wp-core-ui .button-primary {
-      background: '.$this->getColor("buttons").';
-      border-color: '.$this->getColor("buttons").';
-      color: '.$this->getColor("menuText").';
+      background: '.esc_attr($this->getColor("buttons")).';
+      border-color: '.esc_attr($this->getColor("buttons")).';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     .wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus {
-      background: '.$this->getColor("highlight").'; 
-      border-color: '.$this->getColor("highlight").';
-      color: '.$this->getColor("menuText").';
+      background: '.esc_attr($this->getColor("highlight")).'; 
+      border-color: '.esc_attr($this->getColor("highlight")).';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     .wp-core-ui .button-primary:focus {
-      box-shadow: 0 0 0 1px '.$this->getColor("menuText").', 0 0 0 3px '.$this->getColor("buttons").';
+      box-shadow: 0 0 0 1px '.esc_attr($this->getColor("menuText")).', 0 0 0 3px '.esc_attr($this->getColor("buttons")).';
     }
 
     .wp-core-ui .button-primary:active {
-      background: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
-      border-color: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 6400),-6).';
-      color: '.$this->getColor("menuText").';
+      background: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
+      border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     .wp-core-ui .button-primary.active, .wp-core-ui .button-primary.active:focus, .wp-core-ui .button-primary.active:hover {
-      background: '.$this->getColor("buttons").';
-      color: '.$this->getColor("menuText").';
-      border-color: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 19457),-6).'; 
+      background: '.esc_attr($this->getColor("buttons")).';
+      color: '.esc_attr($this->getColor("menuText")).';
+      border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 19457),-6).'; 
       box-shadow: inset 0 2px 5px -3px black;
     }
 
     .wp-core-ui .button-primary[disabled], .wp-core-ui .button-primary:disabled, .wp-core-ui .button-primary.button-primary-disabled, .wp-core-ui .button-primary.disabled {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 3681848),-6).' !important;
-      background: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 10497),-6).' !important; 
-      border-color: #'.substr("000000".dechex(hexdec(substr($this->getColor("buttons"),1)) - 10497),-6).' !important;
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 3681848),-6).' !important;
+      background: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 10497),-6).' !important; 
+      border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 10497),-6).' !important;
       text-shadow: none !important;
     }
 
     .wp-core-ui .button-group > .button.active {
-      border-color: '.$this->getColor("buttons").';
+      border-color: '.esc_attr($this->getColor("buttons")).';
     }
 
     .wp-core-ui .wp-ui-primary {
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("baseMenu").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background-color: '.esc_attr($this->getColor("baseMenu")).';
     }
 
     .wp-core-ui .wp-ui-text-primary {
-      color: '.$this->getColor("baseMenu").';
+      color: '.esc_attr($this->getColor("baseMenu")).';
     }
 
     .wp-core-ui .wp-ui-highlight {
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background-color: '.esc_attr($this->getColor("highlight")).';
     }
 
     .wp-core-ui .wp-ui-text-highlight {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     .wp-core-ui .wp-ui-notification {
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("notification").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background-color: '.esc_attr($this->getColor("notification")).';
     }
 
     .wp-core-ui .wp-ui-text-notification {
-      color: '.$this->getColor("notification").';
+      color: '.esc_attr($this->getColor("notification")).';
     }
 
     .wp-core-ui .wp-ui-text-icon {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     /* List tables */
     .wrap .add-new-h2:hover,
     .wrap .page-title-action:hover {
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("baseMenu").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background-color: '.esc_attr($this->getColor("baseMenu")).';
     }
 
     .view-switch a.current:before {
-      color: '.$this->getColor("baseMenu").';
+      color: '.esc_attr($this->getColor("baseMenu")).';
     }
 
     .view-switch a:hover:before {
-      color: '.$this->getColor("notification").';
+      color: '.esc_attr($this->getColor("notification")).';
     }
 
     /* Admin Menu */
     #adminmenuback,
     #adminmenuwrap,
     #adminmenu {
-      background: '.$this->getColor("baseMenu").';
+      background: '.esc_attr($this->getColor("baseMenu")).';
     }
 
     #adminmenu a {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     #adminmenu div.wp-menu-image:before {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     #adminmenu a:hover,
     #adminmenu li.menu-top:hover,
     #adminmenu li.opensub > a.menu-top,
     #adminmenu li > a.menu-top:focus {
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background-color: '.esc_attr($this->getColor("highlight")).';
     }
 
     #adminmenu li.menu-top:hover div.wp-menu-image:before,
     #adminmenu li.opensub > a.menu-top div.wp-menu-image:before {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     /* Active tabs use a bottom border color that matches the page background color. */
     .about-wrap .nav-tab-active,
     .nav-tab-active,
     .nav-tab-active:hover {
-      background-color: '.$this->getColor("background").';
-      border-bottom-color: '.$this->getColor("background").';
+      background-color: '.esc_attr($this->getColor("background")).';
+      border-bottom-color: '.esc_attr($this->getColor("background")).';
     }
 
     /* Admin Menu: submenu */
@@ -377,15 +367,15 @@ class easyBackendStyle
     #adminmenu .wp-has-current-submenu.opensub .wp-submenu,
     .folded #adminmenu .wp-has-current-submenu .wp-submenu,
     #adminmenu a.wp-has-current-submenu:focus + .wp-submenu {
-      background: '.$this->getColor("subMenu").'; 
+      background: '.esc_attr($this->getColor("subMenu")).'; 
     }
 
     #adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover:after {
-      border-right-color: '.$this->getColor("subMenu").';
+      border-right-color: '.esc_attr($this->getColor("subMenu")).';
     }
 
     #adminmenu .wp-submenu .wp-submenu-head {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     #adminmenu .wp-submenu a,
@@ -393,7 +383,7 @@ class easyBackendStyle
     .folded #adminmenu .wp-has-current-submenu .wp-submenu a,
     #adminmenu a.wp-has-current-submenu:focus + .wp-submenu a,
     #adminmenu .wp-has-current-submenu.opensub .wp-submenu a {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     #adminmenu .wp-submenu a:focus, #adminmenu .wp-submenu a:hover,
@@ -405,14 +395,14 @@ class easyBackendStyle
     #adminmenu a.wp-has-current-submenu:focus + .wp-submenu a:hover,
     #adminmenu .wp-has-current-submenu.opensub .wp-submenu a:focus,
     #adminmenu .wp-has-current-submenu.opensub .wp-submenu a:hover {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     /* Admin Menu: current */
     #adminmenu .wp-submenu li.current a,
     #adminmenu a.wp-has-current-submenu:focus + .wp-submenu li.current a,
     #adminmenu .wp-has-current-submenu.opensub .wp-submenu li.current a {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     #adminmenu .wp-submenu li.current a:hover, #adminmenu .wp-submenu li.current a:focus,
@@ -420,20 +410,20 @@ class easyBackendStyle
     #adminmenu a.wp-has-current-submenu:focus + .wp-submenu li.current a:focus,
     #adminmenu .wp-has-current-submenu.opensub .wp-submenu li.current a:hover,
     #adminmenu .wp-has-current-submenu.opensub .wp-submenu li.current a:focus {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     ul#adminmenu a.wp-has-current-submenu:after,
     ul#adminmenu > li.current > a.current:after {
-      border-right-color: '.$this->getColor("background").';
+      border-right-color: '.esc_attr($this->getColor("background")).';
     }
 
     #adminmenu li.current a.menu-top,
     #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
     #adminmenu li.wp-has-current-submenu .wp-submenu .wp-submenu-head,
     .folded #adminmenu li.current.menu-top {
-      color: '.$this->getColor("menuText").';
-      background: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background: '.esc_attr($this->getColor("highlight")).';
     }
 
     #adminmenu li.wp-has-current-submenu div.wp-menu-image:before,
@@ -444,38 +434,38 @@ class easyBackendStyle
     #adminmenu li a:focus div.wp-menu-image:before,
     #adminmenu li.opensub div.wp-menu-image:before,
     .ie8 #adminmenu li.opensub div.wp-menu-image:before {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     /* Admin Menu: bubble */
     #adminmenu .awaiting-mod,
     #adminmenu .update-plugins {
-      color: '.$this->getColor("menuText").';
-      background: '.$this->getColor("notification").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background: '.esc_attr($this->getColor("notification")).';
     }
 
     #adminmenu li.current a .awaiting-mod,
     #adminmenu li a.wp-has-current-submenu .update-plugins,
     #adminmenu li:hover a .awaiting-mod,
     #adminmenu li.menu-top:hover > a .update-plugins {
-      color: '.$this->getColor("menuText").';
-      background: '.$this->getColor("notification").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background: '.esc_attr($this->getColor("notification")).';
     }
 
     /* Admin Menu: collapse button */
     #collapse-button {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     #collapse-button:hover,
     #collapse-button:focus {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     /* Admin Bar */
     #wpadminbar {
-      color: '.$this->getColor("menuText").';
-      background: '.$this->getColor("baseMenu")
+      color: '.esc_attr($this->getColor("menuText")).';
+      background: '.esc_attr($this->getColor("baseMenu"))
     .';
     }
 
@@ -483,14 +473,14 @@ class easyBackendStyle
     #wpadminbar a.ab-item,
     #wpadminbar > #wp-toolbar span.ab-label,
     #wpadminbar > #wp-toolbar span.noticon {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     #wpadminbar .ab-icon,
     #wpadminbar .ab-icon:before,
     #wpadminbar .ab-item:before,
     #wpadminbar .ab-item:after {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     #wpadminbar:not(.mobile) .ab-top-menu > li:hover > .ab-item,
@@ -498,43 +488,43 @@ class easyBackendStyle
     #wpadminbar.nojq .quicklinks .ab-top-menu > li > .ab-item:focus,
     #wpadminbar.nojs .ab-top-menu > li.menupop:hover > .ab-item,
     #wpadminbar .ab-top-menu > li.menupop.hover > .ab-item {
-      color: '.$this->getColor("highlight").';
-      background: '.$this->getColor("subMenu").';
+      color: '.esc_attr($this->getColor("highlight")).';
+      background: '.esc_attr($this->getColor("subMenu")).';
     }
 
     #wpadminbar:not(.mobile) > #wp-toolbar li:hover span.ab-label,
     #wpadminbar:not(.mobile) > #wp-toolbar li.hover span.ab-label,
     #wpadminbar:not(.mobile) > #wp-toolbar a:focus span.ab-label {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     #wpadminbar:not(.mobile) li:hover .ab-icon:before,
     #wpadminbar:not(.mobile) li:hover .ab-item:before,
     #wpadminbar:not(.mobile) li:hover .ab-item:after,
     #wpadminbar:not(.mobile) li:hover #adminbarsearch:before {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     /* Admin Bar: submenu */
     #wpadminbar .menupop .ab-sub-wrapper {
-      background: '.$this->getColor("subMenu").';
+      background: '.esc_attr($this->getColor("subMenu")).';
     }
 
     #wpadminbar .quicklinks .menupop ul.ab-sub-secondary,
     #wpadminbar .quicklinks .menupop ul.ab-sub-secondary .ab-submenu {
-      background: '.$this->getColor("subMenu").';
+      background: '.esc_attr($this->getColor("subMenu")).';
     }
 
     #wpadminbar .ab-submenu .ab-item,
     #wpadminbar .quicklinks .menupop ul li a,
     #wpadminbar .quicklinks .menupop.hover ul li a,
     #wpadminbar.nojs .quicklinks .menupop:hover ul li a {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     #wpadminbar .quicklinks li .blavatar,
     #wpadminbar .menupop .menupop > .ab-item:before {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     #wpadminbar .quicklinks .menupop ul li a:hover,
@@ -555,7 +545,7 @@ class easyBackendStyle
     #wpadminbar li.hover .ab-item:before,
     #wpadminbar li:hover #adminbarsearch:before,
     #wpadminbar li #adminbarsearch.adminbar-focused:before {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     #wpadminbar .quicklinks li a:hover .blavatar,
@@ -564,163 +554,163 @@ class easyBackendStyle
     #wpadminbar .menupop .menupop > .ab-item:hover:before,
     #wpadminbar.mobile .quicklinks .ab-icon:before,
     #wpadminbar.mobile .quicklinks .ab-item:before {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     #wpadminbar.mobile .quicklinks .hover .ab-icon:before,
     #wpadminbar.mobile .quicklinks .hover .ab-item:before {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     /* Admin Bar: search */
     #wpadminbar #adminbarsearch:before {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     #wpadminbar > #wp-toolbar > #wp-admin-bar-top-secondary > #wp-admin-bar-search #adminbarsearch input.adminbar-input:focus {
-      color: '.$this->getColor("menuText").';
-      background: #'.substr("000000".dechex(2458366 - hexdec(substr($this->getColor("baseMenu"),1))),-6).';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background: #'.substr("000000".dechex(2458366 - hexdec(substr(esc_attr($this->getColor("baseMenu")),1))),-6).';
     }
 
     /* Admin Bar: recovery mode */
     #wpadminbar #wp-admin-bar-recovery-mode {
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("notification").';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background-color: '.esc_attr($this->getColor("notification")).';
     }
 
     #wpadminbar #wp-admin-bar-recovery-mode .ab-item,
     #wpadminbar #wp-admin-bar-recovery-mode a.ab-item {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     #wpadminbar .ab-top-menu > #wp-admin-bar-recovery-mode.hover > .ab-item,
     #wpadminbar.nojq .quicklinks .ab-top-menu > #wp-admin-bar-recovery-mode > .ab-item:focus,
     #wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode:hover > .ab-item,
     #wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode > .ab-item:focus {
-      color: '.$this->getColor("menuText").';
-      background-color: #'.substr("000000".dechex(hexdec(substr($this->getColor("notification"),1)) - 1638400),-6).';
+      color: '.esc_attr($this->getColor("menuText")).';
+      background-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("notification")),1)) - 1638400),-6).';
     }
 
     /* Admin Bar: my account */
     #wpadminbar .quicklinks li#wp-admin-bar-my-account.with-avatar > a img {
-      border-color: #'.substr("000000".dechex(2458366 - hexdec(substr($this->getColor("baseMenu"),1))),-6).';
-      background-color: #'.substr("000000".dechex(2458366 - hexdec(substr($this->getColor("baseMenu"),1))),-6).';
+      border-color: #'.substr("000000".dechex(2458366 - hexdec(substr(esc_attr($this->getColor("baseMenu")),1))),-6).';
+      background-color: #'.substr("000000".dechex(2458366 - hexdec(substr(esc_attr($this->getColor("baseMenu")),1))),-6).';
     }
 
     #wpadminbar #wp-admin-bar-user-info .display-name {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     #wpadminbar #wp-admin-bar-user-info a:hover .display-name {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     #wpadminbar #wp-admin-bar-user-info .username {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     /* Pointers */
     .wp-pointer .wp-pointer-content h3 {
-      background-color: '.$this->getColor("highlight").';
-      border-color: #'.substr("000000".dechex(hexdec(substr($this->getColor("highlight"),1)) - 327705),-6).'; 
+      background-color: '.esc_attr($this->getColor("highlight")).';
+      border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("highlight")),1)) - 327705),-6).'; 
     }
 
     .wp-pointer .wp-pointer-content h3:before {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     .wp-pointer.wp-pointer-top .wp-pointer-arrow,
     .wp-pointer.wp-pointer-top .wp-pointer-arrow-inner,
     .wp-pointer.wp-pointer-undefined .wp-pointer-arrow,
     .wp-pointer.wp-pointer-undefined .wp-pointer-arrow-inner {
-      border-bottom-color: '.$this->getColor("highlight").';
+      border-bottom-color: '.esc_attr($this->getColor("highlight")).';
     }
 
     /* Media */
     .media-item .bar,
     .media-progress-bar div {
-      background-color: '.$this->getColor("highlight").';
+      background-color: '.esc_attr($this->getColor("highlight")).';
     }
 
     .details.attachment {
-      box-shadow: inset 0 0 0 3px '.$this->getColor("menuText").', inset 0 0 0 7px '.$this->getColor("highlight").';
+      box-shadow: inset 0 0 0 3px '.esc_attr($this->getColor("menuText")).', inset 0 0 0 7px '.esc_attr($this->getColor("highlight")).';
     }
 
     .attachment.details .check {
-      background-color: '.$this->getColor("highlight").';
-      box-shadow: 0 0 0 1px '.$this->getColor("menuText").', 0 0 0 2px '.$this->getColor("highlight").';
+      background-color: '.esc_attr($this->getColor("highlight")).';
+      box-shadow: 0 0 0 1px '.esc_attr($this->getColor("menuText")).', 0 0 0 2px '.esc_attr($this->getColor("highlight")).';
     }
 
     .media-selection .attachment.selection.details .thumbnail {
-      box-shadow: 0 0 0 1px '.$this->getColor("menuText").', 0 0 0 3px '.$this->getColor("highlight").';
+      box-shadow: 0 0 0 1px '.esc_attr($this->getColor("menuText")).', 0 0 0 3px '.esc_attr($this->getColor("highlight")).';
     }
 
     /* Themes */
     .theme-browser .theme.active .theme-name,
     .theme-browser .theme.add-new-theme a:hover:after,
     .theme-browser .theme.add-new-theme a:focus:after {
-      background: '.$this->getColor("highlight").';
+      background: '.esc_attr($this->getColor("highlight")).';
     }
 
     .theme-browser .theme.add-new-theme a:hover span:after,
     .theme-browser .theme.add-new-theme a:focus span:after {
-      color: '.$this->getColor("highlight").';
+      color: '.esc_attr($this->getColor("highlight")).';
     }
 
     .theme-section.current,
     .theme-filter.current {
-      border-bottom-color: '.$this->getColor("baseMenu")
+      border-bottom-color: '.esc_attr($this->getColor("baseMenu"))
     .';
     }
 
     body.more-filters-opened .more-filters {
-      color: '.$this->getColor("menuText").';
-      background-color: '.$this->getColor("baseMenu")
+      color: '.esc_attr($this->getColor("menuText")).';
+      background-color: '.esc_attr($this->getColor("baseMenu"))
     .';
     }
 
     body.more-filters-opened .more-filters:before {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     body.more-filters-opened .more-filters:hover,
     body.more-filters-opened .more-filters:focus {
-      background-color: '.$this->getColor("highlight").';
-      color: '.$this->getColor("menuText").';
+      background-color: '.esc_attr($this->getColor("highlight")).';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     body.more-filters-opened .more-filters:hover:before,
     body.more-filters-opened .more-filters:focus:before {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     /* Widgets */
     .widgets-chooser li.widgets-chooser-selected {
-      background-color: '.$this->getColor("highlight").';
-      color: '.$this->getColor("menuText").';
+      background-color: '.esc_attr($this->getColor("highlight")).';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     .widgets-chooser li.widgets-chooser-selected:before,
     .widgets-chooser li.widgets-chooser-selected:focus:before {
-      color: '.$this->getColor("menuText").';
+      color: '.esc_attr($this->getColor("menuText")).';
     }
 
     /* Responsive Component */
     div#wp-responsive-toggle a:before {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     .wp-responsive-open div#wp-responsive-toggle a {
       border-color: transparent;
-      background: '.$this->getColor("highlight").';
+      background: '.esc_attr($this->getColor("highlight")).';
     }
 
     .wp-responsive-open #wpadminbar #wp-admin-bar-menu-toggle a {
-      background: '.$this->getColor("subMenu").';
+      background: '.esc_attr($this->getColor("subMenu")).';
     }
 
     .wp-responsive-open #wpadminbar #wp-admin-bar-menu-toggle .ab-icon:before {
-      color: #'.substr("000000".dechex(hexdec(substr($this->getColor("menuText"),1)) - 920588),-6).';
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 920588),-6).';
     }
 
     /* TinyMCE */
@@ -729,7 +719,7 @@ class easyBackendStyle
     .mce-container.mce-menu .mce-menu-item:focus,
     .mce-container.mce-menu .mce-menu-item-normal.mce-active,
     .mce-container.mce-menu .mce-menu-item-preview.mce-active {
-      background: '.$this->getColor("highlight").';
+      background: '.esc_attr(esc_attr($this->getColor("highlight"))).';
     }</style>';
   }
 }

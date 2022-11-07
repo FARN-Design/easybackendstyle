@@ -47,16 +47,6 @@ class ebs_SettingsSubMenu{
             $this->dbc->saveValueInDB($_REQUEST['formInputs'], 'formInputs');
         }
 
-        if (isset($_REQUEST['submitCustomCSS'])) {
-            
-            if(!str_starts_with($_REQUEST['customCSS'], '<style>') && !str_ends_with($_REQUEST['customCSS'], '</style>')){
-                $this->dbc->saveValueInDB($_REQUEST['customCSS'], 'customCSS');
-            }
-            else{
-                echo '<h5 style="color: #CC0000">'._e('Wrong input. Please make sure to remove < style > and < /style >.', 'ebs').'</h5>';
-            }
-        }
-
         if (isset($_REQUEST['resetDefaults'])){
             $this->dbc->resetDefaults();
         }
@@ -66,7 +56,6 @@ class ebs_SettingsSubMenu{
         }
 
         $this->ebs->ebs_backend_css();
-        $this->ebs->ebs_custom_user_css();
 
     }
 }
@@ -77,7 +66,7 @@ class ebs_SettingsSubMenu{
 
     <h1><?php _e('Settings for EasyBackendStyle Plugin ', 'ebs')?></h1>
 
-    <img src="<?php echo plugin_dir_url( __FILE__ ) . 'images/EasyBackendStyle-Logo 500x500.jpg'; ?>" alt="Logo" width="200" height="200" align="right">
+    <img src="<?php echo esc_attr(plugin_dir_url( __FILE__ ) . 'images/EasyBackendStyle-Logo 500x500.jpg'); ?>" alt="Logo" width="200" height="200" align="right">
 
     <p class="description">
         <?php _e('This is the settings Page for the EasyBackendStyle Plugin.', 'ebs')?>
@@ -90,7 +79,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="menuText"><?php _e('Menu Text', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="menuText" id="menuText" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("menuText")[0][0];?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("menuText")[0][0]);?>">
                     </td>
                 </tr>
 
@@ -98,7 +87,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="baseMenu"><?php _e('Base Menu', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="baseMenu" id="baseMenu" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("baseMenu")[0][0]; ?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("baseMenu")[0][0]); ?>">
                     </td>
                 </tr>
 
@@ -106,7 +95,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="subMenu"><?php _e('Sub Menu', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="subMenu" id="subMenu" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("subMenu")[0][0];?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("subMenu")[0][0]);?>">
                     </td>
                 </tr>
 
@@ -114,7 +103,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="highlight"><?php _e('Highlight', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="highlight" id="highlight" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("highlight")[0][0];?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("highlight")[0][0]);?>">
                     </td>
                 </tr>
 
@@ -122,7 +111,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="notification"><?php _e('Notification', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="notification" id="notification" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("notification")[0][0];?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("notification")[0][0]);?>">
                     </td>
                 </tr>
                 
@@ -130,7 +119,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="background"><?php _e('Background', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="background" id="background" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("background")[0][0];?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("background")[0][0]);?>">
                     </td>
                 </tr>
                
@@ -138,7 +127,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="links"><?php _e('Links', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="links" id="links" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("links")[0][0];?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("links")[0][0]);?>">
                     </td>
                 </tr>
                 
@@ -146,7 +135,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="buttons"><?php _e('Buttons', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="buttons" id="buttons" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttons")[0][0];?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttons")[0][0]);?>">
                     </td>
                 </tr>
 
@@ -154,7 +143,7 @@ class ebs_SettingsSubMenu{
                     <th scope="row"><label for="formInputs"><?php _e('Form Inputs', 'ebs')?></label></th>
                     <td>
                         <input type="color" name="formInputs" id="formInputs" class="small-text"
-                        value="<?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("formInputs")[0][0];?>">
+                        value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("formInputs")[0][0]);?>">
                     </td>
                 </tr>
             </tbody>
@@ -170,7 +159,7 @@ class ebs_SettingsSubMenu{
                     <tr>
                         <th scope="row"><label for="customCSS"><?php _e('Custom CSS', 'ebs')?></label></th>
                         <td>
-                            <textarea name="customCSS" id="customCSS" rows="12" cols="90"><?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB("customCSS")[0][0];?></textarea>
+                            <textarea name="customCSS" id="customCSS" rows="12" cols="90"><?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("customCSS")[0][0]);?></textarea>
                         </td>
                     </tr>
             </tbody>
@@ -179,16 +168,4 @@ class ebs_SettingsSubMenu{
     </form>
 
 </div><!-- .wrap -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/css/css.min.js"></script>
-<script>
-    var editor = CodeMirror.fromTextArea(document.getElementById("customCSS"), {
-        extraKeys: {"Ctrl-Space": "autocomplete"}
-    });
-
-    document.getElementsByClassName('CodeMirror').style.width = "400px";
-</script>
-<style>.CodeMirror {min-width: 400px;}</style>
 

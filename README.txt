@@ -1,9 +1,9 @@
 === EasyBackendStyle ===
 Contributors: farndesign
 Tags: tag1, tag2
-Requires at least: 1.0
-Tested up to: 1.0
-Stable tag: 1.0
+Requires at least: 6.0
+Tested up to: 6.0
+Stable tag: 1.0.0
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html

@@ -20,8 +20,7 @@ class ebs_DatabaseConnector{
 			'background' => '#f0f0f1',
 			'links' => '#2271b1',
 			'buttons' => '#2271b1',
-			'formInputs' => '#3582c4',
-			'customCSS' => '<style></style>'];
+			'formInputs' => '#3582c4'];
 
 	function __construct(){
 
