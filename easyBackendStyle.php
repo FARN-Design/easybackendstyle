@@ -59,9 +59,7 @@ class easyBackendStyle
 
     add_action('admin_menu', array($this, 'sub_settings_page'));
     add_action('admin_head', array($this, 'ebs_backend_css'));
-    add_action('admin_footer', array($this, 'ebs_custom_user_css'));
     add_action('wp_head', array($this, 'ebs_backend_css'));
-    add_action('wp_footer', array($this, 'ebs_custom_user_css'));
 
     if (!class_exists('ebsDatabaseConnector')){
       $this->dbc = new ebs_DatabaseConnector();

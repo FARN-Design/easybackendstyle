@@ -56,7 +56,6 @@ class ebs_SettingsSubMenu{
         }
 
         $this->ebs->ebs_backend_css();
-
     }
 }
 
