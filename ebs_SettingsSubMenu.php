@@ -153,19 +153,5 @@ class ebs_SettingsSubMenu{
 
     </form>
 
-    <form action="" method="post">
-        <table>
-            <tbody>
-                    <tr>
-                        <th scope="row"><label for="customCSS"><?php _e('Custom CSS', 'ebs')?></label></th>
-                        <td>
-                            <textarea name="customCSS" id="customCSS" rows="12" cols="90"><?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("customCSS")[0][0]);?></textarea>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
-        <input type="submit" class="button button-primary" name="submitCustomCSS" id="submitCustomCSS" value="<?php _e('Save', 'ebs')?>">
-    </form>
-
 </div><!-- .wrap -->
 
