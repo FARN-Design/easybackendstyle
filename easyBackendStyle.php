@@ -4,7 +4,7 @@
  * Plugin Name: EasyBackendStyle
  * Plugin URI:        https://github.com/farndesign/easyBackendStyle
  * Description:       Changing the background of the Backend in WordPress
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Farn - Digital Brand Design 
  * Author URI:        https://farn.de
  * License:           GNU GENERAL PUBLIC LICENSE Version 3
@@ -97,7 +97,7 @@ class easyBackendStyle
    * Import of the content file for the setting page.
   */
   function settings_page(): void {
-    include_once plugin_dir_path( dirname( __FILE__ ) ) . 'easyBackendStyle/ebs_SettingsSubMenu.php';
+    include_once ('ebs_SettingsSubMenu.php');
   }
 
   //In class function that calls the getValueFromDB() function from the DatabaseConnector.

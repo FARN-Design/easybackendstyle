@@ -52,10 +52,13 @@ See the [open issues](https://github.com/farndesign/easyBackendStyle/issues) for
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.1 =
+* Bugfix that occurred while loading the subMenuSettings pag
+
+= 1.0.0 =
 * First release
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 1.0.0 =
 * Download to use the first version of the plugin. Should download the update.
