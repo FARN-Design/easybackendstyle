@@ -61,7 +61,7 @@ class ebs_DatabaseConnector{
 			$this->setup_Database();
 		}
 
-		$results = $this->wpdb->get_results('SELECT * FROM wp_easyBackendStyle', ARRAY_N);
+		$results = $this->wpdb->get_results('SELECT * FROM $this->tableName', ARRAY_N);
 
 		$databaseVariables = array();
 
@@ -88,7 +88,7 @@ class ebs_DatabaseConnector{
 	 */
 	public function getValueFromDB( string $ebs_var): array {
 
-		$sql = "SELECT Value FROM wp_easyBackendStyle WHERE Variable = \"" . $ebs_var ."\";";
+		$sql = "SELECT Value FROM $this->tableName WHERE Variable = \"" . $ebs_var ."\";";
 		$result = $this->wpdb->get_results($sql, ARRAY_N);
 
 		return $result;
@@ -102,7 +102,7 @@ class ebs_DatabaseConnector{
 	 */
 	public function saveValueInDB( string $ebs_value, string $ebs_var): void {
 	
-		$sql = "UPDATE wp_easyBackendStyle SET Value = \"". $ebs_value ."\" WHERE Variable = \"". $ebs_var ."\";";
+		$sql = "UPDATE $this->tableName SET Value = \"". $ebs_value ."\" WHERE Variable = \"". $ebs_var ."\";";
 		$this->wpdb->get_results($sql, ARRAY_N);
 	}
 
