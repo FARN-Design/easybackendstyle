@@ -52,6 +52,9 @@ See the [open issues](https://github.com/farndesign/easyBackendStyle/issues) for
 
 == Changelog ==
 
+= 1.0.3 =
+* SVN Bugfix
+
 = 1.0.2 =
 * Bugfix Prefix error in ebs database fix
 
