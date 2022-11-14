@@ -52,8 +52,11 @@ See the [open issues](https://github.com/farndesign/easyBackendStyle/issues) for
 
 == Changelog ==
 
+= 1.0.2 =
+* Bugfix Prefix error in ebs database fix
+
 = 1.0.1 =
-* Bugfix that occurred while loading the subMenuSettings pag
+* Bugfix that occurred while loading the subMenuSettings page
 
 = 1.0.0 =
 * First release
