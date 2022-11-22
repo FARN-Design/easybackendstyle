@@ -159,11 +159,11 @@ class easyBackendStyle
     }
 
     /* Links */
-    a {
+    body.wp-admin a {
       color: '.esc_attr($this->getColor("links")).';
     }
 
-    a:hover, a:active, a:focus {
+    body.wp-admin a:hover, body.wp-admin a:active, body.wp-admin a:focus {
       color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("links")),1)) + 13061),-6).';
     }
 
