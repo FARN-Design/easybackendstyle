@@ -141,7 +141,7 @@ class easyBackendStyle
 
     //Template CSS
     echo '<style>
-    body {
+    body.wp-admin {
       background: '.esc_attr($this->getColor("background")).';
     }
 
