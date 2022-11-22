@@ -135,6 +135,19 @@ class easyBackendStyle
       color: '.esc_attr(esc_attr($this->getColor("menuText"))).';
       background-color: '.esc_attr(esc_attr($this->getColor("buttons"))).';
     }
+    
+    #adminmenu li.wp-has-current-submenu div.wp-menu-image:before, #adminmenu div.wp-menu-image:before,
+    #wpadminbar .ab-icon:before, #wpadminbar .ab-item:before{
+    color: '.esc_attr__($this->getColor("menuText")).'!important;
+    }
+    
+    #collapse-button{
+    color: '.esc_attr__($this->getColor("menuText")).'!important;
+    }
+    
+    #collapse-button:hover{
+    color: '.esc_attr__($this->getColor("highlight")).'!important;
+    }
 
     </style>';
 
