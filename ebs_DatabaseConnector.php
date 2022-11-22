@@ -37,7 +37,7 @@ class ebs_DatabaseConnector{
 	public function setup_Database(): void {
 
 	  	if ($this->wpdb->get_var("show tables like '" . $this->tableName . "'") != $this->tableName) {
-	  		$sql = "CREATE TABLE ".$this->tableName." (
+	  		$sql = "CREATE TABLE $this->tableName (
 	  		id mediumint(9) NOT NULL AUTO_INCREMENT,
 	    	Variable varchar(255) NOT NULL UNIQUE,
 	    	Value varchar(255) NOT NULL,
@@ -61,7 +61,7 @@ class ebs_DatabaseConnector{
 			$this->setup_Database();
 		}
 
-		$results = $this->wpdb->get_results('SELECT * FROM '.$this->tableName, ARRAY_N);
+		$results = $this->wpdb->get_results('SELECT * FROM ' .$this->tableName, ARRAY_N);
 
 		$databaseVariables = array();
 
