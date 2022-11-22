@@ -132,7 +132,7 @@ class easyBackendStyle
     .components-button.is-primary[aria-disabled=true], .components-button.is-primary[aria-disabled=true]:active:enabled,
     .components-button.is-primary[aria-disabled=true]:enabled,
     .edit-post-header-toolbar.edit-post-header-toolbar__left>.edit-post-header-toolbar__inserter-toggle.has-icon{
-      color: '.esc_attr(esc_attr($this->getColor("menuText"))).';
+      color: '.esc_attr(esc_attr($this->getColor("buttonText"))).';
       background-color: '.esc_attr(esc_attr($this->getColor("buttons"))).';
     }
     
@@ -253,34 +253,34 @@ class easyBackendStyle
     .wp-core-ui .button-primary {
       background: '.esc_attr($this->getColor("buttons")).';
       border-color: '.esc_attr($this->getColor("buttons")).';
-      color: '.esc_attr($this->getColor("menuText")).';
+      color: '.esc_attr($this->getColor("buttonText")).';
     }
 
     .wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus {
       background: '.esc_attr($this->getColor("highlight")).'; 
       border-color: '.esc_attr($this->getColor("highlight")).';
-      color: '.esc_attr($this->getColor("menuText")).';
+      color: '.esc_attr($this->getColor("buttonText")).';
     }
 
     .wp-core-ui .button-primary:focus {
-      box-shadow: 0 0 0 1px '.esc_attr($this->getColor("menuText")).', 0 0 0 3px '.esc_attr($this->getColor("buttons")).';
+      box-shadow: 0 0 0 1px '.esc_attr($this->getColor("buttonText")).', 0 0 0 3px '.esc_attr($this->getColor("buttons")).';
     }
 
     .wp-core-ui .button-primary:active {
       background: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
       border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 6400),-6).';
-      color: '.esc_attr($this->getColor("menuText")).';
+      color: '.esc_attr($this->getColor("buttonText")).';
     }
 
     .wp-core-ui .button-primary.active, .wp-core-ui .button-primary.active:focus, .wp-core-ui .button-primary.active:hover {
       background: '.esc_attr($this->getColor("buttons")).';
-      color: '.esc_attr($this->getColor("menuText")).';
+      color: '.esc_attr($this->getColor("buttonText")).';
       border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 19457),-6).'; 
       box-shadow: inset 0 2px 5px -3px black;
     }
 
     .wp-core-ui .button-primary[disabled], .wp-core-ui .button-primary:disabled, .wp-core-ui .button-primary.button-primary-disabled, .wp-core-ui .button-primary.disabled {
-      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("menuText")),1)) - 3681848),-6).' !important;
+      color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttonText")),1)) - 3681848),-6).' !important;
       background: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 10497),-6).' !important; 
       border-color: #'.substr("000000".dechex(hexdec(substr(esc_attr($this->getColor("buttons")),1)) - 10497),-6).' !important;
       text-shadow: none !important;

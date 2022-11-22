@@ -44,6 +44,7 @@ class ebs_SettingsSubMenu{
             $this->dbc->saveValueInDB($_REQUEST['background'], 'background');
             $this->dbc->saveValueInDB($_REQUEST['links'], 'links');
             $this->dbc->saveValueInDB($_REQUEST['buttons'], 'buttons');
+            $this->dbc->saveValueInDB($_REQUEST['buttonText'], 'buttonText');
             $this->dbc->saveValueInDB($_REQUEST['formInputs'], 'formInputs');
         }
 
@@ -135,6 +136,14 @@ class ebs_SettingsSubMenu{
                     <td>
                         <input type="color" name="buttons" id="buttons" class="small-text"
                         value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttons")[0][0]);?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><label for="buttonText"><?php _e('ButtonText', 'ebs')?></label></th>
+                    <td>
+                        <input type="color" name="buttonText" id="buttonText" class="small-text"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttonText")[0][0]);?>">
                     </td>
                 </tr>
 
