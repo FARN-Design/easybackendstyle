@@ -3,7 +3,7 @@ Contributors: farndesign
 Tags: tag1, tag2
 Requires at least: 6.0
 Tested up to: 6.1
-Stable tag: 1.0.4
+Stable tag: 1.1.0
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -51,6 +51,13 @@ In addition, custom CSS can be added. This is always executed additionally and o
 See the [open issues](https://github.com/farndesign/easyBackendStyle/issues) for a full list of proposed features (and known issues).
 
 == Changelog ==
+
+= 1.1.0 =
+* Feature: Icons now change color with the menuText color.
+* Feature: You can now select a separate color for button Text.
+* Bugfix: Database SQL request was not correct formatted.
+* Bugfix: Background color changed in frontend when selected in backend
+* Bugfix: Link color changed in the frontend when selected in the backend
 
 = 1.0.4 =
 * Stable build
