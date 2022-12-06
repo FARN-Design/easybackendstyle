@@ -66,13 +66,13 @@ class ebs_SettingsSubMenu{
 
     <h1><?php _e('Settings for EasyBackendStyle Plugin ', 'ebs')?></h1>
 
-    <img src="<?php echo esc_attr(plugin_dir_url( __FILE__ ) . 'images/EasyBackendStyle-Logo 500x500.jpg'); ?>" alt="Logo" width="200" height="200" align="right">
+    <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'resources/images/EasyBackendStyle-Logo 500x500.jpg' ); ?>" alt="Logo" width="200" height="200" align="right">
 
     <p class="description">
         <?php _e('This is the settings Page for the EasyBackendStyle Plugin.', 'ebs')?>
     </p>
 
-    <form action="" method="post" name="colorPick" id="colorPick">
+    <form action="" method="post" name="colorPickForm" id="colorPickForm">
         <table>
             <tbody>
                 <tr>
@@ -162,4 +162,5 @@ class ebs_SettingsSubMenu{
     </form>
 
 </div><!-- .wrap -->
+<script src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'resources/ebsScript.js');?>"></script>
 
