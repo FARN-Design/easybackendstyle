@@ -72,7 +72,7 @@ class ebs_SettingsSubMenu{
         <?php _e('This is the settings Page for the EasyBackendStyle Plugin.', 'ebs')?>
     </p>
 
-    <form action="" method="post">
+    <form action="" method="post" name="colorPick" id="colorPick">
         <table>
             <tbody>
                 <tr>
@@ -157,8 +157,8 @@ class ebs_SettingsSubMenu{
             </tbody>
         </table>
         <input type="submit" class="button button-primary" name="submit" id="submit" value="<?php _e('Save', 'ebs')?>">
-        <input type="submit" class="button button-primary" name="resetDefaults" id="resetDefaults" value="<?php _e('Reset Defaults', 'ebs')?>">
-
+        <br>
+        <input type="submit" class="button-link" name="resetDefaults" id="resetDefaults" value="<?php _e('Reset Defaults', 'ebs')?>">
     </form>
 
 </div><!-- .wrap -->
