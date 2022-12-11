@@ -5,7 +5,7 @@
  * Plugin URI:        https://github.com/farndesign/easyBackendStyle
  * Description:       Changing the background of the Backend in WordPress
  * Version:           1.1.0
- * Author:            Farn - Digital Brand Design 
+ * Author:            Farn - Digital Brand Design
  * Author URI:        https://farn.de
  * License:           GNU GENERAL PUBLIC LICENSE Version 3
  * Text Domain:       ebs
@@ -57,6 +57,8 @@ class easyBackendStyle
 
   function __construct(){
 
+	  add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
+
     add_action('admin_menu', array($this, 'sub_settings_page'));
     add_action('admin_head', array($this, 'ebs_backend_css'));
     add_action('wp_head', array($this, 'ebs_backend_css'));
@@ -104,6 +106,13 @@ class easyBackendStyle
   function getColor($name){
     return $this->dbc->getValueFromDB($name)[0][0];
   }
+
+	function linkToEBSSettingsPage($links)
+	{
+		$links[] = '<a href="'.admin_url('options-general.php?page=easyBackendStyle').'">'. esc_html('Settings').'</a>';
+
+		return $links;
+	}
 
   /**
    * Main CSS injection of the selected colors from the database.
