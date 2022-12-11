@@ -41,6 +41,7 @@ class ebs_SettingsSubMenu{
             $this->dbc->saveValueInDB($_REQUEST['subMenu'], 'subMenu');
             $this->dbc->saveValueInDB($_REQUEST['highlight'], 'highlight');
             $this->dbc->saveValueInDB($_REQUEST['notification'], 'notification');
+            $this->dbc->saveValueInDB($_REQUEST['notificationText'], 'notificationText');
             $this->dbc->saveValueInDB($_REQUEST['background'], 'background');
             $this->dbc->saveValueInDB($_REQUEST['links'], 'links');
             $this->dbc->saveValueInDB($_REQUEST['buttons'], 'buttons');
@@ -112,6 +113,14 @@ class ebs_SettingsSubMenu{
                     <td>
                         <input type="color" name="notification" id="notification" class="small-text"
                         value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("notification")[0][0]);?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><label for="notificationText"><?php _e('NotificationText', 'ebs')?></label></th>
+                    <td>
+                        <input type="color" name="notificationText" id="notificationText" class="small-text"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("notificationText")[0][0]);?>">
                     </td>
                 </tr>
                 

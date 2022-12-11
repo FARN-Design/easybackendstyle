@@ -17,6 +17,7 @@ class ebs_DatabaseConnector{
 			'subMenu' => '#2c3338',
 			'highlight' => '#2271b1',
 			'notification' => '#d63638',
+			'notificationText' => '#f0f0f1',
 			'background' => '#f0f0f1',
 			'links' => '#2271b1',
 			'buttons' => '#2271b1',

@@ -316,7 +316,7 @@ class easyBackendStyle {
     }
 
     .wp-core-ui .wp-ui-notification {
-      color: ' . esc_attr( $this->getColor( "menuText" ) ) . ';
+      color: ' . esc_attr( $this->getColor( "notificationText" ) ) . ';
       background-color: ' . esc_attr( $this->getColor( "notification" ) ) . ';
     }
 
@@ -458,7 +458,7 @@ class easyBackendStyle {
     /* Admin Menu: bubble */
     #adminmenu .awaiting-mod,
     #adminmenu .update-plugins {
-      color: ' . esc_attr( $this->getColor( "menuText" ) ) . ';
+      color: ' . esc_attr( $this->getColor( "notificationText" ) ) . ';
       background: ' . esc_attr( $this->getColor( "notification" ) ) . ';
     }
 
@@ -466,7 +466,7 @@ class easyBackendStyle {
     #adminmenu li a.wp-has-current-submenu .update-plugins,
     #adminmenu li:hover a .awaiting-mod,
     #adminmenu li.menu-top:hover > a .update-plugins {
-      color: ' . esc_attr( $this->getColor( "menuText" ) ) . ';
+      color: ' . esc_attr( $this->getColor( "notificationText" ) ) . ';
       background: ' . esc_attr( $this->getColor( "notification" ) ) . ';
     }
 
@@ -592,7 +592,7 @@ class easyBackendStyle {
 
     /* Admin Bar: recovery mode */
     #wpadminbar #wp-admin-bar-recovery-mode {
-      color: ' . esc_attr( $this->getColor( "menuText" ) ) . ';
+      color: ' . esc_attr( $this->getColor( "notificationText" ) ) . ';
       background-color: ' . esc_attr( $this->getColor( "notification" ) ) . ';
     }
 
@@ -605,7 +605,7 @@ class easyBackendStyle {
     #wpadminbar.nojq .quicklinks .ab-top-menu > #wp-admin-bar-recovery-mode > .ab-item:focus,
     #wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode:hover > .ab-item,
     #wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode > .ab-item:focus {
-      color: ' . esc_attr( $this->getColor( "menuText" ) ) . ';
+      color: ' . esc_attr( $this->getColor( "notificationText" ) ) . ';
       background-color: #' . substr( "000000" . dechex( hexdec( substr( esc_attr( $this->getColor( "notification" ) ), 1 ) ) - 1638400 ), - 6 ) . ';
     }
 
