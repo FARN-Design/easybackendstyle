@@ -8,7 +8,7 @@
  * Author:            Farn - Digital Brand Design
  * Author URI:        https://farn.de
  * License:           GNU GENERAL PUBLIC LICENSE Version 3
- * Text Domain:       ebs
+ * Text Domain:       easybackendstyle
  * Domain Path:       /languages
  * @link              https://farn.de
  * @since             1.0.0
@@ -41,7 +41,7 @@ register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) )
 register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
 
 function ebsTextDomainLoad(): void {
-	load_plugin_textdomain( "ebs", false, 'easyBackendStyle/languages' );
+	load_plugin_textdomain( "easybackendstyle", false, 'easyBackendStyle/languages' );
 }
 
 add_action( 'init', 'ebsTextDomainLoad' );
