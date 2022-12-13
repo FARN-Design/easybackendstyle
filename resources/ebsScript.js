@@ -33,6 +33,8 @@ var submit = document.getElementById('submit');
 submit.onclick = function() {
     formSubmit = true
 }
+
+//TODO Sollte Meldung geben ob man alles zurücksetzen möchte
 var resetDefaults = document.getElementById('resetDefaults');
 resetDefaults.onclick = function() {
     formSubmit = true
@@ -52,6 +54,7 @@ window.onbeforeunload = function(){
     console.log("Exiting Hash: "+newHash)
 
     if (newHash !== calcHash && !formSubmit){
+        //TODO Spachen Check
         return 'Are you sure you want to leave?';
     }
 };
