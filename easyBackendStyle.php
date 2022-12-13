@@ -139,7 +139,12 @@ class easyBackendStyle {
 				    --linkTextColor: '.$this->getColor("links").'; 
 				    --buttonColor: '.$this->getColor("buttons").'; 
 				    --buttonTextColor: '.$this->getColor("buttonText").'; 
-				    --formInputsColor: '.$this->getColor("formInputs").'; 
+				    --formInputsColor: '.$this->getColor("formInputs").';
+				    --linkHoverColor: '.$this->getColor("linkHoverColor").';
+				    --buttonHoverColor: '.$this->getColor("buttonHoverColor").';
+				    --disabledButtonColor: '.$this->getColor("disabledButtonColor").';
+				    --disabledButtonColorText: '.$this->getColor("disabledButtonColorText").';
+				    --iconColor: '.$this->getColor("iconColor").';
                 }
             </style>';
 	}

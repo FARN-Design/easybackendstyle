@@ -47,6 +47,11 @@ class ebs_SettingsSubMenu{
             $this->dbc->saveValueInDB($_REQUEST['buttons'], 'buttons');
             $this->dbc->saveValueInDB($_REQUEST['buttonText'], 'buttonText');
             $this->dbc->saveValueInDB($_REQUEST['formInputs'], 'formInputs');
+            $this->dbc->saveValueInDB($_REQUEST['linkHoverColor'], 'linkHoverColor');
+            $this->dbc->saveValueInDB($_REQUEST['buttonHoverColor'], 'buttonHoverColor');
+            $this->dbc->saveValueInDB($_REQUEST['disabledButtonColor'], 'disabledButtonColor');
+            $this->dbc->saveValueInDB($_REQUEST['disabledButtonColorText'], 'disabledButtonColorText');
+            $this->dbc->saveValueInDB($_REQUEST['iconColor'], 'iconColor');
         }
 
         if (isset($_REQUEST['resetDefaults'])){
@@ -161,6 +166,46 @@ class ebs_SettingsSubMenu{
                     <td>
                         <input type="color" name="formInputs" id="formInputs" class="small-text"
                         value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("formInputs")[0][0]);?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><label for="linkHoverColor"><?php _e('Link Hover Color', 'easybackendstyle')?></label></th>
+                    <td>
+                        <input type="color" name="linkHoverColor" id="linkHoverColor" class="small-text"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("linkHoverColor")[0][0]);?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><label for="buttonHoverColor"><?php _e('Button Hover Color', 'easybackendstyle')?></label></th>
+                    <td>
+                        <input type="color" name="buttonHoverColor" id="buttonHoverColor" class="small-text"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttonHoverColor")[0][0]);?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><label for="disabledButtonColor"><?php _e('Disabled Button Color', 'easybackendstyle')?></label></th>
+                    <td>
+                        <input type="color" name="disabledButtonColor" id="disabledButtonColor" class="small-text"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("disabledButtonColor")[0][0]);?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><label for="disabledButtonColorText"><?php _e('Disabled Button Color Text', 'easybackendstyle')?></label></th>
+                    <td>
+                        <input type="color" name="disabledButtonColorText" id="disabledButtonColorText" class="small-text"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("disabledButtonColorText")[0][0]);?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><label for="iconColor"><?php _e('Icon Color', 'easybackendstyle')?></label></th>
+                    <td>
+                        <input type="color" name="iconColor" id="iconColor" class="small-text"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("iconColor")[0][0]);?>">
                     </td>
                 </tr>
             </tbody>

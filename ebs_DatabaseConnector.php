@@ -21,8 +21,13 @@ class ebs_DatabaseConnector{
 			'background' => '#f0f0f1',
 			'links' => '#2271b1',
 			'buttons' => '#2271b1',
+			'buttonText' => '#f0f0f1',
 			'formInputs' => '#3582c4',
-			'buttonText' => '#f0f0f1'];
+			'linkHoverColor' => '#195785',
+			'buttonHoverColor' => '#195785',
+			'disabledButtonColor' => '#969696',
+			'disabledButtonColorText' => '#000000',
+			'iconColor' => '#c9c9c9'];
 
 	function __construct(){
 
