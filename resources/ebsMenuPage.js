@@ -159,7 +159,7 @@ jQuery(document).ready(function ($){
 
   function checkLightness(hsl){
       l = hsl[2];
-      return l <= 50 ? "dark" : "light";
+      return l <= 65 ? "dark" : "light";
   }
 
   function colorPreview(colorInputName, newColor){
