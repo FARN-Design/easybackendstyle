@@ -56,11 +56,13 @@ class easyBackendStyle {
 
 	function __construct() {
 
+
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'linkToEBSSettingsPage' ) );
 
 		add_action( 'admin_menu', array( $this, 'sub_settings_page' ) );
 		add_action( 'admin_head', array( $this, 'ebs_backend_css' ) );
 		add_action( 'wp_head', array( $this, 'ebs_backend_css' ) );
+		add_action(	'admin_enqueue_scripts', array( $this, 'addScriptsAndStylesToMenuPages'));
 
 		if ( ! class_exists( 'ebsDatabaseConnector' ) ) {
 			$this->dbc = new ebs_DatabaseConnector();
@@ -132,21 +134,34 @@ class easyBackendStyle {
 				    --menuTextColor: '.$this->getColor("menuText").'; 
 				    --baseMenuColor: '.$this->getColor("baseMenu").'; 
 				    --subMenuColor: '.$this->getColor("subMenu").'; 
-				    --highlightColor: '.$this->getColor("highlight").'; 
+				    --highlightColor: '.$this->getColor("highlight").';
+					--highlightTextColor: '.$this->getColor("highlightText").'; 
 				    --notificationColor: '.$this->getColor("notification").'; 
 				    --notificationTextColor: '.$this->getColor("notificationText").'; 
 				    --backgroundColor: '.$this->getColor("background").'; 
-				    --linkTextColor: '.$this->getColor("links").'; 
-				    --buttonColor: '.$this->getColor("buttons").'; 
+				    --linksColor: '.$this->getColor("links").'; 
+				    --buttonsColor: '.$this->getColor("buttons").'; 
 				    --buttonTextColor: '.$this->getColor("buttonText").'; 
 				    --formInputsColor: '.$this->getColor("formInputs").';
-				    --linkHoverColor: '.$this->getColor("linkHoverColor").';
-				    --buttonHoverColor: '.$this->getColor("buttonHoverColor").';
-				    --disabledButtonColor: '.$this->getColor("disabledButtonColor").';
-				    --disabledButtonColorText: '.$this->getColor("disabledButtonColorText").';
-				    --iconColor: '.$this->getColor("iconColor").';
+				    --linkHoverColor: '.$this->getColor("linkHover").';
+				    --buttonHoverColor: '.$this->getColor("buttonHover").';
+				    --disabledButtonColor: '.$this->getColor("disabledButton").';
+				    --disabledButtonTextColor: '.$this->getColor("disabledButtonText").';
+				    --iconColor: '.$this->getColor("icon").';
                 }
             </style>';
 	}
+
+	    
+    function addScriptsAndStylesToMenuPages($hook){
+		$current_screen = get_current_screen();
+		// scripts and styles for menu page
+		if ( strpos( $current_screen->base, 'easyBackendStyle' )){
+			wp_enqueue_style( 'wp-color-picker' );
+			wp_enqueue_script( 'ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+			wp_enqueue_style( 'ebs_menuPageCSS', plugins_url('resources/ebsMenuPage.css', __FILE__ ) );
+		}
+	}
+
 }
 

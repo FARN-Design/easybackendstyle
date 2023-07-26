@@ -6,18 +6,18 @@
     --baseMenuColor: #1d2327;
     --subMenuColor: #2c3338;
     --highlightColor: #2271b1;
+    --highlightTextColor: #f0f0f1;
     --notificationColor: #d63638;
     --notificationTextColor: #f0f0f1;
     --backgroundColor: #f0f0f1;
-    --linkTextColor: #2271b1;
-    --buttonColor: #2271b1;
+    --linksColor: #2271b1;
+    --buttonsColor: #2271b1;
     --buttonTextColor: #f0f0f1;
     --formInputsColor: #3582c4;
-
     --linkHoverColor: #195785;
     --buttonHoverColor: #195785;
     --disabledButtonColor: #969696;
-    --disabledButtonColorText: #000000;
+    --disabledButtonTextColor: #000000;
     --iconColor: #c9c9c9;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .wp-core-ui .button-link{
-    color: var(--linkTextColor)
+    color: var(--linksColor)
 }
 
 .wp-core-ui .button-link:hover{
@@ -41,7 +41,7 @@
 
 .wrap .page-title-action, .components-button.is-primary{
     color: var(--menuTextColor);
-    background-color: var(--buttonColor);
+    background-color: var(--buttonsColor);
 }
 
 .components-button.is-primary:disabled, .components-button.is-primary:disabled:active:enabled,
@@ -49,20 +49,20 @@
 .components-button.is-primary[aria-disabled=true]:enabled,
 .edit-post-header-toolbar.edit-post-header-toolbar__left>.edit-post-header-toolbar__inserter-toggle.has-icon{
     color: var(--buttonTextColor);
-    background-color: var(--buttonColor);
+    background-color: var(--buttonsColor);
 }
 
 #adminmenu li.wp-has-current-submenu div.wp-menu-image:before, #adminmenu div.wp-menu-image:before,
 #wpadminbar .ab-icon:before, #wpadminbar .ab-item:before{
-    color: var(--menuTextColor); !important;
+    color: var(--menuTextColor) !important;
 }
 
 #collapse-button{
-    color: var(--menuTextColor); !important;
+    color: var(--menuTextColor) !important;
 }
 
 #collapse-button:hover{
-    color: var(--highlightColor); !important;
+    color: var(--highlightColor) !important;
 }
 
 /*
@@ -75,7 +75,7 @@ body.wp-admin {
 
 /* Links */
 body.wp-admin a {
-    color: var(--linkTextColor);
+    color: var(--linksColor);
 }
 
 body.wp-admin a:hover, body.wp-admin a:active, body.wp-admin a:focus {
@@ -130,8 +130,8 @@ textarea:focus {
 /* Core UI */
 .wp-core-ui .button,
 .wp-core-ui .button-secondary {
-    color: var(--buttonColor);
-    border-color: var(--buttonColor);
+    color: var(--buttonsColor);
+    border-color: var(--buttonsColor);
 }
 
 .wp-core-ui .button.hover,
@@ -140,16 +140,16 @@ textarea:focus {
 .wp-core-ui .button.focus,
 .wp-core-ui .button:focus,
 .wp-core-ui .button-secondary:focus {
-    border-color: var(--buttonColor);
+    border-color: var(--buttonsColor);
     color: var(--buttonHoverColor);
 }
 
 .wp-core-ui .button.focus,
 .wp-core-ui .button:focus,
 .wp-core-ui .button-secondary:focus {
-    border-color: var(--buttonColor);
+    border-color: var(--buttonsColor);
     color: var(--buttonHoverColor);
-    box-shadow: 0 0 0 1px var(--buttonColor);
+    box-shadow: 0 0 0 1px var(--buttonsColor);
 }
 
 .wp-core-ui .button:active {
@@ -166,8 +166,8 @@ textarea:focus {
 }
 
 .wp-core-ui .button-primary {
-    background: var(--buttonColor);
-    border-color: var(--buttonColor);
+    background: var(--buttonsColor);
+    border-color: var(--buttonsColor);
     color: var(--buttonTextColor);
 }
 
@@ -178,7 +178,7 @@ textarea:focus {
 }
 
 .wp-core-ui .button-primary:focus {
-    box-shadow: 0 0 0 1px var(--buttonTextColor), 0 0 0 3px var(--buttonColor);
+    box-shadow: 0 0 0 1px var(--buttonTextColor), 0 0 0 3px var(--buttonsColor);
 }
 
 .wp-core-ui .button-primary:active {
@@ -188,21 +188,21 @@ textarea:focus {
 }
 
 .wp-core-ui .button-primary.active, .wp-core-ui .button-primary.active:focus, .wp-core-ui .button-primary.active:hover {
-    background: var(--buttonColor);
+    background: var(--buttonsColor);
     color: var(--buttonTextColor);
     border-color: var(--buttonHoverColor);
     box-shadow: inset 0 2px 5px -3px black;
 }
 
 .wp-core-ui .button-primary[disabled], .wp-core-ui .button-primary:disabled, .wp-core-ui .button-primary.button-primary-disabled, .wp-core-ui .button-primary.disabled {
-    color: var(--disabledButtonColorText); !important;
-    background: var(--disabledButtonColor); !important;
-    border-color: var(--disabledButtonColor); !important;
+    color: var(--disabledButtonTextColor) !important;
+    background: var(--disabledButtonColor) !important;
+    border-color: var(--disabledButtonColor) !important;
     text-shadow: none !important;
 }
 
 .wp-core-ui .button-group > .button.active {
-    border-color: var(--buttonColor);
+    border-color: var(--buttonsColor);
 }
 
 .wp-core-ui .wp-ui-primary {
@@ -348,7 +348,7 @@ ul#adminmenu > li.current > a.current:after {
 #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
 #adminmenu li.wp-has-current-submenu .wp-submenu .wp-submenu-head,
 .folded #adminmenu li.current.menu-top {
-    color: var(--menuTextColor);
+    color: var(--highlightTextColor);
     background: var(--highlightColor);
 }
 
@@ -360,7 +360,7 @@ ul#adminmenu > li.current > a.current:after {
 #adminmenu li a:focus div.wp-menu-image:before,
 #adminmenu li.opensub div.wp-menu-image:before,
 .ie8 #adminmenu li.opensub div.wp-menu-image:before {
-    color: var(--menuTextColor);
+    color: var(--highlightTextColor) !important;
 }
 
 /* Admin Menu: bubble */

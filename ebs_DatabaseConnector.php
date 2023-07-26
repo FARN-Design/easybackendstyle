@@ -12,10 +12,13 @@ class ebs_DatabaseConnector{
 	//Defaults Values for the Database
 	//If a new Variable is needed, just add the variable and default value in this map.
 	var array $defaultsMap = [
+			'primaryColor' => '#2271b1',
+			'secondaryColor' => '#1d2327',
 			'menuText' => '#f0f0f1',
 			'baseMenu' => '#1d2327',
 			'subMenu' => '#2c3338',
 			'highlight' => '#2271b1',
+			'highlightText' => '#f0f0f1',
 			'notification' => '#d63638',
 			'notificationText' => '#f0f0f1',
 			'background' => '#f0f0f1',
@@ -23,11 +26,11 @@ class ebs_DatabaseConnector{
 			'buttons' => '#2271b1',
 			'buttonText' => '#f0f0f1',
 			'formInputs' => '#3582c4',
-			'linkHoverColor' => '#195785',
-			'buttonHoverColor' => '#195785',
-			'disabledButtonColor' => '#969696',
-			'disabledButtonColorText' => '#000000',
-			'iconColor' => '#c9c9c9'];
+			'linkHover' => '#195785',
+			'buttonHover' => '#195785',
+			'disabledButton' => '#969696',
+			'disabledButtonText' => '#000000',
+			'icon' => '#c9c9c9'];
 
 	function __construct(){
 
