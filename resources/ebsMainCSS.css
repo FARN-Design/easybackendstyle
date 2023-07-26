@@ -270,7 +270,7 @@ textarea:focus {
 #adminmenu li.menu-top:hover,
 #adminmenu li.opensub > a.menu-top,
 #adminmenu li > a.menu-top:focus {
-    color: var(--menuTextColor);
+    color: var(--highlightTextColor);
     background-color: var(--highlightColor);
 }
 
