@@ -74,8 +74,6 @@ class ebs_SettingsSubMenu{
 
     <h1><?php _e('EasyBackendStyle settings', 'easybackendstyle')?></h1>
 
-    <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'resources/images/EasyBackendStyle-gross.svg' ); ?>" alt="Logo" width="200" height="200" align="right">
-
     <p class="description">
         <?php _e('Select two colors in the main color selectors. All other colors are selected automatically.', 'easybackendstyle')?>
     </p>
