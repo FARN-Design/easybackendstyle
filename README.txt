@@ -3,7 +3,7 @@ Contributors: farndesign
 Tags: tag1, tag2
 Requires at least: 6.0
 Tested up to: 6.1
-Stable tag: 1.1.0
+Stable tag: 2.0.0
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -45,12 +45,20 @@ In addition, custom CSS can be added. This is always executed additionally and o
 
 == Roadmap ==
 
-- [ ] Live preview of the changes
 - [ ] Think about more Features
 
 See the [open issues](https://github.com/farndesign/easyBackendStyle/issues) for a full list of proposed features (and known issues).
 
 == Changelog ==
+
+= 2.0.0 =
+* Feature: Changed all color pickers to the core Wordpress color picker
+* Feature: New color fields: primaryColor, secondaryColor, highlightText and more
+* Feature: Autofill-Function to fill all color fields based on primary and secondary color
+* Feature: Live-Preview when making color changes
+* Change: reset button is now a reset link
+* Change: refactoring and extraction of main css changes
+* Change: new logo and banner
 
 = 1.1.0 =
 * Feature: Icons now change color with the menuText color.
