@@ -3,7 +3,7 @@ Contributors: farndesign
 Tags: tag1, tag2
 Requires at least: 6.0
 Tested up to: 6.2
-Stable tag: 2.0.0
+Stable tag: 2.0.2
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -50,6 +50,12 @@ In addition, custom CSS can be added. This is always executed additionally and o
 See the [open issues](https://github.com/farndesign/easyBackendStyle/issues) for a full list of proposed features (and known issues).
 
 == Changelog ==
+
+= 2.0.2 =
+* Bugfix: Added missing files to svn control
+
+= 2.0.1 =
+* Bugfix: Updated stable WordPress version
 
 = 2.0.0 =
 * Feature: Changed all color pickers to the core Wordpress color picker
