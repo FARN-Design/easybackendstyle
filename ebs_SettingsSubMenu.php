@@ -79,7 +79,7 @@ class ebs_SettingsSubMenu{
     </p>
 
     <form action="" method="post" name="colorPickForm" id="colorPickForm">
-        <h2><?php _e('main colors', 'easybackendstyle')?></h2>
+        <h2><?php _e('Main colors fields', 'easybackendstyle')?></h2>
         <div class="ebs_main_colors">
                 <div class="wrapper_primaryColor">
                     <label for="primaryColor"><?php _e('primary color', 'easybackendstyle')?></label>
@@ -91,7 +91,7 @@ class ebs_SettingsSubMenu{
                 </div>
         </div>
         <div class="ebs_advanced_settings_toggle">
-            <h2><?php _e('advanced settings', 'easybackendstyle')?></h2>
+            <h2><?php _e('All color fields', 'easybackendstyle')?></h2>
         </div>
         <div class="ebs_advanced_settings">
             <div class="ebs_advanced_settings_columns">
