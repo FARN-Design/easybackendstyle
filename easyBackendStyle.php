@@ -4,7 +4,7 @@
  * Plugin Name: EasyBackendStyle
  * Plugin URI:        https://github.com/farndesign/easyBackendStyle
  * Description:       Changing the background of the Backend in WordPress
- * Version:           2.0.2
+ * Version:           2.2.0
  * Author:            Farn - Digital Brand Design
  * Author URI:        https://farn.de
  * License:           GNU GENERAL PUBLIC LICENSE Version 3

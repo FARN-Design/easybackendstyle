@@ -2,17 +2,20 @@
 Contributors: farndesign
 Tags: tag1, tag2
 Requires at least: 6.0
-Tested up to: 6.2
-Stable tag: 2.0.2
+Tested up to: 6.3
+Stable tag: 2.2.0
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
-This plugin allows you to easily customize the colors in the backend. The changes are easily made via predefined fields, as well as custom CSS.
+This plugin allows you to easily customize the colors in the backend. The changes are easily made via predefined fields.
 
 == Description ==
 
-This Wordpress plugin allows you to easily customize the colors in the backend of wordpress. The changes are easily possible via predefined fields, as well as via custom CSS.
+Seamlessly adjust color schemes, effortlessly transforming the look and feel of your backend interface.
+With an automated color generation feature from just two base colors, achieving a cohesive design is a breeze.
+Dive deeper into customization with advanced fields, allowing precise adjustments to fine-tune your backend's appearance.
+This plugin seamlessly integrates with all WordPress backend styles, ensuring a consistent experience across the board.
 
 == Frequently Asked Questions ==
 
@@ -33,23 +36,21 @@ This Wordpress plugin allows you to easily customize the colors in the backend o
 
 #### Via Wordpress Plugin Store
 
-1. Added later when plugin is released
+https://wordpress.com/de/plugins/easybackendstyle
 
 = How to use the plugin? =
 
 After activating, the settings page can be found as a subpage of the settings section.
 
-At the settings page you can change the color of the different elements. The changes are applied after saving.
 
-In addition, custom CSS can be added. This is always executed additionally and overwrites other content.
-
-== Roadmap ==
-
-- [ ] Think about more Features
-
-See the [open issues](https://github.com/farndesign/easyBackendStyle/issues) for a full list of proposed features (and known issues).
+Within the settings page, you have the ability to alter the primary pair of colors associated with your backend.
+This action subsequently prompts an automatic adjustment of all linked advanced fields, guaranteeing a smooth harmonization with your chosen style.
+In the event that a predilection for a more detailed design arises, you can manually select each distinct advanced field in the drop-down menu on the settings page.
 
 == Changelog ==
+
+= 2.2.0 =
+* Development: Updated the plugin description and tested for WordPress 6.3
 
 = 2.0.2 =
 * Bugfix: Added missing files to svn control
