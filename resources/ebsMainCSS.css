@@ -54,7 +54,7 @@
 
 #adminmenu li.wp-has-current-submenu div.wp-menu-image:before, #adminmenu div.wp-menu-image:before,
 #wpadminbar .ab-icon:before, #wpadminbar .ab-item:before{
-    color: var(--menuTextColor) !important;
+    color: var(--iconColor) !important;
 }
 
 #collapse-button{
