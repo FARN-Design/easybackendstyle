@@ -1,6 +1,6 @@
 === EasyBackendStyle ===
 Contributors: farndesign
-Tags: tag1, tag2
+Tags: admin theme, backend theme, customize admin, Backend interface design, WordPress customization, Color scheme
 Requires at least: 6.0
 Tested up to: 6.3
 Stable tag: 2.2.0
@@ -16,6 +16,12 @@ Seamlessly adjust color schemes, effortlessly transforming the look and feel of 
 With an automated color generation feature from just two base colors, achieving a cohesive design is a breeze.
 Dive deeper into customization with advanced fields, allowing precise adjustments to fine-tune your backend's appearance.
 This plugin seamlessly integrates with all WordPress backend styles, ensuring a consistent experience across the board.
+
+** Plugin Demo **
+
+[Demo Video](https://www.youtube.com/watch?v=82_csWeNwFc)
+
+[youtube https://www.youtube.com/watch?v=82_csWeNwFc]
 
 == Frequently Asked Questions ==
 
@@ -34,7 +40,7 @@ This plugin seamlessly integrates with all WordPress backend styles, ensuring a 
 
 3. Activate the plugin at the Wordpress plugin page http://localhost/wp-admin/plugins.php
 
-#### Via Wordpress Plugin Store
+#### Install via Wordpress Plugin Store
 
 https://wordpress.com/de/plugins/easybackendstyle
 
@@ -46,6 +52,12 @@ After activating, the settings page can be found as a subpage of the settings se
 Within the settings page, you have the ability to alter the primary pair of colors associated with your backend.
 This action subsequently prompts an automatic adjustment of all linked advanced fields, guaranteeing a smooth harmonization with your chosen style.
 In the event that a predilection for a more detailed design arises, you can manually select each distinct advanced field in the drop-down menu on the settings page.
+
+== Screenshots ==
+
+1. Advanced color settings
+2. Color auto population
+
 
 == Changelog ==
 

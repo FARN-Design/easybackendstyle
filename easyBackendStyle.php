@@ -3,7 +3,7 @@
 /**
  * Plugin Name: EasyBackendStyle
  * Plugin URI:        https://github.com/farndesign/easyBackendStyle
- * Description:       Changing the background of the Backend in WordPress
+ * Description:       Easily modify your backend interface's color schemes for a fresh look using an automated color generation feature based on two base colors, and have advanced customization options to fine-tune your backend's appearance.
  * Version:           2.2.0
  * Author:            Farn - Digital Brand Design
  * Author URI:        https://farn.de
