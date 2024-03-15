@@ -24,12 +24,12 @@ msgstr ""
 "Seite erneut, um die Änderungen zu übernehmen."
 
 #: ebs_SettingsSubMenu.php:68
-msgid "Settings for EasyBackendStyle Plugin "
-msgstr "Einstellungen für EasyBackendStyle Plugin "
+msgid "Settings for Easy Backend-Style Plugin "
+msgstr "Einstellungen für Easy Backend-Style Plugin "
 
 #: ebs_SettingsSubMenu.php:73
-msgid "This is the settings Page for the EasyBackendStyle Plugin."
-msgstr "Dies ist die Einstellungsseite für das EasyBackendStyle Plugin."
+msgid "This is the settings Page for the Easy Backend-Style Plugin."
+msgstr "Dies ist die Einstellungsseite für das Easy Backend-Style Plugin."
 
 #: ebs_SettingsSubMenu.php:80
 msgid "Menu Text"

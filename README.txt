@@ -1,4 +1,4 @@
-=== EasyBackendStyle ===
+=== Easy Backend-Style ===
 Contributors: farndesign
 Tags: admin theme, backend theme, customize admin, Backend interface design, WordPress customization, Color scheme
 Requires at least: 6.0

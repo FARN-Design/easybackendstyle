@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Plugin Name: EasyBackendStyle
+ * Plugin Name: Easy Backend-Style
  * Plugin URI:        https://github.com/farndesign/easyBackendStyle
  * Description:       Easily modify your backend interface's color schemes for a fresh look using an automated color generation feature based on two base colors, and have advanced customization options to fine-tune your backend's appearance.
- * Version:           2.1.1
- * Author:            Farn - Digital Brand Design
- * Author URI:        https://farn.de
+ * Version:           2.1.2
+ * Author:            FARN – digital brand design
+ * Author URI:        https://www.farn.de
  * License:           GNU GENERAL PUBLIC LICENSE Version 3
  * Text Domain:       easybackendstyle
  * Domain Path:       /languages
- * @link              https://farn.de
+ * @link              https://www.farn.de
  * @since             1.0.0
  * @package           EasyBackendStyle
  */
@@ -88,8 +88,8 @@ class easyBackendStyle {
 	public function sub_settings_page(): void {
 		add_submenu_page(
 			'options-general.php', //name of the general settings file.
-			'EasyBackendStyle',// page title
-			'EasyBackendStyle',// menu title
+			'Easy Backend-Style',// page title
+			'Easy Backend-Style',// menu title
 			'manage_options',// capability
 			'easyBackendStyle',// menu slug
 			[ $this, 'settings_page' ] // callback function

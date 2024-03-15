@@ -72,7 +72,7 @@ class ebs_SettingsSubMenu{
 <!-- HTML content for the settings page -->
 <div class="wrap">
 
-    <h1><?php _e('EasyBackendStyle settings', 'easybackendstyle')?></h1>
+    <h1><?php _e('Easy Backend-Style settings', 'easybackendstyle')?></h1>
 
     <p class="description">
         <?php _e('Select two colors in the main color selectors. All other colors are selected automatically.', 'easybackendstyle')?>
