@@ -2,7 +2,7 @@
 Contributors: farndesign
 Tags: admin theme, backend theme, customize design, WordPress customization, Color scheme
 Requires at least: 6.0
-Tested up to: 6.4
+Tested up to: 6.5
 Stable tag: 2.1.4
 Requires PHP: 8.0
 License: GPLv3 or later
