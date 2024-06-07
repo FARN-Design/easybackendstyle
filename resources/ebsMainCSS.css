@@ -81,6 +81,12 @@ body.wp-admin a {
 body.wp-admin a:hover, body.wp-admin a:active, body.wp-admin a:focus {
     color: var(--linkHoverColor);
 }
+body.wp-admin .editor-styles-wrapper a,
+body.wp-admin .editor-styles-wrapper a:hover,
+body.wp-admin .editor-styles-wrapper a:focus,
+body.wp-admin .editor-styles-wrapper a:active {
+    color: inherit;
+}
 
 #post-body .misc-pub-post-status:before,
 #post-body #visibility:before,
