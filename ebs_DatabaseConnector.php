@@ -49,8 +49,8 @@ class ebs_DatabaseConnector{
 	  	if ($this->wpdb->get_var("show tables like '" . $this->tableName . "'") != $this->tableName) {
 	  		$sql = "CREATE TABLE ".$this->tableName." (
 	  		id mediumint(9) NOT NULL AUTO_INCREMENT,
-	    	Variable varchar(255) NOT NULL UNIQUE,
-	    	Value varchar(255) NOT NULL,
+	    	Variable varchar(128) NOT NULL UNIQUE,
+	    	Value varchar(128) NOT NULL,
 	    	UNIQUE KEY id (id)
 	  	) $this->charset_collate;";
 
