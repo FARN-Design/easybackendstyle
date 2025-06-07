@@ -1,0 +1,17 @@
+{
+  "plugins": [
+    "easybackendstyle"
+  ],
+  "preferredVersions": {
+    "php": "8.0",
+    "wp": "latest"
+  },
+  "features": {},
+  "login": true,
+  "steps": [
+    {
+      "step": "runPHP",
+      "code": "<?php require_once 'wordpress/wp-load.php'; global $wpdb; $table = $wpdb->prefix . 'easyBackendStyle';$wpdb->replace($table, ['Variable' => 'background', 'Value' => '#fafafa']); $wpdb->replace($table, ['Variable' => 'baseMenu', 'Value' => '#111336']); $wpdb->replace($table, ['Variable' => 'buttonHover', 'Value' => '#015b9b']); $wpdb->replace($table, ['Variable' => 'buttons', 'Value' => '#111336']); $wpdb->replace($table, ['Variable' => 'buttonText', 'Value' => '#ffffff']); $wpdb->replace($table, ['Variable' => 'disabledButton', 'Value' => '#969696']); $wpdb->replace($table, ['Variable' => 'disabledButtonText', 'Value' => '#000000']); $wpdb->replace($table, ['Variable' => 'formInputs', 'Value' => '#111336']); $wpdb->replace($table, ['Variable' => 'highlight', 'Value' => '#00ff00']); $wpdb->replace($table, ['Variable' => 'highlightText', 'Value' => '#111336']); $wpdb->replace($table, ['Variable' => 'icon', 'Value' => '#ffffff']); $wpdb->replace($table, ['Variable' => 'linkHover', 'Value' => '#015b9b']); $wpdb->replace($table, ['Variable' => 'links', 'Value' => '#111336']); $wpdb->replace($table, ['Variable' => 'menuText', 'Value' => '#ffffff']); $wpdb->replace($table, ['Variable' => 'notification', 'Value' => '#00ff00']); $wpdb->replace($table, ['Variable' => 'notificationText', 'Value' => '#111336']); $wpdb->replace($table, ['Variable' => 'primaryColor', 'Value' => '#00ff00']); $wpdb->replace($table, ['Variable' => 'secondaryColor', 'Value' => '#111336']); $wpdb->replace($table, ['Variable' => 'subMenu', 'Value' => '#1d205d']);"
+    }
+  ]
+}
