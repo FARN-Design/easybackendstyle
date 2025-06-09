@@ -1,9 +1,15 @@
 {
+  "plugins": [
+    "easybackendstyle"
+  ],
   "landingPage": "/wp-admin/options-general.php?page=easyBackendStyle",
   "preferredVersions": {
     "php": "8.0",
     "wp": "latest"
   },
+  "phpExtensionBundles": [
+    "kitchen-sink"
+  ],
   "features": {},
   "login": true,
   "steps": [
