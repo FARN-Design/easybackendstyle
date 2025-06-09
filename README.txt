@@ -61,6 +61,9 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 == Changelog ==
 
+= 2.2.* =
+* Minor Fixes and Playground integration
+
 = 2.1.3 =
 * Minor Bug fixes and Name changes
 
