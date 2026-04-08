@@ -23,3 +23,6 @@ node_modules/
 *.sqlite
 /.idea/
 /composer.lock
+/vendor/
+/vendor-prefixed/
+/bin/strauss.phar
