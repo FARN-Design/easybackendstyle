@@ -20,15 +20,15 @@ Domain Path:       /languages
 */
 //------------------------------------------Plugin Security----------------------------------------
 
+use Farn\EasyBackendStyle\ebs_DatabaseConnector;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-//------------------------------------------Requirements-------------------------------------------
-
-require_once( 'ebs_DatabaseConnector.php' );
-
 //------------------------------------------Plugin Code--------------------------------------------
+
+include_once "vendor/autoload.php";
 
 if ( ! class_exists( 'ebsPlugin' ) ) {
 	$GLOBALS['ebsPlugin'] = new easyBackendStyle();
@@ -100,7 +100,7 @@ class easyBackendStyle {
 	 * Import of the content file for the setting page.
 	 */
 	function settings_page(): void {
-		include_once( 'ebs_SettingsSubMenu.php' );
+		include_once( 'src/ebs_SettingsSubMenu.php' );
 	}
 
 	//In class function that calls the getValueFromDB() function from the DatabaseConnector.
@@ -127,7 +127,7 @@ class easyBackendStyle {
 		if ( get_user_option( 'admin_color' ) != 'fresh' ) {
 			return;
 		}
-		echo '<link rel="stylesheet" href="' . plugin_dir_url( __FILE__ ) . 'resources/ebsMainCSS.css">';
+		echo '<link rel="stylesheet" href="' . plugin_dir_url( __FILE__ ) . 'src/resources/ebsMainCSS.css">';
 		echo '	
 			<style>
                 :root{
@@ -158,8 +158,8 @@ class easyBackendStyle {
 		// scripts and styles for menu page
 		if ( strpos( $current_screen->base, 'easyBackendStyle' )){
 			wp_enqueue_style( 'wp-color-picker' );
-			wp_enqueue_script( 'ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
-			wp_enqueue_style( 'ebs_menuPageCSS', plugins_url('resources/ebsMenuPage.css', __FILE__ ) );
+			wp_enqueue_script( 'ebs_menuPageJS', plugins_url('src/resources/ebsMenuPage.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+			wp_enqueue_style( 'ebs_menuPageCSS', plugins_url('src/resources/ebsMenuPage.css', __FILE__ ) );
 		}
 	}
 

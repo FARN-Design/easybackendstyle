@@ -1,0 +1,53 @@
+{
+    "name": "farn/easybackendstyle",
+    "version": "1.0.0",
+    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "Farn\\EasyBackendStyle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "farnlabs",
+            "email": "info@farnlabs.de"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../farn-core",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "farn/farn-core": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "yoast/phpunit-polyfills": "^1.0"
+    },
+    "scripts": {
+        "wp": "vendor/bin/wp",
+        "strauss:download": "sh -c 'test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/latest/download/strauss.phar'",
+        "prefix-namespaces": [
+            "@php bin/strauss.phar",
+            "@composer dump-autoload",
+            "sh -c '[ \"$COMPOSER_DEV_MODE\" = \"0\" ] && rm -rf vendor || true'"
+        ],
+        "post-install-cmd": [
+            "@prefix-namespaces"
+        ],
+        "post-update-cmd": [
+            "@prefix-namespaces"
+        ],
+        "post-autoload-dump": [
+            "@php bin/strauss.phar include-autoloader"
+        ],
+        "pre-autoload-dump": [
+            "@strauss:download"
+        ]
+    }
+}

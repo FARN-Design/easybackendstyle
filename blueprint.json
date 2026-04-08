@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "step": "defineWpConfigConsts",
+      "consts": {
+        "WP_DEBUG": true
+      }
+    },
+    {
+      "step": "activatePlugin",
+      "pluginPath": "/wordpress/wp-content/plugins/easybackendstyle/easybackendstyle.php"
+    },
+    {
+      "step": "wp-cli",
+      "command": "wp post create --post_title='Test post' --post_excerpt='Some content'"
+    },
+    {
+      "step": "login",
+      "username": "admin"
+    }
+  ]
+}
