@@ -1,6 +1,6 @@
 <?php
 
-namespace Farn\EasyBackendStyle;
+namespace Farn\EasyBackendStyle\deprecated;
 use wpdb;
 
 /**

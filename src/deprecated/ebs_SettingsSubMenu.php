@@ -1,8 +1,8 @@
 <?php
 
-namespace Farn\EasyBackendStyle;
+namespace Farn\EasyBackendStyle\deprecated;
 
-use easyBackendStyle;
+use easyBackendStyle_deprecated;
 
 if (!class_exists('ebsSettingsSubMenu')) {
     $GLOBALS['ebsSettingsSubMenu'] = new ebs_SettingsSubMenu();
@@ -19,7 +19,7 @@ class ebs_SettingsSubMenu
     //An object of the ebs_DatabaseConnector class
     private ebs_DatabaseConnector $dbc;
     //An object of the main ebs plugin class
-    private easyBackendStyle $ebs;
+    private \Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated $ebs;
 
     //Set a reference to the ebs plugin main php class and the ebs databaseConnector class.
     function __construct()
