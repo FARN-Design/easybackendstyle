@@ -1,0 +1,13 @@
+{
+    "name": "dev1.farn.space",
+    "host": "w02039ab.kasserver.com",
+    "protocol": "ftp",
+    "password": "",
+    "port": 21,
+    "username": "w02039ab",
+    "remotePath": "/dev1.farn.space/wp-content/plugins/easybackendstyle",
+    "uploadOnSave": true,
+    "useTempFile": false,
+    "openSsh": false,
+    "downloadOnOpen": false
+}

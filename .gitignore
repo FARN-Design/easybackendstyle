@@ -26,3 +26,4 @@ node_modules/
 /vendor/
 /vendor-prefixed/
 /bin/strauss.phar
+.vscode/sftp.json
