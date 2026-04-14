@@ -63,22 +63,6 @@ class easyBackendStyle {
     function __construct()
     {
 
-        $GLOBALS['ebsPlugin'] = $this;
-        register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
-        register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
-
-        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
-
-        add_action('admin_menu', array($this, 'sub_settings_page'));
-        add_action('admin_head', array($this, 'ebs_backend_css'));
-        add_action('wp_head', array($this, 'ebs_backend_css'));
-        add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
-
-        if (!class_exists('ebsDatabaseConnector')) {
-            $this->dbc = new ebs_DatabaseConnector();
-        }
-        $this->dbc->checkFields();
-
         $GLOBALS['ebsColorMapping'] = [
 
             "#f0f0f0" => "ebsBackground",
@@ -105,22 +89,6 @@ class easyBackendStyle {
             "rgb(202.5, 152.1, 64.8)" => "ebsNotification",
             "rgb(7.3723404255, 81.914893617, 108.1276595745)" => "ebsTertiary",
             "rgb(232.1830985915, 189.5915492958, 115.8169014085)" => "ebsNotification",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -159,6 +127,24 @@ class easyBackendStyle {
             */
 
         ];
+
+        $GLOBALS['ebsPlugin'] = $this;
+        register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
+        register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
+
+        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
+
+        add_action('admin_menu', array($this, 'sub_settings_page'));
+        add_action('admin_head', array($this, 'ebs_backend_css'));
+        add_action('wp_head', array($this, 'ebs_backend_css'));
+        add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
+
+        if (!class_exists('ebsDatabaseConnector')) {
+            $this->dbc = new ebs_DatabaseConnector();
+        }
+        $this->dbc->checkFields();
+
+
 
         /*Function for adding a color scheme in the admin area
         wp_admin_css_color(
@@ -235,7 +221,16 @@ class easyBackendStyle {
         }
         */
         echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css">';
-        echo '	
+        $cssRoot = "<style> :root {";
+
+        foreach ($GLOBALS['ebsColorMapping'] as $oldColor => $newColor) {
+            $cssRoot .= "--".$newColor.": ".$this->getColor($newColor).";";
+        }
+
+        $cssRoot .= "} </style>";
+        echo $cssRoot;
+
+        /* echo '
 			<style>
                 :root{
 				    --ebsMenuText: ' . $this->getColor("menuText") . '; 
@@ -250,11 +245,10 @@ class easyBackendStyle {
 				    --ebsDisabledButton: ' . $this->getColor("disabledButton") . ';
 				    --ebsDisabledButtonText: ' . $this->getColor("disabledButtonText") . ';
 				    --ebsIconColor: ' . $this->getColor("icon") . ';
-				    
-				   /* New colors with new variables */
+
 				    
                 }
-            </style>';
+            </style>'; */
     }
 
     function addScriptsAndStylesToMenuPages($hook)

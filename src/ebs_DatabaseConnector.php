@@ -15,6 +15,8 @@ class ebs_DatabaseConnector
 
     //Defaults Values for the Database
     //If a new Variable is needed, just add the variable and default value in this map.
+
+    /*
     var array $defaultsMap = [
         'primaryColor' => '#0073aa',
         'secondaryColor' => '#000000',
@@ -34,7 +36,7 @@ class ebs_DatabaseConnector
         'highlightHover' => '#004f75',
         'highlightHover2' => '#002c42',
         ];
-
+*/
     function __construct()
     {
 
@@ -85,7 +87,7 @@ class ebs_DatabaseConnector
             $databaseVariables[] = $results[$x][1];
         }
 
-        foreach ($this->defaultsMap as $key => $value) {
+        foreach ($GLOBALS['ebsColorMapping'] as $value => $key) {
             if (!in_array($key, $databaseVariables)) {
                 $this->wpdb->insert($this->tableName,
                     array(
@@ -128,7 +130,7 @@ class ebs_DatabaseConnector
     public function resetDefaults(): void
     {
 
-        foreach ($this->defaultsMap as $key => $value) {
+        foreach ($GLOBALS['ebsColorMapping'] as $value => $key) {
             $this->saveValueInDB($value, $key);
         }
 
