@@ -80,38 +80,77 @@ class easyBackendStyle {
         $this->dbc->checkFields();
 
         $GLOBALS['ebsColorMapping'] = [
-            // Old variables with new color-mapping
+
+            "#f0f0f0" => "ebsBackground",
             "#0073aa" => "ebsLinks",
             "rgb(0, 149.5, 221)" => "ebsLinksHover",
+            "var(--wp-admin-theme-color)" => "ebsPrimary",
+            "var(--wp-admin-theme-color-darker-20)" => "ebsPrimaryDarker20",
+            "#949494" => "ebsDisabledButtonText",
+            "#cc1818" => "ebsDeleteLinks",
+            "rgb(230.6842105263, 48.3157894737, 48.3157894737)" => "ebsDeleteLinksHover",
+            "var(--wp-admin-theme-color--rgb" => "ebsPrimary",
+            "#dddddd" => "ebsDisabledButtonBorder",
+            "var(--wp-admin-theme-color-darker-10)" => "ebsPrimaryDarker10",
+            "#fffffff" => "ebsPrimaryText",
+            "#fff" => "ebsPrimaryText",
+            "#52accc" => "ebsSecondary",
+            "#096484" => "ebsTertiary",
+            "#e1a948" => "ebsNotification",
+            "#e5f8ff" => "ebsIcon",
+            "#4796b3" => "ebsSubMenu",
+            "#e2ecf1" => "ebsSubMenuText",
+            "rgb(116.162375, 182.0949364754, 205.537625)" => "ebsSecondaryLighter",
+            "rgb(109.571875, 185.228125, 212.128125)" => "ebsSecondaryLighter",
+            "rgb(202.5, 152.1, 64.8)" => "ebsNotification",
+            "rgb(7.3723404255, 81.914893617, 108.1276595745)" => "ebsTertiary",
+            "rgb(232.1830985915, 189.5915492958, 115.8169014085)" => "ebsNotification",
 
-            // TODO - Farbwert falsch
-            "#0073aa" => "ebsButton",
 
-            "#52accc" => "ebsMenuText",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
+            // Old variables with new color-mapping
+            "#0073aa" => "ebsLinks",
             "#52accc" => "ebsBaseMenu",
+            "#52accc" => "ebsMenuText",
 
             "#096484" => "ebsHighlight",
             "#096484" => "ebsHighlightText",
 
             "#e1a948" => "ebsNotification",
-            "#e1a948" => "ebsNotificationText",
 
             "#f0f0f0" => "ebsBackground",
-            "#4796b3" => "ebsSubMenu",
             "var(--wp-admin-theme-color)" => "ebsHighlight",
-            "#949494" => "ebsDisabledButtonText",
-            "#dddddd" => "ebsDisabledButton",
-            "#e5f8ff" => "ebsIcon",
+            "#4796b3" => "ebsSubMenuColor",
+            "#949494" => "ebsDisabledButtonTextColor",
+            "#dddddd" => "ebsDisabledButtonColor",
+            "#e5f8ff" => "ebsIconColor",
 
             // New colors and new variables (for WordPress 7.0+)
-            "#e2ecf1" => "ebsSubMenuText",
+            "#e2ecf1" => "ebsSubmenuText",
             "#cc1818" => "ebsDeleteLinks",
             "rgba(var(--wp-admin-theme-color--rgb), 0.08)" => "ebsHighlightHover",
             "rgba(var(--wp-admin-theme-color--rgb), 0.04)" => "ebsHighlightHover",
             "var(--wp-admin-theme-color-darker-10)" => "ebsHighlightHover",
             "var(--wp-admin-theme-color-darker-20)" => "ebsHighlightHover2",
             // "#1e1e1e" => "ebsCheckboxFocusBorder",
-
+            */
             /* Missing old variables
              *
              * ebsFormInputsColor
@@ -205,20 +244,15 @@ class easyBackendStyle {
 				    --ebsHighlight: ' . $this->getColor("highlight") . ';
 					--ebsHighlightText: ' . $this->getColor("highlightText") . '; 
 				    --ebsNotification: ' . $this->getColor("notification") . '; 
-				    --ebsNotificationText: ' . $this->getColor("notificationText") . '; 
 				    --ebsBackground: ' . $this->getColor("background") . '; 
 				    --ebsLinks: ' . $this->getColor("links") . '; 
 				    --ebsButtons: ' . $this->getColor("buttons") . '; 
-				    --ebsLinkHover: ' . $this->getColor("linkHover") . ';
 				    --ebsDisabledButton: ' . $this->getColor("disabledButton") . ';
 				    --ebsDisabledButtonText: ' . $this->getColor("disabledButtonText") . ';
-				    --ebsIcon: ' . $this->getColor("icon") . ';
+				    --ebsIconColor: ' . $this->getColor("icon") . ';
 				    
 				   /* New colors with new variables */
-				    --ebsSubMenuText: ' . $this->getColor("subMenuText") . ';
-				    --ebsDeleteLinks: ' . $this->getColor("deleteLinks") . ';
-				    --ebsHighlightHover: ' . $this->getColor("highlightHover") . ';
-				    --ebsHighlightHover2: ' . $this->getColor("highlightHover2") . ';
+				    
                 }
             </style>';
     }

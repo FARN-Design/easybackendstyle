@@ -181,41 +181,41 @@ jQuery(document).ready(function ($){
       let scLightness = checkLightness(scHSL);
 
       // colors based on scLightness
-      let menuTextColor = "#000000";
-      let subMenuColor = convertHSLToHex([scHSL[0], scHSL[1], scHSL[2] - 10]);
+      let menuText = "#000000";
+      let subMenu = convertHSLToHex([scHSL[0], scHSL[1], scHSL[2] - 10]);
       if(scLightness == "dark"){
-          menuTextColor = "#ffffff";
-          subMenuColor = convertHSLToHex([scHSL[0], scHSL[1], scHSL[2] + 10]);
+          menuText = "#ffffff";
+          subMenu = convertHSLToHex([scHSL[0], scHSL[1], scHSL[2] + 10]);
       }
 
       // colors based on pcLightness
-      let buttonTextColor = "#000000";
+      let buttonText = "#000000";
       if(pcLightness == "dark"){
-          buttonTextColor = "#ffffff";
+          buttonText = "#ffffff";
       }
 
       // colors based directly on pc - shift values
-      let linkHoverColor = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] - 20]);
+      let linkHover = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] - 20]);
 
       // set all defined colors
       $('.ebs_advanced_settings input[type=text]').each(function(){
-          let colorInputName = capitalizeFirstLetter($(this).attr('name'));
+          let colorInputName = $(this).attr('name');
           let newColor = pc;
 
           // TODO: Neue Variablen hinzufügen?
           switch(colorInputName) {
-              case "menuText"           :       newColor = menuTextColor;           break;
-              case "baseMenu"           :       newColor = sc;                      break;
-              case "subMenu"            :       newColor = subMenuColor;            break;
-              case "notification"       :       newColor = '#d63638';               break;
-              case "notificationText"   :       newColor = '#f0f0f1';               break;
-              case "highlightText"      :       newColor = buttonTextColor;         break;
-              case "background"         :       newColor = '#f0f0f1';               break;
-              case "linkHover"          :       newColor = linkHoverColor;          break;
-              case "buttonHover"        :       newColor = linkHoverColor;          break;
-              case "disabledButton"     :       newColor = '#969696';               break;
-              case "disabledButtonText" :       newColor = '#000000';               break;
-              case "icon"               :       newColor = menuTextColor;           break;
+              case "menuText"           :       newColor = menuText;           break;
+              case "baseMenu"           :       newColor = sc;                 break;
+              case "subMenu"            :       newColor = subMenu;            break;
+              case "notification"       :       newColor = '#d63638';          break;
+              case "notificationText"   :       newColor = '#f0f0f1';          break;
+              case "highlightText"      :       newColor = buttonText;         break;
+              case "background"         :       newColor = '#f0f0f1';          break;
+              case "linkHover"          :       newColor = linkHover;          break;
+              case "buttonHover"        :       newColor = linkHover;          break;
+              case "disabledButton"     :       newColor = '#969696';          break;
+              case "disabledButtonText" :       newColor = '#000000';          break;
+              case "icon"               :       newColor = menuText;           break;
           }
           $(this).val(newColor);
           $('.wrapper_'+colorInputName).find('button.wp-color-result').css('background-color',newColor);
