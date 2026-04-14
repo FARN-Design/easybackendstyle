@@ -1,0 +1,65 @@
+
+.ebs_advanced_settings_toggle {
+    cursor: pointer;
+    margin-top: 4em;
+    padding:0 2em 2em 0;
+    display: block;
+}
+.ebs_advanced_settings_toggle h2 {
+    position: relative;
+    display: inline-block;
+    margin:0;
+}
+.ebs_advanced_settings_toggle h2::after {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    margin-left:10px;
+    vertical-align: top;
+    border-bottom: 2px solid #000000;
+    border-right: 2px solid #000000;
+    content: "";
+    transform: translateY(3px) rotate(45deg);
+    transition: 0.2s;
+}
+
+.ebs_advanced_settings_toggle.active h2::after {
+    transform: translateY(7px) rotate(-135deg);
+}
+
+.ebs_advanced_settings {
+    display: none;
+    margin-bottom: 2em;
+    width:80%;
+}
+
+.ebs_advanced_settings_columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ebs_main_colors > div > label,
+.ebs_advanced_settings_column > div > label {
+    font-weight: bold;
+    width:150px;
+    display: inline-block;
+    cursor:default;
+    vertical-align: top;
+    margin-top: 6px;
+}
+.ebs_main_colors > div,
+.ebs_advanced_settings_column > div {
+    margin-bottom: 10px;
+}
+.ebs_main_colors .wp-picker-container,
+.ebs_advanced_settings_column .wp-picker-container{
+    vertical-align: top;
+}
+.ebs_main_colors .wp-picker-container button,
+.ebs_advanced_settings_column .wp-picker-container button{
+    margin:0 !important;
+}
+.ebs_submitButton {
+    vertical-align: middle !important;
+    margin-right: 10px !important;
+}

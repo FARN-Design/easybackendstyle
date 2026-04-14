@@ -1,0 +1,26 @@
+/*
+        --------------------------------------Default Values--------------------------------------
+ */
+:root{
+    --menuText: #52accc;
+    --baseMenu: #52accc;
+    --subMenu: #4796b3;
+    --highlight: #096484;
+    --highlightText: #096484;
+    --notification: #e1a948;
+    --notificationText: #e1a948;
+    --background: #f0f0f0;
+    --links: #0073aa;
+    --buttons: #0073aa;
+    --linkHover: rgb(0, 149.5, 221);
+    --disabledButton: #dddddd;
+    --disabledButtonText: #949494;
+    --iconColor: #e5f8ff;
+    --subMenuText: #e2ecf1;
+    --deleteLinks: #cc1818;
+    --highlightHover: #004f75;
+    --highlightHover2: #002c42;
+
+}
+
+
