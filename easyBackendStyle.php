@@ -64,31 +64,26 @@ class easyBackendStyle {
     {
 
         $GLOBALS['ebsColorMapping'] = [
-
-            "#f0f0f0" => "ebsBackground",
-            "#0073aa" => "ebsLinks",
-            "rgb(0, 149.5, 221)" => "ebsLinksHover",
-            "var(--wp-admin-theme-color)" => "ebsPrimary",
-            "var(--wp-admin-theme-color-darker-20)" => "ebsPrimaryDarker20",
-            "#949494" => "ebsDisabledButtonText",
-            "#cc1818" => "ebsDeleteLinks",
-            "rgb(230.6842105263, 48.3157894737, 48.3157894737)" => "ebsDeleteLinksHover",
-            "var(--wp-admin-theme-color--rgb" => "ebsPrimary",
-            "#dddddd" => "ebsDisabledButtonBorder",
-            "var(--wp-admin-theme-color-darker-10)" => "ebsPrimaryDarker10",
-            "#fffffff" => "ebsPrimaryText",
-            "#fff" => "ebsPrimaryText",
-            "#52accc" => "ebsSecondary",
-            "#096484" => "ebsTertiary",
-            "#e1a948" => "ebsNotification",
-            "#e5f8ff" => "ebsIcon",
-            "#4796b3" => "ebsSubMenu",
-            "#e2ecf1" => "ebsSubMenuText",
-            "rgb(116.162375, 182.0949364754, 205.537625)" => "ebsSecondaryLighter",
-            "rgb(109.571875, 185.228125, 212.128125)" => "ebsSecondaryLighter",
-            "rgb(202.5, 152.1, 64.8)" => "ebsNotification",
-            "rgb(7.3723404255, 81.914893617, 108.1276595745)" => "ebsTertiary",
-            "rgb(232.1830985915, 189.5915492958, 115.8169014085)" => "ebsNotification",
+            // key => [name, list of replaceable colors, default value]    
+            "ebsBackground" => ["background",["#f0f0f0"],'#f0f0f0'],
+            "ebsLinks" => ["links",["#0073aa"],'#0073aa'],
+            "ebsLinksHover" => ["linksHover",["rgb(0, 149.5, 221)"],'#0095dd'],
+            "ebsPrimary" => ["primary",["var(--wp-admin-theme-color)", "var(--wp-admin-theme-color--rgb)"],'#096484'],
+            "ebsPrimaryDarker20" => ["primary darker 20",["var(--wp-admin-theme-color-darker-20)"],'#064054'],
+            "ebsPrimaryDarker10" => ["primary darker 10",["var(--wp-admin-theme-color-darker-10)"],'#07526c'],
+            "ebsDisabledButtonText" => ['disabled button text', ["#949494"],'#949494'],
+            "ebsDeleteLinks" => ["delete links", ["#cc1818"],'#cc1818'],
+            "ebsDeleteLinksHover" => ["delete links hover", ["rgb(230.6842105263, 48.3157894737, 48.3157894737)"],'#e63004'],
+            "ebsDisabledButtonBorder" => ['disabled button border', ["#dddddd"],'#dddddd'],
+            "ebsPrimaryText" => ["primary text", ["#ffffff", "#fff"],'#ffffff'],
+            "ebsSecondary" => ["secondary", ["#52accc"],'#52accc'],
+            "ebsTertiary" => ["tertiary", ["#096484"],'#096484'],
+            "ebsNotification" => ["notification", ["#e1a948","rgb(202.5, 152.1, 64.8)","rgb(232.1830985915, 189.5915492958, 115.8169014085)"],'#e1a948'],
+            "ebsIcon" => ["icon", ["#e5f8ff"],'#e5f8ff'],
+            "ebsSubMenu" => ["submenu", ["#4796b3"],'#4796b3'],
+            "ebsSubMenuText" => ["submenu text", ["#e2ecf1"],'#e2ecf1'],
+            "ebsSecondaryLighter" => ["secondary lighter", ["rgb(116.162375, 182.0949364754, 205.537625)", "rgb(109.571875, 185.228125, 212.128125)"],'#74a6b9'],
+            "ebsTertiary" => ["tertiary", ["rgb(7.3723404255, 81.914893617, 108.1276595745)"],'#096484']
 
 
 
@@ -223,8 +218,8 @@ class easyBackendStyle {
         echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css">';
         $cssRoot = "<style> :root {";
 
-        foreach ($GLOBALS['ebsColorMapping'] as $oldColor => $newColor) {
-            $cssRoot .= "--".$newColor.": ".$this->getColor($newColor).";";
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+            $cssRoot .= "--".$colorKey.": ".$this->getColor($colorKey).";";
         }
 
         $cssRoot .= "} </style>";

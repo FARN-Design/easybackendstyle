@@ -87,12 +87,13 @@ class ebs_DatabaseConnector
             $databaseVariables[] = $results[$x][1];
         }
 
-        foreach ($GLOBALS['ebsColorMapping'] as $value => $key) {
-            if (!in_array($key, $databaseVariables)) {
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+
+            if (!in_array($colorKey, $databaseVariables)) {
                 $this->wpdb->insert($this->tableName,
                     array(
-                        'Variable' => $key,
-                        'Value' => $value));
+                        'Variable' => $colorKey,
+                        'Value' => $colorValue[2]));
             }
         }
     }
@@ -130,8 +131,8 @@ class ebs_DatabaseConnector
     public function resetDefaults(): void
     {
 
-        foreach ($GLOBALS['ebsColorMapping'] as $value => $key) {
-            $this->saveValueInDB($value, $key);
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+            $this->saveValueInDB($colorValue[2], $colorKey);
         }
 
     }

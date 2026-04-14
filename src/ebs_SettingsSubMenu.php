@@ -34,10 +34,10 @@ class ebs_SettingsSubMenu
         $baseColorFileContent = file_get_contents($baseColorFilePath);
         $newContent = $baseColorFileContent;
 
-        print_r($GLOBALS['ebsColorMapping']);
-        foreach ($GLOBALS['ebsColorMapping'] as $oldColor => $newColor) {
-            $newContent = str_replace($oldColor, "var(--".$newColor.")", $newContent);
-
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+            foreach ($colorValue[1] as $oldColor) {
+                $newContent = str_replace($oldColor, "var(--".$colorKey.")", $newContent);
+            }
         }
         // TODO: exchange hardcoded Plugin name
         file_put_contents(WP_PLUGIN_DIR."/easybackendstyle/resources/ebsMainCSS.css", $newContent);
@@ -105,20 +105,20 @@ class ebs_SettingsSubMenu
 
             <?php $mainColors = [];
 
-            foreach ($GLOBALS['ebsColorMapping'] as $oldColor => $newColor){
-                    if($newColor != "ebsPrimary" && $newColor != "ebsSecondary" && $newColor != "ebsTertiary"){
+            foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue){
+                    if($colorKey != "ebsPrimary" && $colorKey != "ebsSecondary" && $colorKey != "ebsTertiary"){
                         continue;
                     }
-                    if(in_array($newColor, $mainColors)){
+                    if(in_array($colorKey, $mainColors)){
                         continue;
                     }
-                    $mainColors[] = $newColor;?>
-                <div class="wrapper_<?php echo $newColor; ?>">
-                    <label for="<?php echo $newColor; ?>"> <?php echo $newColor; ?> </label>
-                    <input type="text" name="<?php echo $newColor; ?>" id="<?php echo $newColor; ?>"
-                           value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($newColor)[0][0]); ?>"
+                    $mainColors[] = $colorKey;?>
+                <div class="wrapper_<?php echo $colorKey; ?>">
+                    <label for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?> </label>
+                    <input type="text" name="<?php echo $colorKey; ?>" id="<?php echo $colorKey; ?>"
+                           value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
                            class="ebs_mainColorPicker"
-                           data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($newColor)[0][0]); ?>"/>
+                           data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"/>
                 </div>
             <?php } ?>
 
@@ -133,20 +133,20 @@ class ebs_SettingsSubMenu
 
                     <?php $advancedColorFields = [];
 
-                    foreach ($GLOBALS['ebsColorMapping'] as $oldColor => $newColor){
-                        if($newColor == "ebsPrimary" || $newColor == "ebsSecondary" || $newColor == "ebsTertiary"){
+                    foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue){
+                        if($colorKey == "ebsPrimary" || $colorKey == "ebsSecondary" || $colorKey == "ebsTertiary"){
                             continue;
                         }
-                        if(in_array($newColor, $advancedColorFields)){
+                        if(in_array($colorKey, $advancedColorFields)){
                             continue;
                         }
-                        $advancedColorFields[] = $newColor;?>
-                        <div class="wrapper_<?php echo $newColor; ?>">
-                            <label for="<?php echo $newColor; ?>"> <?php echo $newColor; ?> </label>
-                            <input type="text" name="<?php echo $newColor; ?>" id="<?php echo $newColor; ?>"
-                                   value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($newColor)[0][0]); ?>"
+                        $advancedColorFields[] = $colorKey;?>
+                        <div class="wrapper_<?php echo $colorKey; ?>">
+                            <label for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?> </label>
+                            <input type="text" name="<?php echo $colorKey; ?>" id="<?php echo $colorKey; ?>"
+                                   value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
                                    class="ebs_mainColorPicker"
-                                   data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($newColor)[0][0]); ?>"/>
+                                   data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"/>
                         </div>
                     <?php } ?>
                 </div>
