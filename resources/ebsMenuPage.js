@@ -202,8 +202,28 @@ jQuery(document).ready(function ($){
           let colorInputName = $(this).attr('name');
           let newColor = pc;
 
-          // TODO: Neue Variablen hinzufügen?
+          console.log(colorInputName);
+          // TODO:  1.ebsTertiary unten fest hinzugefügt, ok?
+          //        2.Dynamische Farbwerte anpassen (Darker & Lighter)
           switch(colorInputName) {
+              case "ebsBackground"              :       newColor = '#f0f0f0';       break;
+              case "ebsLinks"                   :       newColor = '#0073aa';       break;
+              case "ebsLinksHover"              :       newColor = linkHover;       break;
+              case "ebsPrimaryDarker20"         :       newColor = '#064054';       break;
+              case "ebsPrimaryDarker10"         :       newColor = '#07526c';       break;
+              case "ebsDisabledButtonText"      :       newColor = '#949494';       break;
+              case "ebsDeleteLinks"             :       newColor = '#cc1818';       break;
+              case "ebsDeleteLinksHover"        :       newColor = '#e63004';       break;
+              case "ebsDisabledButtonBorder"    :       newColor = '#dddddd';       break;
+              case "ebsPrimaryText"             :       newColor = menuText;        break;
+              case "ebsTertiary"                :       newColor = '#096484';       break;
+              case "ebsNotification"            :       newColor = '#e1a948';       break;
+              case "ebsIcon"                    :       newColor = menuText;        break;
+              case "ebsSubMenu"                 :       newColor = subMenu;         break;
+              case "ebsSubMenuText"             :       newColor = menuText;        break;
+              case "ebsSecondaryLighter"        :       newColor = '#74a6b9';       break;
+
+              /*
               case "menuText"           :       newColor = menuText;           break;
               case "baseMenu"           :       newColor = sc;                 break;
               case "subMenu"            :       newColor = subMenu;            break;
@@ -216,6 +236,7 @@ jQuery(document).ready(function ($){
               case "disabledButton"     :       newColor = '#969696';          break;
               case "disabledButtonText" :       newColor = '#000000';          break;
               case "icon"               :       newColor = menuText;           break;
+              */
           }
           $(this).val(newColor);
           $('.wrapper_'+colorInputName).find('button.wp-color-result').css('background-color',newColor);

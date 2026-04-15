@@ -2,6 +2,26 @@
         --------------------------------------Default Values--------------------------------------
  */
 :root{
+    --ebsBackground: #f0f0f0;
+    --ebsLinks: #0073aa;
+    --ebsLinksHover: #0095dd;
+    --ebsPrimary: #096484;
+    --ebsPrimaryDarker20: #064054;
+    --ebsPrimaryDarker10: #07526c;
+    --ebsDisabledButtonText: #949494;
+    --ebsDeleteLinks: #cc1818;
+    --ebsDeleteLinksHover: #e63004;
+    --ebsDisabledButtonBorder: #dddddd;
+    --ebsPrimaryText: #ffffff;
+    --ebsSecondary: #52accc;
+    --ebsTertiary: #096484;
+    --ebsNotification: #e1a948;
+    --ebsIcon: #e5f8ff;
+    --ebsSubMenu: #4796b3;
+    --ebsSubMenuText: #e2ecf1;
+    --ebsSecondaryLIghter: #74a6b9;
+
+    /*
     --menuText: #52accc;
     --baseMenu: #52accc;
     --subMenu: #4796b3;
@@ -17,6 +37,6 @@
     --deleteLinks: #cc1818;
     --highlightHover: #004f75;
     --highlightHover2: #002c42;
-
+    */
 }
 
