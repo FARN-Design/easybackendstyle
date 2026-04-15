@@ -85,42 +85,6 @@ class easyBackendStyle {
             "ebsSecondaryLighter" => ["secondary lighter", ["rgb(116.162375, 182.0949364754, 205.537625)", "rgb(109.571875, 185.228125, 212.128125)"],'#74a6b9'],
             "ebsTertiary" => ["tertiary", ["rgb(7.3723404255, 81.914893617, 108.1276595745)"],'#096484']
 
-
-
-            /*
-            // Old variables with new color-mapping
-            "#0073aa" => "ebsLinks",
-            "#52accc" => "ebsBaseMenu",
-            "#52accc" => "ebsMenuText",
-
-            "#096484" => "ebsHighlight",
-            "#096484" => "ebsHighlightText",
-
-            "#e1a948" => "ebsNotification",
-
-            "#f0f0f0" => "ebsBackground",
-            "var(--wp-admin-theme-color)" => "ebsHighlight",
-            "#4796b3" => "ebsSubMenuColor",
-            "#949494" => "ebsDisabledButtonTextColor",
-            "#dddddd" => "ebsDisabledButtonColor",
-            "#e5f8ff" => "ebsIconColor",
-
-            // New colors and new variables (for WordPress 7.0+)
-            "#e2ecf1" => "ebsSubmenuText",
-            "#cc1818" => "ebsDeleteLinks",
-            "rgba(var(--wp-admin-theme-color--rgb), 0.08)" => "ebsHighlightHover",
-            "rgba(var(--wp-admin-theme-color--rgb), 0.04)" => "ebsHighlightHover",
-            "var(--wp-admin-theme-color-darker-10)" => "ebsHighlightHover",
-            "var(--wp-admin-theme-color-darker-20)" => "ebsHighlightHover2",
-            // "#1e1e1e" => "ebsCheckboxFocusBorder",
-            */
-            /* Missing old variables
-             *
-             * ebsFormInputsColor
-             * ebsButtonHoverColor
-             * ebsButtonTextColor
-            */
-
         ];
 
         $GLOBALS['ebsPlugin'] = $this;

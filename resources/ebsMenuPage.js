@@ -173,8 +173,8 @@ jQuery(document).ready(function ($){
 
   function autofillColors(){
       // get colors from main color fields
-      let pc = $('.ebs_main_colors').find('#primaryColor').val();
-      let sc = $('.ebs_main_colors').find('#secondaryColor').val();
+      let pc = $('.ebs_main_colors').find('#ebsPrimary').val();
+      let sc = $('.ebs_main_colors').find('#ebsSecondary').val();
       let pcHSL = convertHexToHSL(pc);
       let scHSL = convertHexToHSL(sc);
       let pcLightness = checkLightness(pcHSL);

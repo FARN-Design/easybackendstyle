@@ -52,27 +52,13 @@ class ebs_SettingsSubMenu
      */
     public function handleRequest(): void
     {
-
         if (isset($_REQUEST['submit'])) {
-            // TODO: Transform PrimaryColor hex to rgb
-            $this->dbc->saveValueInDB($_REQUEST['primaryColor'], 'primaryColor');
-            $this->dbc->saveValueInDB($_REQUEST['secondaryColor'], 'secondaryColor');
-            $this->dbc->saveValueInDB($_REQUEST['menuText'], 'menuText');
-            $this->dbc->saveValueInDB($_REQUEST['baseMenu'], 'baseMenu');
-            $this->dbc->saveValueInDB($_REQUEST['subMenu'], 'subMenu');
-            $this->dbc->saveValueInDB($_REQUEST['highlight'], 'highlight');
-            $this->dbc->saveValueInDB($_REQUEST['highlightText'], 'highlightText');
-            $this->dbc->saveValueInDB($_REQUEST['notification'], 'notification');
-            $this->dbc->saveValueInDB($_REQUEST['background'], 'background');
-            $this->dbc->saveValueInDB($_REQUEST['links'], 'links');
-            $this->dbc->saveValueInDB($_REQUEST['disabledButton'], 'disabledButton');
-            $this->dbc->saveValueInDB($_REQUEST['disabledButtonText'], 'disabledButtonText');
-            $this->dbc->saveValueInDB($_REQUEST['icon'], 'icon');
-            $this->dbc->saveValueInDB($_REQUEST['subMenuText'], 'subMenuText');
-            $this->dbc->saveValueInDB($_REQUEST['deleteLinks'], 'deleteLinks');
-            $this->dbc->saveValueInDB($_REQUEST['highlightHover'], 'highlightHover');
-            $this->dbc->saveValueInDB($_REQUEST['highlightHover2'], 'highlightHover2');
 
+            foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+                $this->dbc->saveValueInDB($_REQUEST[$colorKey], $colorKey);
+            }
+
+            // TODO: Transform PrimaryColor hex to rgb
 
             $this->generateColorsCss();
         }
