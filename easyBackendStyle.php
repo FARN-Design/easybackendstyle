@@ -69,20 +69,20 @@ class easyBackendStyle {
             "ebsLinks" => ["links",["#0073aa"],'#0073aa'],
             "ebsLinksHover" => ["linksHover",["rgb(0, 149.5, 221)"],'#0095dd'],
             "ebsPrimary" => ["primary",["var(--wp-admin-theme-color)", "var(--wp-admin-theme-color--rgb)"],'#096484'],
-            "ebsPrimaryDarker20" => ["primary darker 20",["var(--wp-admin-theme-color-darker-20)"],'#064054'],
             "ebsPrimaryDarker10" => ["primary darker 10",["var(--wp-admin-theme-color-darker-10)"],'#07526c'],
-            "ebsDisabledButtonText" => ['disabled button text', ["#949494"],'#949494'],
+            "ebsPrimaryDarker20" => ["primary darker 20",["var(--wp-admin-theme-color-darker-20)"],'#064054'],
+            "ebsSecondaryLighter" => ["secondary lighter", ["rgb(116.162375, 182.0949364754, 205.537625)", "rgb(109.571875, 185.228125, 212.128125)"],'#74a6b9'],
             "ebsDeleteLinks" => ["delete links", ["#cc1818"],'#cc1818'],
             "ebsDeleteLinksHover" => ["delete links hover", ["rgb(230.6842105263, 48.3157894737, 48.3157894737)"],'#e63004'],
+            "ebsDisabledButtonText" => ['disabled button text', ["#949494"],'#949494'],
             "ebsDisabledButtonBorder" => ['disabled button border', ["#dddddd"],'#dddddd'],
-            "ebsPrimaryText" => ["primary text", ["#ffffff", "#fff"],'#ffffff'],
             "ebsSecondary" => ["secondary", ["#52accc"],'#52accc'],
             "ebsTertiary" => ["tertiary", ["#096484", "rgb(7.3723404255, 81.914893617, 108.1276595745)"],'#096484'],
             "ebsNotification" => ["notification", ["#e1a948","rgb(202.5, 152.1, 64.8)","rgb(232.1830985915, 189.5915492958, 115.8169014085)"],'#e1a948'],
             "ebsIcon" => ["icon", ["#e5f8ff"],'#e5f8ff'],
+            "ebsPrimaryText" => ["primary text", ["#ffffff", "#fff"],'#ffffff'],
             "ebsSubMenu" => ["submenu", ["#4796b3"],'#4796b3'],
             "ebsSubMenuText" => ["submenu text", ["#e2ecf1"],'#e2ecf1'],
-            "ebsSecondaryLighter" => ["secondary lighter", ["rgb(116.162375, 182.0949364754, 205.537625)", "rgb(109.571875, 185.228125, 212.128125)"],'#74a6b9'],
         ];
 
         $GLOBALS['ebsPlugin'] = $this;
@@ -203,7 +203,6 @@ class easyBackendStyle {
 				    --ebsDisabledButtonText: ' . $this->getColor("disabledButtonText") . ';
 				    --ebsIconColor: ' . $this->getColor("icon") . ';
 
-				    
                 }
             </style>'; */
     }

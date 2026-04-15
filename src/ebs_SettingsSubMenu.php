@@ -58,8 +58,6 @@ class ebs_SettingsSubMenu
                 $this->dbc->saveValueInDB($_REQUEST[$colorKey], $colorKey);
             }
 
-            // TODO: Transform PrimaryColor hex to rgb
-
             $this->generateColorsCss();
         }
 
@@ -67,6 +65,7 @@ class ebs_SettingsSubMenu
             $this->dbc->resetDefaults();
         }
 
+        // TODO: Fresh als Farbschema nicht mehr verfügbar auf WP - aktualisieren mit blue?
         if (get_user_option('admin_color') != 'fresh') {
             echo '<h5 style="color: #CC0000">' . _e('Please select the default admin color scheme and reload the site to apply changes.', 'easybackendstyle') . '</h5>';
         }
@@ -131,7 +130,7 @@ class ebs_SettingsSubMenu
                             <label for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?> </label>
                             <input type="text" name="<?php echo $colorKey; ?>" id="<?php echo $colorKey; ?>"
                                    value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
-                                   class="ebs_mainColorPicker"
+                                   class="ebs_colorPicker"
                                    data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"/>
                         </div>
                     <?php } ?>

@@ -168,7 +168,7 @@ jQuery(document).ready(function ($){
   }
 
   function colorPreview(colorInputName, newColor){
-    $(':root').css('--ebs'+colorInputName, newColor);
+    $(':root').css('--'+colorInputName, newColor);
   }
 
   function autofillColors(){
@@ -194,23 +194,26 @@ jQuery(document).ready(function ($){
           buttonText = "#ffffff";
       }
 
-      // colors based directly on pc - shift values
+      // colors based directly on pc - shift values - 20% darker
       let linkHover = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] - 20]);
+
+      // colors based directly on pc - shift values - 10% darker
+      let darker10 = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] - 10]);
 
       // set all defined colors
       $('.ebs_advanced_settings input[type=text]').each(function(){
           let colorInputName = $(this).attr('name');
           let newColor = pc;
 
-          console.log(colorInputName);
           // TODO:  1.ebsTertiary unten fest hinzugefügt, ok?
           //        2.Dynamische Farbwerte anpassen (Darker & Lighter)
+          // TODO: Transform PrimaryColor hex to rgb
           switch(colorInputName) {
               case "ebsBackground"              :       newColor = '#f0f0f0';       break;
               case "ebsLinks"                   :       newColor = '#0073aa';       break;
               case "ebsLinksHover"              :       newColor = linkHover;       break;
-              case "ebsPrimaryDarker20"         :       newColor = '#064054';       break;
-              case "ebsPrimaryDarker10"         :       newColor = '#07526c';       break;
+              case "ebsPrimaryDarker20"         :       newColor = linkHover;       break;
+              case "ebsPrimaryDarker10"         :       newColor = darker10;        break;
               case "ebsDisabledButtonText"      :       newColor = '#949494';       break;
               case "ebsDeleteLinks"             :       newColor = '#cc1818';       break;
               case "ebsDeleteLinksHover"        :       newColor = '#e63004';       break;
@@ -221,7 +224,7 @@ jQuery(document).ready(function ($){
               case "ebsIcon"                    :       newColor = menuText;        break;
               case "ebsSubMenu"                 :       newColor = subMenu;         break;
               case "ebsSubMenuText"             :       newColor = menuText;        break;
-              case "ebsSecondaryLighter"        :       newColor = '#74a6b9';       break;
+              case "ebsSecondaryLighter"        :       newColor = sc;              break;
 
               /*
               case "menuText"           :       newColor = menuText;           break;
@@ -248,12 +251,12 @@ jQuery(document).ready(function ($){
   // init all color pickers and listen to changes
   $(".ebs_colorPicker").wpColorPicker({
     change: function (event, ui) {
-      var colorInputName = capitalizeFirstLetter($(this).attr('name'));
+      var colorInputName = $(this).attr('name');
       var newColor = ui.color.toString();
       colorPreview(colorInputName, newColor);
     },
     clear: function (event) {
-      var colorInputName = capitalizeFirstLetter($(this).attr('name'));
+      var colorInputName = $(this).attr('name');
       var newColor = ui.color.toString();
       colorPreview(colorInputName, newColor);
     }
