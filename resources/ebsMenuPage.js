@@ -175,6 +175,10 @@ jQuery(document).ready(function ($){
       // get colors from main color fields
       let pc = $('.ebs_main_colors').find('#ebsPrimary').val();
       let sc = $('.ebs_main_colors').find('#ebsSecondary').val();
+      let tc = $('.ebs_main_colors').find('#ebsTertiary').val();
+      colorPreview('ebsPrimary', pc);
+      colorPreview('ebsSecondary', sc);
+      colorPreview('ebsTertiary', tc);
       let pcHSL = convertHexToHSL(pc);
       let scHSL = convertHexToHSL(sc);
       let pcLightness = checkLightness(pcHSL);
@@ -207,7 +211,7 @@ jQuery(document).ready(function ($){
 
           // TODO:  1.ebsTertiary unten fest hinzugefügt, ok?
           //        2.Dynamische Farbwerte anpassen (Darker & Lighter)
-          // TODO: Transform PrimaryColor hex to rgb
+          //        3.Function for transformation of PrimaryColor hex to rgb
           switch(colorInputName) {
               case "ebsBackground"              :       newColor = '#f0f0f0';       break;
               case "ebsLinks"                   :       newColor = '#0073aa';       break;
@@ -219,12 +223,11 @@ jQuery(document).ready(function ($){
               case "ebsDeleteLinksHover"        :       newColor = '#e63004';       break;
               case "ebsDisabledButtonBorder"    :       newColor = '#dddddd';       break;
               case "ebsPrimaryText"             :       newColor = menuText;        break;
-              case "ebsTertiary"                :       newColor = '#096484';       break;
               case "ebsNotification"            :       newColor = '#e1a948';       break;
               case "ebsIcon"                    :       newColor = menuText;        break;
               case "ebsSubMenu"                 :       newColor = subMenu;         break;
               case "ebsSubMenuText"             :       newColor = menuText;        break;
-              case "ebsSecondaryLighter"        :       newColor = sc;              break;
+              case "ebsSecondaryLighter"        :       newColor = subMenu;         break;
 
               /*
               case "menuText"           :       newColor = menuText;           break;

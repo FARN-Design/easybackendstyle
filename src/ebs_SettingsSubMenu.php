@@ -57,7 +57,6 @@ class ebs_SettingsSubMenu
             foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
                 $this->dbc->saveValueInDB($_REQUEST[$colorKey], $colorKey);
             }
-
             $this->generateColorsCss();
         }
 
