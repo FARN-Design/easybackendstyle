@@ -34,6 +34,23 @@ class ebs_SettingsSubMenu
         $baseColorFileContent = file_get_contents($baseColorFilePath);
         $newContent = $baseColorFileContent;
 
+        // RegEx-String Replacement for highlighted Text+Icons
+        $newContent = preg_replace(
+                [
+                        '/(#adminmenu li\.wp-has-current-submenu div\.wp-menu-image:before,\n#adminmenu a\.current:hover div\.wp-menu-image:before,\n#adminmenu li\.current div\.wp-menu-image:before,\n#adminmenu li\.wp-has-current-submenu a:focus div\.wp-menu-image:before,\n#adminmenu li\.wp-has-current-submenu\.opensub div\.wp-menu-image:before,\n#adminmenu li:hover div\.wp-menu-image:before,\n#adminmenu li a:focus div\.wp-menu-image:before,\n#adminmenu li\.opensub div\.wp-menu-image:before \{\n  color: )#fff(;)/',
+                        '/(#adminmenu \.menu-counter,\s*#adminmenu \.awaiting-mod,\s*#adminmenu \.update-plugins\s*\{\s*color:\s*)#fff(;)/',
+                        '/(#adminmenu li\.current a\.menu-top,\s*#adminmenu li\.wp-has-current-submenu a\.wp-has-current-submenu,\s*#adminmenu li\.wp-has-current-submenu \.wp-submenu \.wp-submenu-head,\s*.folded #adminmenu li\.current\.menu-top\s*\{\s*color:\s*)#fff(;)/',
+                        '/(#adminmenu a:hover,\n#adminmenu li\.menu-top:hover,\n#adminmenu li\.opensub > a\.menu-top,\n#adminmenu li > a\.menu-top:focus \{\n  color: )#fff(;)/',
+                        '/(#adminmenu li\.menu-top:hover div\.wp-menu-image:before,\n#adminmenu li\.opensub > a\.menu-top div\.wp-menu-image:before \{\n  color: )#fff(;)/',
+                ],
+                [
+                        '$1var(--ebsHighlightedText)$2',
+                        '$1var(--ebsHighlightedText)$2',
+                        '$1var(--ebsHighlightedText)$2',
+                        '$1var(--ebsHighlightedText)$2',
+                        '$1var(--ebsHighlightedText)$2'
+                ], $newContent
+        );
         foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
             foreach ($colorValue[1] as $oldColor) {
                 $newContent = str_replace($oldColor, "var(--".$colorKey.")", $newContent);

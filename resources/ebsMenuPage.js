@@ -185,10 +185,10 @@ jQuery(document).ready(function ($){
       let scLightness = checkLightness(scHSL);
 
       // colors based on scLightness
-      let menuText = "#000000";
+      let allText = "#000000";
       let subMenu = convertHSLToHex([scHSL[0], scHSL[1], scHSL[2] - 10]);
       if(scLightness == "dark"){
-          menuText = "#ffffff";
+          allText = "#ffffff";
           subMenu = convertHSLToHex([scHSL[0], scHSL[1], scHSL[2] + 10]);
       }
 
@@ -199,10 +199,10 @@ jQuery(document).ready(function ($){
       }
 
       // colors based directly on pc - shift values - 20% darker
-      let linkHover = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] - 20]);
+      let pcDarker20 = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] - 20]);
 
       // colors based directly on pc - shift values - 10% darker
-      let darker10 = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] - 10]);
+      let pcDarker10 = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] - 10]);
 
       // set all defined colors
       $('.ebs_advanced_settings input[type=text]').each(function(){
@@ -215,18 +215,19 @@ jQuery(document).ready(function ($){
           switch(colorInputName) {
               case "ebsBackground"              :       newColor = '#f0f0f0';       break;
               case "ebsLinks"                   :       newColor = pc;              break;
-              case "ebsLinksHover"              :       newColor = linkHover;       break;
-              case "ebsPrimaryDarker20"         :       newColor = linkHover;       break;
-              case "ebsPrimaryDarker10"         :       newColor = darker10;        break;
+              case "ebsLinksHover"              :       newColor = pcDarker20;      break;
+              case "ebsPrimaryDarker20"         :       newColor = pcDarker20;      break;
+              case "ebsPrimaryDarker10"         :       newColor = pcDarker10;      break;
               case "ebsDisabledButtonText"      :       newColor = '#949494';       break;
               case "ebsDeleteLinks"             :       newColor = '#cc1818';       break;
               case "ebsDeleteLinksHover"        :       newColor = '#e63004';       break;
-              case "ebsPrimaryText"             :       newColor = menuText;        break;
-              case "ebsNotification"            :       newColor = pc;              break;
-              case "ebsIcon"                    :       newColor = menuText;        break;
+              case "ebsPrimaryText"             :       newColor = allText;         break;
+              case "ebsNotification"            :       newColor = tc;              break;
+              case "ebsIcon"                    :       newColor = allText;         break;
               case "ebsSubMenu"                 :       newColor = subMenu;         break;
-              case "ebsSubMenuText"             :       newColor = menuText;        break;
+              case "ebsSubMenuText"             :       newColor = allText;         break;
               case "ebsSecondaryLighter"        :       newColor = subMenu;         break;
+              case "ebsHighlightedText"         :       newColor = '#ffffff';       break;
 
               /*
               case "menuText"           :       newColor = menuText;           break;

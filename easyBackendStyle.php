@@ -82,6 +82,7 @@ class easyBackendStyle {
             "ebsPrimaryText" => ["primary text", ["#ffffff", "#fff"],'#ffffff'],
             "ebsSubMenu" => ["submenu", ["#4796b3"],'#4796b3'],
             "ebsSubMenuText" => ["submenu text", ["#e2ecf1"],'#e2ecf1'],
+            "ebsHighlightedText" => ["highlight text", ["#fff"],'#ffffff'],
         ];
 
         $GLOBALS['ebsPlugin'] = $this;
