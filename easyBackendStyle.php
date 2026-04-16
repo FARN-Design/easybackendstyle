@@ -75,7 +75,6 @@ class easyBackendStyle {
             "ebsDeleteLinks" => ["delete links", ["#cc1818"],'#cc1818'],
             "ebsDeleteLinksHover" => ["delete links hover", ["rgb(230.6842105263, 48.3157894737, 48.3157894737)"],'#e63004'],
             "ebsDisabledButtonText" => ['disabled button text', ["#949494"],'#949494'],
-            "ebsDisabledButtonBorder" => ['disabled button border', ["#dddddd"],'#dddddd'],
             "ebsSecondary" => ["secondary", ["#52accc"],'#52accc'],
             "ebsTertiary" => ["tertiary", ["#096484", "rgb(7.3723404255, 81.914893617, 108.1276595745)"],'#096484'],
             "ebsNotification" => ["notification", ["#e1a948","rgb(202.5, 152.1, 64.8)","rgb(232.1830985915, 189.5915492958, 115.8169014085)"],'#e1a948'],
@@ -103,15 +102,15 @@ class easyBackendStyle {
 
 
 
-        /*Function for adding a color scheme in the admin area
-        wp_admin_css_color(
+        // Function for adding a color scheme in the admin area
+        /*wp_admin_css_color(
             'easybackendstyle',
             __( 'EasyBackendStyle', 'textdomain' ),
             admin_url( "css/colors/blue/colors.css" ),
             array('#fce4ec', '#f48fb1', '#e91e8c', '#c2185b'),
             array( 'base' => '#f3e5f5', 'focus' => '#ce93d8', 'current' => '#6a1b9a' )
-        );*/
-
+        );
+         */
     }
 
     //On activation of the plugin

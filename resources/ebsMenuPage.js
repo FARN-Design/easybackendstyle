@@ -214,16 +214,15 @@ jQuery(document).ready(function ($){
           //        3.Function for transformation of PrimaryColor hex to rgb
           switch(colorInputName) {
               case "ebsBackground"              :       newColor = '#f0f0f0';       break;
-              case "ebsLinks"                   :       newColor = '#0073aa';       break;
+              case "ebsLinks"                   :       newColor = pc;              break;
               case "ebsLinksHover"              :       newColor = linkHover;       break;
               case "ebsPrimaryDarker20"         :       newColor = linkHover;       break;
               case "ebsPrimaryDarker10"         :       newColor = darker10;        break;
               case "ebsDisabledButtonText"      :       newColor = '#949494';       break;
               case "ebsDeleteLinks"             :       newColor = '#cc1818';       break;
               case "ebsDeleteLinksHover"        :       newColor = '#e63004';       break;
-              case "ebsDisabledButtonBorder"    :       newColor = '#dddddd';       break;
               case "ebsPrimaryText"             :       newColor = menuText;        break;
-              case "ebsNotification"            :       newColor = '#e1a948';       break;
+              case "ebsNotification"            :       newColor = pc;              break;
               case "ebsIcon"                    :       newColor = menuText;        break;
               case "ebsSubMenu"                 :       newColor = subMenu;         break;
               case "ebsSubMenuText"             :       newColor = menuText;        break;
