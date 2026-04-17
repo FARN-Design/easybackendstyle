@@ -181,8 +181,10 @@ jQuery(document).ready(function ($){
       colorPreview('ebsTertiary', tc);
       let pcHSL = convertHexToHSL(pc);
       let scHSL = convertHexToHSL(sc);
+      let tcHSL = convertHexToHSL(tc);
       let pcLightness = checkLightness(pcHSL);
       let scLightness = checkLightness(scHSL);
+      let tcLightness = checkLightness(tcHSL);
 
       // colors based on scLightness
       let allText = "#000000";
@@ -192,10 +194,17 @@ jQuery(document).ready(function ($){
           subMenu = convertHSLToHex([scHSL[0], scHSL[1], scHSL[2] + 10]);
       }
 
+      // TODO: Buttontextfarb-Variable raussuchen & ändern, damit das hier wieder klappt?
       // colors based on pcLightness
       let buttonText = "#000000";
       if(pcLightness == "dark"){
           buttonText = "#ffffff";
+      }
+
+      //colors based on tcLightness
+      let highlightedText = "#000000";
+      if(tcLightness == "dark"){
+          highlightedText = "#ffffff";
       }
 
       // colors based directly on pc - shift values - 20% darker
@@ -209,9 +218,7 @@ jQuery(document).ready(function ($){
           let colorInputName = $(this).attr('name');
           let newColor = pc;
 
-          // TODO:  1.ebsTertiary unten fest hinzugefügt, ok?
-          //        2.Dynamische Farbwerte anpassen (Darker & Lighter)
-          //        3.Function for transformation of PrimaryColor hex to rgb
+          // TODO: 1.Function for transformation of PrimaryColor hex to rgb
           switch(colorInputName) {
               case "ebsBackground"              :       newColor = '#f0f0f0';       break;
               case "ebsLinks"                   :       newColor = pc;              break;
@@ -227,7 +234,7 @@ jQuery(document).ready(function ($){
               case "ebsSubMenu"                 :       newColor = subMenu;         break;
               case "ebsSubMenuText"             :       newColor = allText;         break;
               case "ebsSecondaryLighter"        :       newColor = subMenu;         break;
-              case "ebsHighlightedText"         :       newColor = '#ffffff';       break;
+              case "ebsHighlightedText"         :       newColor = highlightedText; break;
 
               /*
               case "menuText"           :       newColor = menuText;           break;

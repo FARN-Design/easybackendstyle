@@ -19,12 +19,15 @@ Domain Path:       /src/languages
 	See LICENCE.md file.
 */
 //------------------------------------------Plugin Security----------------------------------------
-use Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated;
-use Farn\EasyBackendStyle\ebs_DatabaseConnector;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
+//------------------------------------------Define constants & Use---------------------------------
+
+define('EBS_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
+
+use Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated;
+use Farn\EasyBackendStyle\ebs_DatabaseConnector;
 
 //------------------------------------------Plugin Code--------------------------------------------
 
@@ -120,6 +123,7 @@ class easyBackendStyle {
         $this->dbc->setup_Database();
         $this->sub_settings_page();
         flush_rewrite_rules();
+        $this->generateColorsCss();
     }
 
     //On deactivation of the plugin
@@ -216,6 +220,37 @@ class easyBackendStyle {
             wp_enqueue_script('ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__), array('wp-color-picker'), false, true);
             wp_enqueue_style('ebs_menuPageCSS', plugins_url('resources/ebsMenuPage.css', __FILE__));
         }
+    }
+
+    function generateColorsCss(){
+        $baseColorFilePath = ABSPATH . 'wp-admin/css/colors/blue/colors.css';
+        $baseColorFileContent = file_get_contents($baseColorFilePath);
+        $newContent = $baseColorFileContent;
+
+        // RegEx-String Replacement to insert variable for highlighted Text+Icons
+        $newContent = preg_replace(
+            [
+                '/(#adminmenu li\.wp-has-current-submenu div\.wp-menu-image:before,\n#adminmenu a\.current:hover div\.wp-menu-image:before,\n#adminmenu li\.current div\.wp-menu-image:before,\n#adminmenu li\.wp-has-current-submenu a:focus div\.wp-menu-image:before,\n#adminmenu li\.wp-has-current-submenu\.opensub div\.wp-menu-image:before,\n#adminmenu li:hover div\.wp-menu-image:before,\n#adminmenu li a:focus div\.wp-menu-image:before,\n#adminmenu li\.opensub div\.wp-menu-image:before \{\n  color: )#fff(;)/',
+                '/(#adminmenu \.menu-counter,\s*#adminmenu \.awaiting-mod,\s*#adminmenu \.update-plugins\s*\{\s*color:\s*)#fff(;)/',
+                '/(#adminmenu li\.current a\.menu-top,\s*#adminmenu li\.wp-has-current-submenu a\.wp-has-current-submenu,\s*#adminmenu li\.wp-has-current-submenu \.wp-submenu \.wp-submenu-head,\s*.folded #adminmenu li\.current\.menu-top\s*\{\s*color:\s*)#fff(;)/',
+                '/(#adminmenu a:hover,\n#adminmenu li\.menu-top:hover,\n#adminmenu li\.opensub > a\.menu-top,\n#adminmenu li > a\.menu-top:focus \{\n  color: )#fff(;)/',
+                '/(#adminmenu li\.menu-top:hover div\.wp-menu-image:before,\n#adminmenu li\.opensub > a\.menu-top div\.wp-menu-image:before \{\n  color: )#fff(;)/',
+            ],
+            [
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsHighlightedText)$2'
+            ], $newContent
+        );
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+            foreach ($colorValue[1] as $oldColor) {
+                $newContent = str_replace($oldColor, "var(--".$colorKey.")", $newContent);
+            }
+        }
+
+        file_put_contents(EBS_PLUGIN_PATH."/resources/ebsMainCSS.css", $newContent);
     }
 }
 
