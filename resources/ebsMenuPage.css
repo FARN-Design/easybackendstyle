@@ -34,8 +34,14 @@
 }
 
 .ebs_advanced_settings_columns {
-    display: flex;
     justify-content: space-between;
+}
+
+.ebs_advanced_settings_column {
+    column-count: 3;
+}
+.wp-picker-container > .wp-picker-holder {
+    position: absolute;
 }
 
 .ebs_main_colors > div > label,

@@ -34,7 +34,7 @@ class ebs_SettingsSubMenu
         $baseColorFileContent = file_get_contents($baseColorFilePath);
         $newContent = $baseColorFileContent;
 
-        // RegEx-String Replacement for highlighted Text+Icons
+        // RegEx-String Replacement to insert variable for highlighted Text+Icons
         $newContent = preg_replace(
                 [
                         '/(#adminmenu li\.wp-has-current-submenu div\.wp-menu-image:before,\n#adminmenu a\.current:hover div\.wp-menu-image:before,\n#adminmenu li\.current div\.wp-menu-image:before,\n#adminmenu li\.wp-has-current-submenu a:focus div\.wp-menu-image:before,\n#adminmenu li\.wp-has-current-submenu\.opensub div\.wp-menu-image:before,\n#adminmenu li:hover div\.wp-menu-image:before,\n#adminmenu li a:focus div\.wp-menu-image:before,\n#adminmenu li\.opensub div\.wp-menu-image:before \{\n  color: )#fff(;)/',
@@ -151,8 +151,7 @@ class ebs_SettingsSubMenu
                         </div>
                     <?php } ?>
                 </div>
-                <div class="ebs_advanced_settings_column">
-                </div>
+            </div>
         </div>
         <br>
         <input type="submit" class="ebs_submitButton button button-primary" name="submit" id="submit"

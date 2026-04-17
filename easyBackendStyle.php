@@ -64,8 +64,8 @@ class easyBackendStyle {
     {
 
         $GLOBALS['ebsColorMapping'] = [
-            // key => [name, list of replaceable colors, default value]    
-            "ebsBackground" => ["background",["#f0f0f0"],'#f0f0f0'],
+            // key => [name, list of replaceable colors, default value, description]
+            "ebsBackground" => ["background",["#f0f0f0"],'#f0f0f0', "Mainbackground color"],
             "ebsLinks" => ["links",["#0073aa"],'#0073aa'],
             "ebsLinksHover" => ["linksHover",["rgb(0, 149.5, 221)"],'#0095dd'],
             "ebsPrimary" => ["primary",["var(--wp-admin-theme-color)", "var(--wp-admin-theme-color--rgb)"],'#096484'],
