@@ -38,14 +38,19 @@
 }
 
 .ebs_advanced_settings_column {
-    column-count: 3;
+    column-count: 4;
+}
+
+.label_group {
+    display: flex;
+    flex-direction: column;
 }
 .wp-picker-container > .wp-picker-holder {
     position: absolute;
 }
 
 .ebs_main_colors > div > label,
-.ebs_advanced_settings_column > div > label {
+.ebs_advanced_settings_column > div > div > label {
     font-weight: bold;
     width:150px;
     display: inline-block;
@@ -56,6 +61,7 @@
 .ebs_main_colors > div,
 .ebs_advanced_settings_column > div {
     margin-bottom: 10px;
+    display: inline-block;
 }
 .ebs_main_colors .wp-picker-container,
 .ebs_advanced_settings_column .wp-picker-container{

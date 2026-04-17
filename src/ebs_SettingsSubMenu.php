@@ -102,7 +102,6 @@ class ebs_SettingsSubMenu
                 <div class="ebs_advanced_settings_column">
 
                     <?php $advancedColorFields = [];
-
                     foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue){
                         if($colorKey == "ebsPrimary" || $colorKey == "ebsSecondary" || $colorKey == "ebsTertiary"){
                             continue;
@@ -112,11 +111,15 @@ class ebs_SettingsSubMenu
                         }
                         $advancedColorFields[] = $colorKey;?>
                         <div class="wrapper_<?php echo $colorKey; ?>">
-                            <label for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?> </label>
+                            <div class="label_group">
+                                <label for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?></label>
+                                <small id="description_<?php echo $colorKey; ?>"><?php echo $colorValue[3]; ?></small>
+                            </div>
                             <input type="text" name="<?php echo $colorKey; ?>" id="<?php echo $colorKey; ?>"
                                    value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
                                    class="ebs_colorPicker"
-                                   data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"/>
+                                   data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
+                                   aria-describedby="description_<?php echo $colorKey; ?>"/>
                         </div>
                     <?php } ?>
                 </div>
