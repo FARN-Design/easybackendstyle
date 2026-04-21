@@ -58,7 +58,9 @@
     vertical-align: top;
     margin-top: 6px;
 }
-.ebs_main_colors > div,
+.ebs_main_colors > div{
+    margin-bottom: 10px;
+}
 .ebs_advanced_settings_column > div {
     margin-bottom: 10px;
     display: inline-block;

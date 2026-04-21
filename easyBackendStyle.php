@@ -65,6 +65,8 @@ class easyBackendStyle {
     public ebs_DatabaseConnector $dbc;
     function __construct()
     {
+        $pluginActviationHandler = \Farn\EasyBackendStyle\pluginActivationHandler::getInstance("ebs");
+        $pluginActviationHandler->handleNotices();
 
         $GLOBALS['ebsColorMapping'] = [
             // key => [name, list of replaceable colors, default value, description]
@@ -225,6 +227,9 @@ class easyBackendStyle {
     function generateColorsCss(){
         $baseColorFilePath = ABSPATH . 'wp-admin/css/colors/blue/colors.css';
         $baseColorFileContent = file_get_contents($baseColorFilePath);
+        $pluginActviationHandler = \Farn\EasyBackendStyle\pluginActivationHandler::getInstance("ebs");
+        $pluginActviationHandler->createNotice("error", "Could not activate plugin. Failes to load CSS.", "hard");
+
         $newContent = $baseColorFileContent;
 
         // RegEx-String Replacement to insert variable for highlighted Text+Icons
