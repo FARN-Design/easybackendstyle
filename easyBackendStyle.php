@@ -28,6 +28,9 @@ define('EBS_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 
 use Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated;
 use Farn\EasyBackendStyle\ebs_DatabaseConnector;
+use Farn\EasyBackendStyle\pluginActivationHandler;
+use Farn\EasyBackendStyle\Severity;
+use Farn\EasyBackendStyle\Type;
 
 //------------------------------------------Plugin Code--------------------------------------------
 
@@ -39,7 +42,7 @@ add_action( 'init', function (){
 } );
 
 if ( version_compare( $GLOBALS['wp_version'], '7.0-alpha', '<' ) ) {
-    \Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated::Instance();
+    easyBackendStyle_deprecated::Instance();
 } else {
     new easyBackendStyle();
 }
@@ -65,7 +68,7 @@ class easyBackendStyle {
     public ebs_DatabaseConnector $dbc;
     function __construct()
     {
-        $pluginActviationHandler = \Farn\EasyBackendStyle\pluginActivationHandler::getInstance("ebs");
+        $pluginActviationHandler = pluginActivationHandler::getInstance("ebs");
         $pluginActviationHandler->handleNotices();
 
         $GLOBALS['ebsColorMapping'] = [
@@ -91,6 +94,12 @@ class easyBackendStyle {
         ];
 
         $GLOBALS['ebsPlugin'] = $this;
+        $bool = get_option('is_css_generated', false);
+
+        if ($bool === false) {
+            $this->generateColorsCss();
+        }
+
         register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
         register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
 
@@ -105,7 +114,6 @@ class easyBackendStyle {
             $this->dbc = new ebs_DatabaseConnector();
         }
         $this->dbc->checkFields();
-
 
 
         // Function for adding a color scheme in the admin area
@@ -192,25 +200,6 @@ class easyBackendStyle {
 
         $cssRoot .= "} </style>";
         echo $cssRoot;
-
-        /* echo '
-			<style>
-                :root{
-				    --ebsMenuText: ' . $this->getColor("menuText") . '; 
-				    --ebsBaseMenu: ' . $this->getColor("baseMenu") . '; 
-				    --ebsSubMenu: ' . $this->getColor("subMenu") . '; 
-				    --ebsHighlight: ' . $this->getColor("highlight") . ';
-					--ebsHighlightText: ' . $this->getColor("highlightText") . '; 
-				    --ebsNotification: ' . $this->getColor("notification") . '; 
-				    --ebsBackground: ' . $this->getColor("background") . '; 
-				    --ebsLinks: ' . $this->getColor("links") . '; 
-				    --ebsButtons: ' . $this->getColor("buttons") . '; 
-				    --ebsDisabledButton: ' . $this->getColor("disabledButton") . ';
-				    --ebsDisabledButtonText: ' . $this->getColor("disabledButtonText") . ';
-				    --ebsIconColor: ' . $this->getColor("icon") . ';
-
-                }
-            </style>'; */
     }
 
     function addScriptsAndStylesToMenuPages($hook)
@@ -227,9 +216,14 @@ class easyBackendStyle {
     function generateColorsCss(){
         $baseColorFilePath = ABSPATH . 'wp-admin/css/colors/blue/colors.css';
         $baseColorFileContent = file_get_contents($baseColorFilePath);
-        $pluginActviationHandler = \Farn\EasyBackendStyle\pluginActivationHandler::getInstance("ebs");
-        $pluginActviationHandler->createNotice("error", "Could not activate plugin. Failes to load CSS.", "hard");
-
+        if(!$baseColorFileContent){
+            $pluginActviationHandler = pluginActivationHandler::getInstance("ebs");
+            $pluginActviationHandler->createNotice(
+                Type::Error,
+                "Could not activate plugin. Failes to load CSS.",
+                Severity::Hard
+            );
+        }
         $newContent = $baseColorFileContent;
 
         // RegEx-String Replacement to insert variable for highlighted Text+Icons
@@ -256,6 +250,7 @@ class easyBackendStyle {
         }
 
         file_put_contents(EBS_PLUGIN_PATH."/resources/ebsMainCSS.css", $newContent);
+        add_option("is_css_generated", true);
     }
 }
 

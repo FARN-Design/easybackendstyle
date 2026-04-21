@@ -2,6 +2,32 @@
 
 namespace Farn\EasyBackendStyle;
 
+/**
+ * Available Types for notices
+ * Error, Warning, Success, Info
+ */
+enum Type {
+    case Error;
+    case Warning;
+    case Success;
+    case Info;
+
+    function to_string():string
+    {
+        return match ($this) {
+            Type::Error => "error",
+            Type::Warning => "warning",
+            Type::Info => "info",
+            Type::Success => "success",
+        };
+    }
+}
+
+enum Severity {
+    case Soft;
+    case Hard;
+}
+
 class pluginActivationHandler
 {
     static private pluginActivationHandler|null $instance = null;
@@ -17,7 +43,7 @@ class pluginActivationHandler
         $this->transient_name = $prefix . '_pah_error_on_activation';
     }
 
-    public static function getInstance(string $prefix){
+    public static function getInstance(string $prefix) : self {
         if (self::$instance == null){
             self::$instance = new self($prefix);
         }
@@ -27,12 +53,13 @@ class pluginActivationHandler
     /**
      * Creates admin notices to be handled after the activation
      *
-     * @param string $type error, warning, success, info
+     * @param Type $type
      * @param string $message
-     * @param string $severity soft, hard
+     * @param Severity $severity
      * @return void
      */
-    public function createNotice(string $type, string $message, string $severity){
+
+    public function createNotice( Type $type, string $message, Severity $severity){
         $notice = [
             "type" => $type,
             "message" => $message,
@@ -57,15 +84,18 @@ class pluginActivationHandler
 
         foreach ($allNotices as $notice){
 
-            if($notice["severity"] == "hard"){
-                add_action('admin_notices', function() use ($notice){
-                    wp_admin_notice($notice["message"], ["type"=>$notice["type"]]);
-                });
+            /** @var Type $notice_type */
+            $notice_type = $notice["type"];
+            $notice_type = $notice_type->to_string();
 
+            if($notice["severity"] == Severity::Hard){
+                add_action('admin_notices', function() use ($notice, $notice_type){
+                    wp_admin_notice($notice["message"], ["type"=> $notice_type]);
+                });
                 $hasHardError = true;
             } else {
-                add_action('admin_notices', function() use ($notice){
-                    wp_admin_notice($notice["message"], ["type"=>$notice["type"]]);
+                add_action('admin_notices', function() use ($notice, $notice_type){
+                    wp_admin_notice($notice["message"], ["type"=>$notice_type]);
                 });
             }
         }

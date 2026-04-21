@@ -2,10 +2,17 @@
 
 namespace Farn\EasyBackendStyle\deprecated;
 
+/**
+ * @deprecated
+ */
 class easyBackendStyle_deprecated
 {
     private static easyBackendStyle_deprecated $ebsPlugin;
 
+    /**
+     * @deprecated
+     * @return easyBackendStyle_deprecated
+     */
     public static function Instance(): easyBackendStyle_deprecated
     {
         if(!isset(self::$ebsPlugin)){
