@@ -115,7 +115,7 @@ class easyBackendStyle {
         }
         $this->dbc->checkFields();
 
-
+        // TODO: Funktion bauen um ein Farbschema dem Adminprofil hinzuzufügen
         // Function for adding a color scheme in the admin area
         /*wp_admin_css_color(
             'easybackendstyle',

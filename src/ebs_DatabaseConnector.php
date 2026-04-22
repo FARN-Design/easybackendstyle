@@ -13,37 +13,13 @@ class ebs_DatabaseConnector
     var string $tableName;
     var string $charset_collate;
 
-    //Defaults Values for the Database
-    //If a new Variable is needed, just add the variable and default value in this map.
-
-    /*
-    var array $defaultsMap = [
-        'primaryColor' => '#0073aa',
-        'secondaryColor' => '#000000',
-        'menuText' => '52accc',
-        'baseMenu' => '#52accc',
-        'subMenu' => '#4796b3',
-        'subMenuText' => '#e2ecf1',
-        'highlight' => '#096484',
-        'highlightText' => '#096484',
-        'notification' => '#e1a948',
-        'background' => '#f0f0f0',
-        'links' => '#0073aa',
-        'disabledButton' => '#dddddd',
-        'disabledButtonText' => '#949494',
-        'icon' => '#e5f8ff',
-        'deleteLinks' => '#cc1818',
-        'highlightHover' => '#004f75',
-        'highlightHover2' => '#002c42',
-        ];
-*/
     function __construct()
     {
 
         global $wpdb;
 
         $this->wpdb = $wpdb;
-        $this->tableName = $wpdb->prefix . 'easyBackendStyle';
+        $this->tableName = $wpdb->prefix . 'ebs_easyBackendStyle';
         $this->charset_collate = $wpdb->get_charset_collate();
     }
 

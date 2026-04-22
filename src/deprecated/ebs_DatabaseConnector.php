@@ -4,7 +4,7 @@ namespace Farn\EasyBackendStyle\deprecated;
 use wpdb;
 
 /**
- * This is the DatabaseConnector class wich controls the interaction with the Database.
+ * This is the DatabaseConnector class which controls the interaction with the Database.
  */
 class ebs_DatabaseConnector
 {
