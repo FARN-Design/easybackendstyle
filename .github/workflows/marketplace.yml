@@ -17,6 +17,76 @@ jobs:
       - name: Install dependencies
         run: composer install --no-dev --optimize-autoloader
 
+      # 1. Fetch native commit message history since the previous tag release
+      - name: Collect commit messages since previous tag
+        id: commits
+        shell: bash
+        run: |
+          if git describe --tags --abbrev=0 HEAD^ 2>/dev/null; then
+            prev_tag=$(git describe --tags --abbrev=0 HEAD^)
+          else
+            prev_tag=$(git rev-list --max-parents=0 HEAD)
+          fi
+
+          git log --oneline --no-decorate --no-merges ${prev_tag}..HEAD > commits.txt || echo "" > commits.txt
+
+          echo "messages<<EOF" >> "$GITHUB_OUTPUT"
+          cat commits.txt >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Show commit messages (logs)
+        shell: bash
+        run: |
+          echo "Commit messages since previous tag:"
+          cat <<'COMMITS'
+          ${{ steps.commits.outputs.messages }}
+          COMMITS
+
+      # 2. Trigger your easy-changelog action specifically formatted for WP.org
+      - name: Update readme.txt with Easy Changelog
+        uses: Farn-Design/easy-changelog@main # Verify your local target ref/action here
+        with:
+          open-ai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          new-version: ${{ github.ref_name }}
+          commit-messages: ${{ steps.commits.outputs.messages }}
+          mode: 'wordpress_marketplace'
+          readme-path: 'README.txt' # Note: Watch your capitalizations here
+
+      # 3. Persist the modified version numbers and changelog back into your repository
+      - name: Sync Changelog & Versions to Main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Fetch the main branch
+          git fetch origin main
+
+          # Temporarily safeguard our modified files
+          cp README.txt /tmp/README.txt
+          cp easynewsletter.php /tmp/easynewsletter.php
+
+          # Switch to main branch to record the commit 
+          git reset --hard
+          git checkout main
+
+          # Bring the updated files into the main branch
+          cp /tmp/README.txt README.txt
+          cp /tmp/easynewsletter.php easynewsletter.php
+
+          # Commit the updates back to the repository
+          git add README.txt easynewsletter.php
+          git commit -m "chore: sync release ${{ github.ref_name }} changelog and bumps [skip ci]"
+          git push origin main
+
+          # Switch BACK to the release tag so the WordPress deployment uses the correct state!
+          git checkout ${{ github.ref_name }}
+
+          # Restore the modified files for the actual FTP/SVN deployment
+          cp /tmp/README.txt README.txt
+          cp /tmp/easynewsletter.php easynewsletter.php
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Remove Development Files
         run: |
           rm -rf ${{ env.pluginSlug }}/.git
