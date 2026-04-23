@@ -1,0 +1,11 @@
+34ffa79 Update marketplace workflow: use `fetch-depth: 0` for checkout and replace direct file sync with pull request generation
+e481d66 Refactor marketplace workflow: introduce MAIN_PLUGIN_FILE env variable for dynamic file handling, streamline version update and file sync steps
+17de1c7 Switch Easy Changelog action to local checkout and update cleanup paths in marketplace workflow
+4b0720b Fix casing in Easy Changelog action reference in marketplace workflow
+3e180da Remove WordPress.org deployment workflow from GitHub Actions
+8aa9086 Automate changelog generation and version synchronization in marketplace workflow
+6846d06 add vscode sftp.json
+9c4ae54 Update .gitignore: exclude vendor directories and Strauss binary
+c1b5797 Refactor plugin structure: introduce deprecated namespace, relocate resources, and streamline initialization flow.
+d7ef5d5 Composer integration
+2660c38 removed yellow checkbox
