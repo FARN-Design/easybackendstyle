@@ -56,7 +56,7 @@ jobs:
       - name: Update readme.txt with Easy Changelog
         uses: ./.github/actions/easy-changelog
         with:
-          open-ai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          open-ai-api-key: ${{ secrets.OPEN_AI_API_KEY }}
           new-version: ${{ github.ref_name }}
           commit-messages: ${{ steps.commits.outputs.messages }}
           mode: 'wordpress_marketplace'
@@ -82,12 +82,6 @@ jobs:
             - Updated `${{ env.MAIN_PLUGIN_FILE }}`
           base: main
           delete-branch: true
-
-      - name: Merge PR
-        if: steps.cpr.outputs.pull-request-number
-        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --delete-branch --admin --repo "${{ github.repository }}"
-        env:
-          GH_TOKEN: ${{ secrets.FARN_CORE_TOKEN }}
 
       - name: Remove Development Files
         run: |
