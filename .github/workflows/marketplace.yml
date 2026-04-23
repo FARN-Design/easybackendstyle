@@ -11,7 +11,7 @@ jobs:
     env:
       MAIN_PLUGIN_FILE: easyBackendStyle.php
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - run: sed -i "s/.*Stable tag.*/Stable tag:\ ${{  github.ref_name }}/" README.txt
@@ -46,7 +46,7 @@ jobs:
 
       # 2. Trigger your easy-changelog action specifically formatted for WP.org
       - name: Checkout Easy Changelog Action
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: FARN-Design/easy-changelog
           ref: main
@@ -85,7 +85,7 @@ jobs:
 
       - name: Merge PR
         if: steps.cpr.outputs.pull-request-number
-        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --delete-branch --admin
+        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --delete-branch --admin --repo "${{ github.repository }}"
         env:
           GH_TOKEN: ${{ secrets.FARN_CORE_TOKEN }}
 
