@@ -83,9 +83,9 @@ jobs:
           base: main
           delete-branch: true
 
-      - name: Auto-merge PR
+      - name: Merge PR
         if: steps.cpr.outputs.pull-request-number
-        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --auto --squash --delete-branch
+        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --delete-branch --admin
         env:
           GH_TOKEN: ${{ secrets.FARN_CORE_TOKEN }}
 
