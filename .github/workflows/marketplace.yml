@@ -43,8 +43,16 @@ jobs:
           COMMITS
 
       # 2. Trigger your easy-changelog action specifically formatted for WP.org
+      - name: Checkout Easy Changelog Action
+        uses: actions/checkout@v3
+        with:
+          repository: FARN-Design/easy-changelog
+          ref: main
+          path: .github/actions/easy-changelog
+          token: ${{ secrets.FARN_CORE_TOKEN }}
+
       - name: Update readme.txt with Easy Changelog
-        uses: FARN-Design/easy-changelog@main
+        uses: ./.github/actions/easy-changelog
         with:
           open-ai-api-key: ${{ secrets.OPENAI_API_KEY }}
           new-version: ${{ github.ref_name }}
@@ -89,17 +97,18 @@ jobs:
 
       - name: Remove Development Files
         run: |
-          rm -rf ${{ env.pluginSlug }}/.git
-          rm -rf ${{ env.pluginSlug }}/.github
-          rm -rf ${{ env.pluginSlug }}/.idea
-          rm -rf ${{ env.pluginSlug }}/.gitignore
-          rm -rf ${{ env.pluginSlug }}/tests
-          rm -rf ${{ env.pluginSlug }}/bin
-          rm -rf ${{ env.pluginSlug }}/blueprint.json
-          rm -rf ${{ env.pluginSlug }}/phpunit.*
-          rm -rf ${{ env.pluginSlug }}/scripts
-          rm -rf ${{ env.pluginSlug }}/package*
-          rm -rf ${{ env.pluginSlug }}/composer*
+          rm -rf .github/actions
+          rm -rf .git
+          rm -rf .github
+          rm -rf .idea
+          rm -rf .gitignore
+          rm -rf tests
+          rm -rf bin
+          rm -rf blueprint.json
+          rm -rf phpunit.*
+          rm -rf scripts
+          rm -rf package*
+          rm -rf composer*
 
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
