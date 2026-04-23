@@ -1,0 +1,16 @@
+.github
+.idea
+tests
+bin
+scripts
+blueprint.json
+composer.json
+composer.lock
+composer.dev.json
+composer.prod.json
+package.json
+package-lock.json
+phpunit.xml.dist
+.gitignore
+.gitattributes
+commits.txt

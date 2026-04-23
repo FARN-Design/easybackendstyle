@@ -68,13 +68,32 @@ jobs:
           rm -f commits.txt
           rm -rf .github/actions
 
-      - name: Commit and Push changes back to Main
+      - name: Sync changes to Main
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.txt ${{ env.MAIN_PLUGIN_FILE }}
-          git commit -m "chore: sync release ${{ github.ref_name }} changelog and bumps [skip ci]" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.FARN_CORE_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+          
+          # 1. Capture the modified files from the runner (on the tag)
+          cp README.txt README.txt.tmp
+          cp ${{ env.MAIN_PLUGIN_FILE }} ${{ env.MAIN_PLUGIN_FILE }}.tmp
+
+          # 2. Switch to the actual main branch to avoid detached HEAD and push conflicts
+          git fetch origin main
+          git checkout main
+          git pull origin main
+
+          # 3. Restore the modified files onto the main branch
+          mv README.txt.tmp README.txt
+          mv ${{ env.MAIN_PLUGIN_FILE }}.tmp ${{ env.MAIN_PLUGIN_FILE }}
+
+          # 4. Only commit if there are actual differences
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add README.txt ${{ env.MAIN_PLUGIN_FILE }}
+            git commit -m "chore: sync release ${{ github.ref_name }} changelog and bumps [skip ci]"
+            git push https://x-access-token:${{ secrets.FARN_CORE_TOKEN }}@github.com/${{ github.repository }}.git main
+          else
+            echo "No changes detected (version already synced). Skipping commit."
+          fi
 
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
