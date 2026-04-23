@@ -44,7 +44,7 @@ jobs:
 
       # 2. Trigger your easy-changelog action specifically formatted for WP.org
       - name: Update readme.txt with Easy Changelog
-        uses: Farn-Design/easy-changelog@main # Verify your local target ref/action here
+        uses: FARN-Design/easy-changelog@main
         with:
           open-ai-api-key: ${{ secrets.OPENAI_API_KEY }}
           new-version: ${{ github.ref_name }}
