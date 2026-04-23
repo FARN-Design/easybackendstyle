@@ -28,6 +28,7 @@ define('EBS_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 
 use Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated;
 use Farn\EasyBackendStyle\ebs_DatabaseConnector;
+use Farn\EasyBackendStyle\ebs_MigrationHandler;
 use Farn\EasyBackendStyle\pluginActivationHandler;
 use Farn\EasyBackendStyle\Severity;
 use Farn\EasyBackendStyle\Type;
@@ -95,7 +96,6 @@ class easyBackendStyle {
 
         $GLOBALS['ebsPlugin'] = $this;
         $bool = get_option('is_css_generated', false);
-
         if ($bool === false) {
             $this->generateColorsCss();
         }
@@ -110,6 +110,7 @@ class easyBackendStyle {
         add_action('wp_head', array($this, 'ebs_backend_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
 
+        $this->initMigration();
         if (!class_exists('ebsDatabaseConnector')) {
             $this->dbc = new ebs_DatabaseConnector();
         }
@@ -251,6 +252,11 @@ class easyBackendStyle {
 
         file_put_contents(EBS_PLUGIN_PATH."/resources/ebsMainCSS.css", $newContent);
         add_option("is_css_generated", true);
+    }
+
+    function initMigration(){
+        $handler = new ebs_MigrationHandler();
+        $handler->migration();
     }
 }
 
