@@ -8,10 +8,12 @@ jobs:
   publish-to-WordPress-Marketplace:
     name: Release New Version ${{  github.ref_name }} to WordPress Marketplace
     runs-on: ubuntu-latest
+    env:
+      MAIN_PLUGIN_FILE: easyBackendStyle.php
     steps:
       - uses: actions/checkout@v3
       - run: sed -i "s/.*Stable tag.*/Stable tag:\ ${{  github.ref_name }}/" README.txt
-      - run: sed -i 's/.*Version.*/Version:\ ${{  github.ref_name }}/' easynewsletter.php
+      - run: sed -i 's/.*Version.*/Version:\ ${{  github.ref_name }}/' ${{ env.MAIN_PLUGIN_FILE }}
       - name: Setup Composer Authentication
         run: composer config --global github-oauth.github.com ${{ secrets.FARN_CORE_TOKEN }}
       - name: Install dependencies
@@ -71,7 +73,7 @@ jobs:
 
           # Temporarily safeguard our modified files
           cp README.txt /tmp/README.txt
-          cp easynewsletter.php /tmp/easynewsletter.php
+          cp ${{ env.MAIN_PLUGIN_FILE }} /tmp/${{ env.MAIN_PLUGIN_FILE }}
 
           # Switch to main branch to record the commit 
           git reset --hard
@@ -79,10 +81,10 @@ jobs:
 
           # Bring the updated files into the main branch
           cp /tmp/README.txt README.txt
-          cp /tmp/easynewsletter.php easynewsletter.php
+          cp /tmp/${{ env.MAIN_PLUGIN_FILE }} ${{ env.MAIN_PLUGIN_FILE }}
 
           # Commit the updates back to the repository
-          git add README.txt easynewsletter.php
+          git add README.txt ${{ env.MAIN_PLUGIN_FILE }}
           git commit -m "chore: sync release ${{ github.ref_name }} changelog and bumps [skip ci]"
           git push origin main
 
@@ -91,7 +93,7 @@ jobs:
 
           # Restore the modified files for the actual FTP/SVN deployment
           cp /tmp/README.txt README.txt
-          cp /tmp/easynewsletter.php easynewsletter.php
+          cp /tmp/${{ env.MAIN_PLUGIN_FILE }} ${{ env.MAIN_PLUGIN_FILE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
