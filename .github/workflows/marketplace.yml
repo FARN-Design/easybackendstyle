@@ -12,6 +12,8 @@ jobs:
       MAIN_PLUGIN_FILE: easyBackendStyle.php
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - run: sed -i "s/.*Stable tag.*/Stable tag:\ ${{  github.ref_name }}/" README.txt
       - run: sed -i 's/.*Version.*/Version:\ ${{  github.ref_name }}/' ${{ env.MAIN_PLUGIN_FILE }}
       - name: Setup Composer Authentication
@@ -19,7 +21,6 @@ jobs:
       - name: Install dependencies
         run: composer install --no-dev --optimize-autoloader
 
-      # 1. Fetch native commit message history since the previous tag release
       - name: Collect commit messages since previous tag
         id: commits
         shell: bash
@@ -29,9 +30,9 @@ jobs:
           else
             prev_tag=$(git rev-list --max-parents=0 HEAD)
           fi
-
+          
           git log --oneline --no-decorate --no-merges ${prev_tag}..HEAD > commits.txt || echo "" > commits.txt
-
+          
           echo "messages<<EOF" >> "$GITHUB_OUTPUT"
           cat commits.txt >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
@@ -42,7 +43,6 @@ jobs:
           echo "Commit messages since previous tag:"
           cat <<'COMMITS'
           ${{ steps.commits.outputs.messages }}
-          COMMITS
 
       # 2. Trigger your easy-changelog action specifically formatted for WP.org
       - name: Checkout Easy Changelog Action
@@ -63,39 +63,19 @@ jobs:
           readme-path: 'README.txt' # Note: Watch your capitalizations here
 
       # 3. Persist the modified version numbers and changelog back into your repository
-      - name: Sync Changelog & Versions to Main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Fetch the main branch
-          git fetch origin main
-
-          # Temporarily safeguard our modified files
-          cp README.txt /tmp/README.txt
-          cp ${{ env.MAIN_PLUGIN_FILE }} /tmp/${{ env.MAIN_PLUGIN_FILE }}
-
-          # Switch to main branch to record the commit 
-          git reset --hard
-          git checkout main
-
-          # Bring the updated files into the main branch
-          cp /tmp/README.txt README.txt
-          cp /tmp/${{ env.MAIN_PLUGIN_FILE }} ${{ env.MAIN_PLUGIN_FILE }}
-
-          # Commit the updates back to the repository
-          git add README.txt ${{ env.MAIN_PLUGIN_FILE }}
-          git commit -m "chore: sync release ${{ github.ref_name }} changelog and bumps [skip ci]"
-          git push origin main
-
-          # Switch BACK to the release tag so the WordPress deployment uses the correct state!
-          git checkout ${{ github.ref_name }}
-
-          # Restore the modified files for the actual FTP/SVN deployment
-          cp /tmp/README.txt README.txt
-          cp /tmp/${{ env.MAIN_PLUGIN_FILE }} ${{ env.MAIN_PLUGIN_FILE }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Pull Request to Sync Main
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.FARN_CORE_TOKEN }}
+          commit-message: "chore: sync release ${{ github.ref_name }} changelog and bumps [skip ci]"
+          branch: sync-release-${{ github.ref_name }}
+          title: "Chore: Sync Release ${{ github.ref_name }} to Main"
+          body: |
+            This PR syncs the version bumps and changelog generated during the release of ${{ github.ref_name }}.
+            - Updated `README.txt`
+            - Updated `${{ env.MAIN_PLUGIN_FILE }}`
+          base: main
+          delete-branch: true
 
       - name: Remove Development Files
         run: |
