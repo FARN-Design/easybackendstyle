@@ -63,6 +63,11 @@ jobs:
           readme-path: 'README.txt' # Note: Watch your capitalizations here
 
       # 3. Persist the modified version numbers and changelog back into your repository
+      - name: Cleanup temporary files before PR
+        run: |
+          rm -f commits.txt
+          rm -rf .github/actions
+
       - name: Create Pull Request to Sync Main
         uses: peter-evans/create-pull-request@v5
         with:
@@ -79,11 +84,7 @@ jobs:
 
       - name: Remove Development Files
         run: |
-          rm -rf .github/actions
-          rm -rf .git
-          rm -rf .github
           rm -rf .idea
-          rm -rf .gitignore
           rm -rf tests
           rm -rf bin
           rm -rf blueprint.json
