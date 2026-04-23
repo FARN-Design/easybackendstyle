@@ -11,24 +11,35 @@ class ebs_MigrationHandler
     private oldDataBaseConnector $odbc;
     private ebs_DatabaseConnector $dbc;
     private bool $is_migration_needed = false;
+    private bool $first_step_successful = false;
+    private bool $second_step_successful = false;
     private string $old_table_name;
     private string $new_table_name;
     private string $charset_collate;
 
-    function __construct(wpdb $wpdb, ebs_DatabaseConnector $dbc, oldDataBaseConnector $odbc)
+    function __construct()
     {
+        global $wpdb;
         $this->wpdb = $wpdb;
-        $this->odbc = $odbc;
-        $this->dbc = $dbc;
-        $this->old_table_name = $odbc->tableName;
-        $this->new_table_name = $dbc->tableName;
+        $this->odbc = new oldDataBaseConnector();
+        $this->dbc = new ebs_DatabaseConnector();
+        $this->old_table_name = $this->odbc->tableName;
+        $this->new_table_name = $this->dbc->tableName;
         $this->charset_collate = $wpdb->get_charset_collate();
     }
 
+    public function migration()
+    {
+        $this->migrationNeeded();
+
+        if($this->is_migration_needed){
+            $this->startMigration();
+        }
+    }
     /**
      * This function checks whether a migration process is necessary.
      */
-    function migrationNeeded() : bool
+    private function migrationNeeded() : bool
     {
         if($this->wpdb->get_var("show tables like '" . $this->new_table_name . "'") == $this->new_table_name){
             $this->is_migration_needed = false;
@@ -40,16 +51,15 @@ class ebs_MigrationHandler
         return $this->is_migration_needed;
     }
 
-    function startMigration(){
+    private function startMigration() : void
+    {
         // manages the various steps of the migration process
-        if($this->is_migration_needed){
             $this->createNewTable();
             $this->migrateValues();
-            $this->deleteOldTable();
-        }
+            $this->validateKeys();
     }
 
-    function migrateValues()
+    private function migrateValues() : void
     {
         $map = [
             "primaryColor" => "ebsPrimary",
@@ -71,22 +81,38 @@ class ebs_MigrationHandler
 
         foreach ($map as $old_key => $new_key) {
             $temp_value = $this->odbc->getValueFromDB($old_key);
-            $this->dbc->saveValueInDB($temp_value, $new_key);
+            $this->dbc->saveValueInDB($temp_value[0][0], $new_key);
         }
-
+        if(empty($this->wpdb->last_error)){
+            $this->second_step_successful = true;
+        }
     }
 
-    function createNewTable()
+    private function createNewTable() : void
     {
         $this->dbc->setup_Database();
-
+        if(empty($this->wpdb->last_error)){
+            $this->first_step_successful = true;
+        }
     }
 
-    function deleteOldTable(){
+    private function deleteOldTable() : void
+    {
         // Query smth like: DROP TABLE IF EXISTS $oldTableName - wpdb::delete löscht nur reihen, keine tables
         $this->wpdb->query("DROP TABLE IF EXISTS $this->old_table_name;");
     }
 
-    //TODO: validateKeys() (zur Validierung bevor die alte Tabelle gelöscht wird)
+    private function validateKeys() : void
+    {
+        if($this->first_step_successful && $this->second_step_successful){
+            $this->deleteOldTable();
+        }
+    }
+    //TODO: userFeedback() - um die User über das Update/spezielle Erneuerungen zu informieren
+    private function userFeedback()
+    {
+
+    }
+
 
 }
