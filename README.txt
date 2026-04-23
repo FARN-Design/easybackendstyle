@@ -63,9 +63,9 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 = 2.2.8 =
 * Fix - Ensured compatibility with WordPress 7.X and added deprecation fallbacks for older versions.
-* Fix - Corrected casing in API key configuration to prevent workflow errors.
-* Tweak - Streamlined plugin initialization and resource management for improved performance.
-* Tweak - Updated internal workflows for more efficient version synchronization and deployment.
+* Tweak - Refactored plugin structure for improved initialization and resource management.
+* Fix - Corrected secret key casing in marketplace workflow to prevent deployment issues.
+* Tweak - Streamlined marketplace workflow for more efficient version updates and file handling.
 = 2.2.* =
 * Minor Fixes and Playground integration
 
