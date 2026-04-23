@@ -36,6 +36,7 @@ add_action( 'init', function (){
 if ( version_compare( $GLOBALS['wp_version'], '7.0-alpha', '<' ) ) {
     \Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated::Instance();
 } else {
+    //New 7.X version
     new easyBackendStyle();
 }
 
