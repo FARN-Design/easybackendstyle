@@ -1,0 +1,17 @@
+# Exclude development and CI files from WordPress.org distribution
+.github          export-ignore
+.idea            export-ignore
+tests            export-ignore
+bin              export-ignore
+scripts          export-ignore
+blueprint.json   export-ignore
+composer.json    export-ignore
+composer.lock    export-ignore
+composer.dev.json export-ignore
+composer.prod.json export-ignore
+package.json     export-ignore
+package-lock.json export-ignore
+phpunit.xml.dist export-ignore
+.gitignore       export-ignore
+.gitattributes   export-ignore
+commits.txt      export-ignore

@@ -83,17 +83,6 @@ jobs:
           base: main
           delete-branch: true
 
-      - name: Remove Development Files
-        run: |
-          rm -rf .idea
-          rm -rf tests
-          rm -rf bin
-          rm -rf blueprint.json
-          rm -rf phpunit.*
-          rm -rf scripts
-          rm -rf package*
-          rm -rf composer*
-
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
         env:
