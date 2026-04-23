@@ -68,7 +68,8 @@ jobs:
           rm -f commits.txt
           rm -rf .github/actions
 
-      - name: Create Pull Request to Sync Main
+      - name: Create and Auto-Merge Pull Request to Sync Main
+        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.FARN_CORE_TOKEN }}
@@ -81,6 +82,12 @@ jobs:
             - Updated `${{ env.MAIN_PLUGIN_FILE }}`
           base: main
           delete-branch: true
+
+      - name: Auto-merge PR
+        if: steps.cpr.outputs.pull-request-number
+        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --auto --squash --delete-branch
+        env:
+          GH_TOKEN: ${{ secrets.FARN_CORE_TOKEN }}
 
       - name: Remove Development Files
         run: |
