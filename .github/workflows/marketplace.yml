@@ -56,32 +56,25 @@ jobs:
       - name: Update readme.txt with Easy Changelog
         uses: ./.github/actions/easy-changelog
         with:
-          open-ai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          open-ai-api-key: ${{ secrets.OPEN_AI_API_KEY }}
           new-version: ${{ github.ref_name }}
           commit-messages: ${{ steps.commits.outputs.messages }}
           mode: 'wordpress_marketplace'
           readme-path: 'README.txt' # Note: Watch your capitalizations here
 
       # 3. Persist the modified version numbers and changelog back into your repository
-      - name: Cleanup temporary files before PR
+      - name: Cleanup temporary files before Commit
         run: |
           rm -f commits.txt
           rm -rf .github/actions
 
-      - name: Create and Auto-Merge Pull Request to Sync Main
-        id: cpr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.FARN_CORE_TOKEN }}
-          commit-message: "chore: sync release ${{ github.ref_name }} changelog and bumps [skip ci]"
-          branch: sync-release-${{ github.ref_name }}
-          title: "Chore: Sync Release ${{ github.ref_name }} to Main"
-          body: |
-            This PR syncs the version bumps and changelog generated during the release of ${{ github.ref_name }}.
-            - Updated `README.txt`
-            - Updated `${{ env.MAIN_PLUGIN_FILE }}`
-          base: main
-          delete-branch: true
+      - name: Commit and Push changes back to Main
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.txt ${{ env.MAIN_PLUGIN_FILE }}
+          git commit -m "chore: sync release ${{ github.ref_name }} changelog and bumps [skip ci]" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.FARN_CORE_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
 
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
