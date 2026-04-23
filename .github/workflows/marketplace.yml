@@ -56,7 +56,7 @@ jobs:
       - name: Update readme.txt with Easy Changelog
         uses: ./.github/actions/easy-changelog
         with:
-          open-ai-api-key: ${{ secrets.OPEN_AI_API_KEY }}
+          open-ai-api-key: ${{ secrets.OPENAI_API_KEY }}
           new-version: ${{ github.ref_name }}
           commit-messages: ${{ steps.commits.outputs.messages }}
           mode: 'wordpress_marketplace'
