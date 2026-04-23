@@ -62,10 +62,10 @@ In the event that a predilection for a more detailed design arises, you can manu
 == Changelog ==
 
 = 2.2.8 =
-* Fix - Ensured compatibility with WordPress 7.X by adding deprecation fallbacks for older versions.
+* Fix - Ensured compatibility with WordPress 7.X and added deprecation fallbacks for older versions.
 * Tweak - Refactored plugin structure for improved initialization and resource management.
-* New - Integrated Composer for better dependency management.
-
+* Fix - Corrected secret key casing in marketplace workflow to prevent deployment issues.
+* Tweak - Streamlined marketplace workflow for more efficient version updates and file handling.
 = 2.2.* =
 * Minor Fixes and Playground integration
 
