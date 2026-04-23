@@ -3,6 +3,7 @@
 namespace Farn\EasyBackendStyle;
 use Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector as oldDataBaseConnector;
 use Farn\EasyBackendStyle\ebs_DatabaseConnector;
+use Farn\EasyBackendStyle\pluginActivationHandler;
 use wpdb;
 
 class ebs_MigrationHandler

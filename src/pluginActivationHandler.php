@@ -22,12 +22,15 @@ enum Type {
         };
     }
 }
-
 enum Severity {
     case Soft;
     case Hard;
 }
 
+enum Scope {
+    case Global;
+    case EbsSettingsOnly;
+}
 class pluginActivationHandler
 {
     static private pluginActivationHandler|null $instance = null;
@@ -56,14 +59,17 @@ class pluginActivationHandler
      * @param Type $type
      * @param string $message
      * @param Severity $severity
+     * @param Scope $scope
      * @return void
      */
 
-    public function createNotice( Type $type, string $message, Severity $severity){
+    public function createNotice( Type $type, string $message, Severity $severity, Scope $scope) : void
+    {
         $notice = [
             "type" => $type,
             "message" => $message,
-            "severity" => $severity
+            "severity" => $severity,
+            "scope" => $scope,
         ];
 
         $error_activation_transient = get_transient($this->transient_name);
@@ -75,7 +81,8 @@ class pluginActivationHandler
         }
     }
 
-    function handleNotices(){
+    function handleNotices()
+    {
         $allNotices = get_transient($this->transient_name);
         if(!$allNotices){
             return false;
@@ -88,18 +95,19 @@ class pluginActivationHandler
             $notice_type = $notice["type"];
             $notice_type = $notice_type->to_string();
 
+            add_action('admin_notices', function() use ($notice, $notice_type){
+                wp_admin_notice($notice["message"], ["type"=>$notice_type]);ä
+                });
+            $screen = get_current_screen();
+            if($notice["scope"] == Scope::EbsSettingsOnly && $screen !== meineSettingsPage){
+                return;
+            }
+
             if($notice["severity"] == Severity::Hard){
-                add_action('admin_notices', function() use ($notice, $notice_type){
-                    wp_admin_notice($notice["message"], ["type"=> $notice_type]);
-                });
                 $hasHardError = true;
-            } else {
-                add_action('admin_notices', function() use ($notice, $notice_type){
-                    wp_admin_notice($notice["message"], ["type"=>$notice_type]);
-                });
             }
         }
-        if($hasHardError){
+        if($hasHardError) {
             deactivate_plugins(plugin_basename(__DIR__));
         }
         // TODO: Kann man das hier noch verbessern?
