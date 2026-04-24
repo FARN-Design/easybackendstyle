@@ -16,6 +16,13 @@ jobs:
           fetch-depth: 0
       - run: sed -i "s/.*Stable tag.*/Stable tag:\ ${{  github.ref_name }}/" README.txt
       - run: sed -i 's/.*Version.*/Version:\ ${{  github.ref_name }}/' ${{ env.MAIN_PLUGIN_FILE }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
       - name: Setup Composer Authentication
         run: composer config --global github-oauth.github.com ${{ secrets.FARN_CORE_TOKEN }}
       - name: Install dependencies
