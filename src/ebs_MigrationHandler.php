@@ -1,9 +1,11 @@
 <?php
 
 namespace Farn\EasyBackendStyle;
+require_once 'pluginActivationHandler.php';
+require_once 'Enums.php';
 use Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector as oldDataBaseConnector;
 use Farn\EasyBackendStyle\ebs_DatabaseConnector;
-use Farn\EasyBackendStyle\pluginActivationHandler;
+use http\Message;
 use wpdb;
 
 class ebs_MigrationHandler
@@ -14,6 +16,7 @@ class ebs_MigrationHandler
     private bool $is_migration_needed = false;
     private bool $first_step_successful = false;
     private bool $second_step_successful = false;
+    private bool $third_step_successful = false;
     private string $old_table_name;
     private string $new_table_name;
     private string $charset_collate;
@@ -58,6 +61,7 @@ class ebs_MigrationHandler
             $this->createNewTable();
             $this->migrateValues();
             $this->validateKeys();
+            $this->userFeedback();
     }
 
     private function migrateValues() : void
@@ -107,13 +111,49 @@ class ebs_MigrationHandler
     {
         if($this->first_step_successful && $this->second_step_successful){
             $this->deleteOldTable();
+            $this->third_step_successful = true;
         }
     }
     //TODO: userFeedback() - um die User über das Update/spezielle Erneuerungen zu informieren
     private function userFeedback()
     {
+        $handler = pluginActivationHandler::getInstance("ebs_");
+        if ($this->third_step_successful) {
+            $handler->createNotice(
+                Type::Success,
+                "Plugin Easy Backend-Style has received an update with new features and improvements. 
+                The plugin has been updated successfully. Your existing color profiles have been migrated.",
+                Severity::Soft);
+        } else {
+            $handler->createNotice(
+                Type::Warning,
+                "Plugin Easy Backend-Style has received an update with new features and improvements. 
+                            Something went wrong during the update process. Your settings may not have been migrated correctly. 
+                            Please check your Plugin-Settingspage.",
+                Severity::Soft);
+        }
+        $handler->createNotice(
+            Type::Info,
+            "What's new in this update: - A third primary color option has been added 
+                                                 - Various color values have been redistributed and reorganized
+                                                 - New color settings have been introduced
+                        Please note: Your existing color profiles have been migrated where possible. 
+                        Newly added color settings have been pre-filled with default values and may require manual adjustment to match your design.",
+            Severity::Soft);
 
+        $transient_name = $handler->getTransientName();
+        add_action('admin_notices', function () use ($transient_name) {
+            $notices = get_transient($transient_name);
+
+            if (!$notices) return;
+
+            foreach ($notices as $notice) {
+                $screen = get_current_screen();
+                if ($screen->id != "settings_page_easyBackendStyle" && $notice["type"] == Type::Info) {
+                    continue;
+                }
+                wp_admin_notice($notice["message"], ["type" => $notice["type"]->to_string(), "dismissible" => true]);
+            }
+        });
     }
-
-
 }
