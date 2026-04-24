@@ -55,17 +55,15 @@ class pluginActivationHandler
      * @param Type $type
      * @param string $message
      * @param Severity $severity
-     * @param Scope $scope
      * @return void
      */
 
-    public function createNotice( Type $type, string $message, Severity $severity, Scope $scope) : void
+    public function createNotice( Type $type, string $message, Severity $severity) : void
     {
         $notice = [
             "type" => $type,
             "message" => $message,
-            "severity" => $severity,
-            "scope" => $scope,
+            "severity" => $severity
         ];
 
         $error_activation_transient = get_transient($this->transient_name);
