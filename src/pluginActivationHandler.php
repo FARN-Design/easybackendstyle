@@ -6,13 +6,14 @@ namespace Farn\EasyBackendStyle;
  * Available Types for notices
  * Error, Warning, Success, Info
  */
-enum Type {
+enum Type
+{
     case Error;
     case Warning;
     case Success;
     case Info;
 
-    function to_string():string
+    function to_string(): string
     {
         return match ($this) {
             Type::Error => "error",
@@ -22,7 +23,9 @@ enum Type {
         };
     }
 }
-enum Severity {
+
+enum Severity
+{
     case Soft;
     case Hard;
 }
@@ -108,4 +111,11 @@ class pluginActivationHandler
         },10,3 );
         delete_transient($this->transient_name);
     }
+
+    public function getTransientName(): string
+    {
+        return $this->transient_name;
+    }
+
+
 }
