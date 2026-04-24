@@ -27,10 +27,6 @@ enum Severity {
     case Hard;
 }
 
-enum Scope {
-    case Global;
-    case EbsSettingsOnly;
-}
 class pluginActivationHandler
 {
     static private pluginActivationHandler|null $instance = null;
@@ -96,13 +92,8 @@ class pluginActivationHandler
             $notice_type = $notice_type->to_string();
 
             add_action('admin_notices', function() use ($notice, $notice_type){
-                wp_admin_notice($notice["message"], ["type"=>$notice_type]);ä
+                wp_admin_notice($notice["message"], ["type"=>$notice_type]);
                 });
-            $screen = get_current_screen();
-            if($notice["scope"] == Scope::EbsSettingsOnly && $screen !== meineSettingsPage){
-                return;
-            }
-
             if($notice["severity"] == Severity::Hard){
                 $hasHardError = true;
             }
