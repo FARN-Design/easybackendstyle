@@ -14,6 +14,7 @@ class ebs_MigrationHandler
     private bool $is_migration_needed = false;
     private bool $first_step_successful = false;
     private bool $second_step_successful = false;
+    private bool $third_step_successful = false;
     private string $old_table_name;
     private string $new_table_name;
     private string $charset_collate;
@@ -27,6 +28,8 @@ class ebs_MigrationHandler
         $this->old_table_name = $this->odbc->tableName;
         $this->new_table_name = $this->dbc->tableName;
         $this->charset_collate = $wpdb->get_charset_collate();
+
+        add_action('admin_notices', [$this, 'userFeedback']);
     }
 
     public function migration()
@@ -57,7 +60,7 @@ class ebs_MigrationHandler
         // manages the various steps of the migration process
             $this->createNewTable();
             $this->migrateValues();
-            $this->validateKeys();
+            $this->validateMigrationsSteps();
     }
 
     private function migrateValues() : void
@@ -103,17 +106,65 @@ class ebs_MigrationHandler
         $this->wpdb->query("DROP TABLE IF EXISTS $this->old_table_name;");
     }
 
-    private function validateKeys() : void
+    private function validateMigrationsSteps() : void
     {
         if($this->first_step_successful && $this->second_step_successful){
             $this->deleteOldTable();
+            update_option('ebs_plugin_notice_success', true);
+            update_option('ebs_plugin_notice_warning', false);
+        } else {
+            update_option('ebs_plugin_notice_success', false);
+            update_option('ebs_plugin_notice_warning', true);
+        }
+        update_option('ebs_plugin_notice_info', true);
+    }
+
+    public function userFeedback(): void
+    {
+        if (isset($_GET['dismiss_notice'])) {
+            $which = $_GET['dismiss_notice'];
+            if($which === 'info') delete_option('ebs_plugin_notice_info');
+            if($which === 'success') delete_option('ebs_plugin_notice_success');
+            if($which === 'warning') delete_option('ebs_plugin_notice_warning');
+        }
+
+        $screen = get_current_screen();
+        $current_url = $_SERVER['REQUEST_URI'];
+        $symbol = str_contains($current_url, '?') ? '&' : '?';
+
+        // info notice - only visible on settings_page
+        if (get_option("ebs_plugin_notice_info") && $screen->id === "settings_page_easyBackendStyle") {
+            wp_admin_notice(
+                'What\'s new in this update:
+                    A third primary color option has been added
+                    Various color values have been redistributed and reorganized
+                    New color settings have been introduced
+                    Please note: Your existing color profiles have been migrated where possible.
+                    Newly added color settings have been pre-filled with default values and
+                    may require manual adjustment to match your design. 
+                    <a href="' . admin_url('admin.php?page=easyBackendStyle&dismiss_notice=info') . '" class="button">Verstanden</a>',
+                ["type" => "info", "dismissible" => false]
+            );
+        }
+        // success & warning notices - visible throughout the admin menu
+        if (get_option("ebs_plugin_notice_success")) {
+            wp_admin_notice(
+                'Update Successful:
+                    Plugin Easy Backend-Style has received an update with new features and improvements.
+                    The plugin has been updated successfully.
+                    Your existing color profiles have been migrated. <a href="' . $current_url . $symbol . 'dismiss_notice=success" class="button">Verstanden</a>',
+                ['type' => 'success', 'dismissible' => false]
+            );
+        }
+        if (get_option("ebs_plugin_notice_warning")) {
+            wp_admin_notice(
+                'Update Warning:
+                    Plugin Easy Backend-Style has received an update with new features and improvements.
+                    Something went wrong during the update process.
+                    Your settings may not have been migrated correctly.
+                    Please check your Plugin-Settingspage. <a href="' . $current_url . $symbol . '&dismiss_notice=warning" class="button">Verstanden</a>',
+                ['type' => 'warning', 'dismissible' => false]
+            );
         }
     }
-    //TODO: userFeedback() - um die User über das Update/spezielle Erneuerungen zu informieren
-    private function userFeedback()
-    {
-
-    }
-
-
 }
