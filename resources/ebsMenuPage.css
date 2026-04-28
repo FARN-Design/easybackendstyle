@@ -38,7 +38,10 @@
 }
 
 .ebs_advanced_settings_column {
-    column-count: 4;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, auto);
+    grid-auto-flow: column;
 }
 
 .label_group {
@@ -63,7 +66,6 @@
 }
 .ebs_advanced_settings_column > div {
     margin-bottom: 10px;
-    display: inline-block;
 }
 .ebs_main_colors .wp-picker-container,
 .ebs_advanced_settings_column .wp-picker-container{
