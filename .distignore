@@ -14,3 +14,5 @@ phpunit.xml.dist
 .gitignore
 .gitattributes
 commits.txt
+.git
+.vscode
