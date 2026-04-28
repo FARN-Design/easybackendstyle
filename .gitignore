@@ -27,3 +27,4 @@ node_modules/
 /vendor-prefixed/
 /bin/strauss.phar
 .vscode/sftp.json
+.DS_Store
