@@ -115,17 +115,6 @@ class easyBackendStyle {
             $this->dbc = new ebs_DatabaseConnector();
         }
         $this->dbc->checkFields();
-
-        // TODO: Funktion bauen um ein Farbschema dem Adminprofil hinzuzufügen
-        // Function for adding a color scheme in the admin area
-        /*wp_admin_css_color(
-            'easybackendstyle',
-            __( 'EasyBackendStyle', 'textdomain' ),
-            admin_url( "css/colors/blue/colors.css" ),
-            array('#fce4ec', '#f48fb1', '#e91e8c', '#c2185b'),
-            array( 'base' => '#f3e5f5', 'focus' => '#ce93d8', 'current' => '#6a1b9a' )
-        );
-         */
     }
 
     //On activation of the plugin
@@ -174,8 +163,6 @@ class easyBackendStyle {
 
     function linkToEBSSettingsPage($links)
     {
-
-        //TODO Variablen Check
         if (get_user_locale() == "de_DE") {
             $links[] = '<a href="' . admin_url('options-general.php?page=easyBackendStyle') . '">' . esc_html('Einstellungen') . '</a>';
         } else {
@@ -187,11 +174,6 @@ class easyBackendStyle {
 
     function ebs_backend_css(): void
     {
-        /*
-        if (get_user_option('admin_color') != 'fresh') {
-            return;
-        }
-        */
         echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css">';
         $cssRoot = "<style> :root {";
 

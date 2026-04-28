@@ -36,9 +36,6 @@ class pluginActivationHandler
     private string $prefix;
     private string $transient_name;
 
-    // this = Instanz-Attribut == zugriff auf Attribute/Methoden einer konkreten Instanz
-    // self::$instance... = statisches Attribut der Klasse == zugriff auf statische Attribute/Methoden der Klasse selbst, ohne dass eine Instanz existieren muss
-
     private function __construct(string $prefix)
     {
         $this->prefix = $prefix;
@@ -84,14 +81,13 @@ class pluginActivationHandler
         if(!$allNotices){
             return false;
         }
-        $hasHardError = false;
+        $hasHardError = true;
 
         foreach ($allNotices as $notice){
 
             /** @var Type $notice_type */
             $notice_type = $notice["type"];
             $notice_type = $notice_type->to_string();
-
             add_action('admin_notices', function() use ($notice, $notice_type){
                 wp_admin_notice($notice["message"], ["type"=>$notice_type]);
                 });
@@ -102,7 +98,6 @@ class pluginActivationHandler
         if($hasHardError) {
             deactivate_plugins(plugin_basename(__DIR__));
         }
-        // TODO: Kann man das hier noch verbessern?
         add_filter("wp_admin_notice_markup", function($markup, $message, $args){
             if(str_contains($markup, "Plugin activated.")){
                 return "";
@@ -111,11 +106,4 @@ class pluginActivationHandler
         },10,3 );
         delete_transient($this->transient_name);
     }
-
-    public function getTransientName(): string
-    {
-        return $this->transient_name;
-    }
-
-
 }
