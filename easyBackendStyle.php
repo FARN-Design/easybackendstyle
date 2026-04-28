@@ -1,7 +1,7 @@
 <?php
 
 /*
-Plugin Name: Easy Backend-Style
+Plugin Name:       Easy Backend-Style
 Plugin URI:        https://github.com/farndesign/easyBackendStyle
 Description:       Easily modify your backend interface's color schemes for a fresh look using an automated color generation feature based on two base colors, and have advanced customization options to fine-tune your backend's appearance.
 Version: 2.2.8
@@ -19,10 +19,19 @@ Domain Path:       /src/languages
 	See LICENCE.md file.
 */
 //------------------------------------------Plugin Security----------------------------------------
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
+//------------------------------------------Define constants & Use---------------------------------
+
+define('EBS_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
+
+use Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated;
+use Farn\EasyBackendStyle\ebs_DatabaseConnector;
+use Farn\EasyBackendStyle\ebs_MigrationHandler;
+use Farn\EasyBackendStyle\pluginActivationHandler;
+use Farn\EasyBackendStyle\Severity;
+use Farn\EasyBackendStyle\Type;
 
 //------------------------------------------Plugin Code--------------------------------------------
 
@@ -34,7 +43,7 @@ add_action( 'init', function (){
 } );
 
 if ( version_compare( $GLOBALS['wp_version'], '7.0-alpha', '<' ) ) {
-    \Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated::Instance();
+    easyBackendStyle_deprecated::Instance();
 } else {
     //New 7.X version
     new easyBackendStyle();
@@ -47,9 +56,190 @@ if ( version_compare( $GLOBALS['wp_version'], '7.0-alpha', '<' ) ) {
  * Main ebs plugin class. Manages the Plugin.
  */
 class easyBackendStyle {
+
+    private static easyBackendStyle $ebsPlugin;
+
+    public static function Instance(): easyBackendStyle
+    {
+        if(!isset(self::$ebsPlugin)){
+            self::$ebsPlugin = new easyBackendStyle();
+        }
+        return self::$ebsPlugin;
+    }
+
+    public ebs_DatabaseConnector $dbc;
     function __construct()
     {
+        $pluginActviationHandler = pluginActivationHandler::getInstance("ebs");
+        $pluginActviationHandler->handleNotices();
 
+        $GLOBALS['ebsColorMapping'] = [
+            // key => [name, list of replaceable colors, default value, description]
+            "ebsBackground" => ["background",["#f0f0f0"],'#f0f0f0', "Sets the background color of the page"],
+            "ebsLinks" => ["links",["#0073aa"],'#0073aa', "Sets the links color of the page"],
+            "ebsLinksHover" => ["link hover",["rgb(0, 149.5, 221)"],'#0095dd', "Sets the links hover color of the page"],
+            "ebsPrimary" => ["primary",["var(--wp-admin-theme-color)", "var(--wp-admin-theme-color--rgb)"],'#096484', "Sets the main color for headings and buttons"],
+            "ebsPrimaryDarker10" => ["button hover",["var(--wp-admin-theme-color-darker-10)"],'#07526c', "Sets the button color when hovering over it"],
+            "ebsPrimaryDarker20" => ["button click",["var(--wp-admin-theme-color-darker-20)"],'#064054', "Sets the button color when clicking it"],
+            "ebsSecondaryLighter" => ["nested submenu", ["rgb(116.162375, 182.0949364754, 205.537625)", "rgb(109.571875, 185.228125, 212.128125)"],'#74a6b9', "Sets the adaptive accent color for image borders and nested menus"],
+            "ebsDeleteLinks" => ["delete links", ["#cc1818"],'#cc1818', "Sets the color of links that trigger a deletion"],
+            "ebsDeleteLinksHover" => ["delete links hover", ["rgb(230.6842105263, 48.3157894737, 48.3157894737)"],'#e63004', "Sets the color of delete links when hovering over them"],
+            "ebsDisabledButtonText" => ['disabled button text', ["#949494"],'#949494', "Sets the color of disabled button text"],
+            "ebsSecondary" => ["secondary", ["#52accc"],'#52accc', "Sets the color of the menu"],
+            "ebsTertiary" => ["tertiary", ["#096484", "rgb(7.3723404255, 81.914893617, 108.1276595745)"],'#096484', "Sets the color used to highlight the current menu item"],
+            "ebsNotification" => ["notification", ["#e1a948","rgb(202.5, 152.1, 64.8)","rgb(232.1830985915, 189.5915492958, 115.8169014085)"],'#e1a948', "Sets the color of the notification"],
+            "ebsIcon" => ["icon", ["#e5f8ff"],'#e5f8ff', "Sets the color of the icons"],
+            "ebsPrimaryText" => ["primary text", ["#ffffff", "#fff"],'#ffffff', "Sets the color of all text"],
+            "ebsSubMenu" => ["submenu", ["#4796b3"],'#4796b3', "Sets the color of the sub menu"],
+            "ebsSubMenuText" => ["submenu text", ["#e2ecf1"],'#e2ecf1', "Sets the color of the sub menu text"],
+            "ebsHighlightedText" => ["highlight text", ["#fff"],'#ffffff', "Sets the color of the highlighted text"],
+        ];
+
+        $GLOBALS['ebsPlugin'] = $this;
+        $bool = get_option('is_css_generated', false);
+        if ($bool === false) {
+            $this->generateColorsCss();
+        }
+
+        register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
+        register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
+
+        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
+
+        add_action('admin_menu', array($this, 'sub_settings_page'));
+        add_action('admin_head', array($this, 'ebs_backend_css'));
+        add_action('wp_head', array($this, 'ebs_backend_css'));
+        add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
+
+        $this->initMigration();
+        if (!class_exists('ebsDatabaseConnector')) {
+            $this->dbc = new ebs_DatabaseConnector();
+        }
+        $this->dbc->checkFields();
+    }
+
+    //On activation of the plugin
+    function activate(): void
+    {
+        $this->dbc->setup_Database();
+        $this->sub_settings_page();
+        flush_rewrite_rules();
+        $this->generateColorsCss();
+    }
+
+    //On deactivation of the plugin
+    function deactivate(): void
+    {
+        flush_rewrite_rules();
+    }
+
+    /**
+     * Creates a new submenu page in the general settings.
+     */
+    public function sub_settings_page(): void
+    {
+        add_submenu_page(
+            'options-general.php', //name of the general settings file.
+            'Easy Backend-Style',// page title
+            'Easy Backend-Style',// menu title
+            'manage_options',// capability
+            'easyBackendStyle',// menu slug
+            [$this, 'settings_page'] // callback function
+        );
+    }
+
+    /**
+     * Import of the content file for the setting page.
+     */
+    function settings_page(): void
+    {
+        include_once('src/ebs_SettingsSubMenu.php');
+    }
+
+    //In class function that calls the getValueFromDB() function from the DatabaseConnector.
+    function getColor($name)
+    {
+        return $this->dbc->getValueFromDB($name)[0][0];
+    }
+
+    function linkToEBSSettingsPage($links)
+    {
+        if (get_user_locale() == "de_DE") {
+            $links[] = '<a href="' . admin_url('options-general.php?page=easyBackendStyle') . '">' . esc_html('Einstellungen') . '</a>';
+        } else {
+            $links[] = '<a href="' . admin_url('options-general.php?page=easyBackendStyle') . '">' . esc_html('Settings') . '</a>';
+        }
+
+        return $links;
+    }
+
+    function ebs_backend_css(): void
+    {
+        echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css">';
+        $cssRoot = "<style> :root {";
+
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+            $cssRoot .= "--".$colorKey.": ".$this->getColor($colorKey).";";
+        }
+
+        $cssRoot .= "} </style>";
+        echo $cssRoot;
+    }
+
+    function addScriptsAndStylesToMenuPages($hook)
+    {
+        $current_screen = get_current_screen();
+        // scripts and styles for menu page
+        if (strpos($current_screen->base, 'easyBackendStyle')) {
+            wp_enqueue_style('wp-color-picker');
+            wp_enqueue_script('ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__), array('wp-color-picker'), false, true);
+            wp_enqueue_style('ebs_menuPageCSS', plugins_url('resources/ebsMenuPage.css', __FILE__));
+        }
+    }
+
+    function generateColorsCss(){
+        $baseColorFilePath = ABSPATH . 'wp-admin/css/colors/blue/colors.css';
+        $baseColorFileContent = file_get_contents($baseColorFilePath);
+        if(!$baseColorFileContent){
+            $pluginActviationHandler = pluginActivationHandler::getInstance("ebs");
+            $pluginActviationHandler->createNotice(
+                Type::Error,
+                "Could not activate plugin. Failes to load CSS.",
+                Severity::Hard
+            );
+        }
+        $newContent = $baseColorFileContent;
+
+        // RegEx-String Replacement to insert variable for highlighted Text+Icons
+        $newContent = preg_replace(
+            [
+                '/(#adminmenu li\.wp-has-current-submenu div\.wp-menu-image:before,\n#adminmenu a\.current:hover div\.wp-menu-image:before,\n#adminmenu li\.current div\.wp-menu-image:before,\n#adminmenu li\.wp-has-current-submenu a:focus div\.wp-menu-image:before,\n#adminmenu li\.wp-has-current-submenu\.opensub div\.wp-menu-image:before,\n#adminmenu li:hover div\.wp-menu-image:before,\n#adminmenu li a:focus div\.wp-menu-image:before,\n#adminmenu li\.opensub div\.wp-menu-image:before \{\n  color: )#fff(;)/',
+                '/(#adminmenu \.menu-counter,\s*#adminmenu \.awaiting-mod,\s*#adminmenu \.update-plugins\s*\{\s*color:\s*)#fff(;)/',
+                '/(#adminmenu li\.current a\.menu-top,\s*#adminmenu li\.wp-has-current-submenu a\.wp-has-current-submenu,\s*#adminmenu li\.wp-has-current-submenu \.wp-submenu \.wp-submenu-head,\s*.folded #adminmenu li\.current\.menu-top\s*\{\s*color:\s*)#fff(;)/',
+                '/(#adminmenu a:hover,\n#adminmenu li\.menu-top:hover,\n#adminmenu li\.opensub > a\.menu-top,\n#adminmenu li > a\.menu-top:focus \{\n  color: )#fff(;)/',
+                '/(#adminmenu li\.menu-top:hover div\.wp-menu-image:before,\n#adminmenu li\.opensub > a\.menu-top div\.wp-menu-image:before \{\n  color: )#fff(;)/',
+            ],
+            [
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsHighlightedText)$2'
+            ], $newContent
+        );
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+            foreach ($colorValue[1] as $oldColor) {
+                $newContent = str_replace($oldColor, "var(--".$colorKey.")", $newContent);
+            }
+        }
+
+        file_put_contents(EBS_PLUGIN_PATH."/resources/ebsMainCSS.css", $newContent);
+        add_option("is_css_generated", true);
+    }
+
+    function initMigration(){
+        $handler = new ebs_MigrationHandler();
+        $handler->migration();
     }
 }
 

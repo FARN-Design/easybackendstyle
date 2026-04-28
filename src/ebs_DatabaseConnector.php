@@ -1,6 +1,6 @@
 <?php
 
-namespace Farn\EasyBackendStyle\deprecated;
+namespace Farn\EasyBackendStyle;
 use wpdb;
 
 /**
@@ -13,36 +13,13 @@ class ebs_DatabaseConnector
     var string $tableName;
     var string $charset_collate;
 
-    //Defaults Values for the Database
-    //If a new Variable is needed, just add the variable and default value in this map.
-    var array $defaultsMap = [
-        'primaryColor' => '#2271b1',
-        'secondaryColor' => '#1d2327',
-        'menuText' => '#f0f0f1',
-        'baseMenu' => '#1d2327',
-        'subMenu' => '#2c3338',
-        'highlight' => '#2271b1',
-        'highlightText' => '#f0f0f1',
-        'notification' => '#d63638',
-        'notificationText' => '#f0f0f1',
-        'background' => '#f0f0f1',
-        'links' => '#2271b1',
-        'buttons' => '#2271b1',
-        'buttonText' => '#f0f0f1',
-        'formInputs' => '#3582c4',
-        'linkHover' => '#195785',
-        'buttonHover' => '#195785',
-        'disabledButton' => '#969696',
-        'disabledButtonText' => '#000000',
-        'icon' => '#c9c9c9'];
-
     function __construct()
     {
 
         global $wpdb;
 
         $this->wpdb = $wpdb;
-        $this->tableName = $wpdb->prefix . 'easyBackendStyle';
+        $this->tableName = $wpdb->prefix . 'ebs_easyBackendStyle';
         $this->charset_collate = $wpdb->get_charset_collate();
     }
 
@@ -86,12 +63,13 @@ class ebs_DatabaseConnector
             $databaseVariables[] = $results[$x][1];
         }
 
-        foreach ($this->defaultsMap as $key => $value) {
-            if (!in_array($key, $databaseVariables)) {
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+
+            if (!in_array($colorKey, $databaseVariables)) {
                 $this->wpdb->insert($this->tableName,
                     array(
-                        'Variable' => $key,
-                        'Value' => $value));
+                        'Variable' => $colorKey,
+                        'Value' => $colorValue[2]));
             }
         }
     }
@@ -125,12 +103,12 @@ class ebs_DatabaseConnector
         $this->wpdb->get_results($sql, ARRAY_N);
     }
 
-    //A reset function that writes every default value to the corresponding datable table field.
+    // A reset function that writes every default value to the corresponding datable table field.
     public function resetDefaults(): void
     {
 
-        foreach ($this->defaultsMap as $key => $value) {
-            $this->saveValueInDB($value, $key);
+        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
+            $this->saveValueInDB($colorValue[2], $colorKey);
         }
 
     }
