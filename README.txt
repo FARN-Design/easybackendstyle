@@ -3,7 +3,7 @@ Contributors: farndesign
 Tags: admin theme, backend theme, customize design, WordPress customization, Color scheme
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 2.2.8
+Stable tag: 3.0.0
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -60,6 +60,16 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 
 == Changelog ==
+
+= 3.0.0 =
+New - Implemented user feedback notices for database migration.
+New - Added database migration handler for improved data management.
+Tweak - Adjusted primary color output for better visual consistency.
+Tweak - Updated main color live preview for real-time feedback.
+Tweak - Added description for advanced color field settings.
+Tweak - Simplified user experience by removing unnecessary color settings.
+Tweak - Added new color mapping scheme for enhanced customization.
+Tweak - Internal optimizations and stability improvements.
 
 = 2.2.8 =
 * Fix - Ensured compatibility with WordPress 7.X by adding deprecation fallbacks for older versions.
