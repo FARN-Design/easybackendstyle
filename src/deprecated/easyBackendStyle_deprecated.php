@@ -76,7 +76,7 @@ class easyBackendStyle_deprecated
      */
     function settings_page(): void
     {
-        include_once('ebs_SettingsSubMenu.php');
+        include_once(__DIR__ . '/ebs_SettingsSubMenu.php');
     }
 
     //In class function that calls the getValueFromDB() function from the DatabaseConnector.

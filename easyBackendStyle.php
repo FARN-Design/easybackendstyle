@@ -35,7 +35,7 @@ use Farn\EasyBackendStyle\Type;
 
 //------------------------------------------Plugin Code--------------------------------------------
 
-include_once "vendor/autoload.php";
+include_once __DIR__ . "/vendor/autoload.php";
 
 
 add_action( 'init', function (){
@@ -153,7 +153,7 @@ class easyBackendStyle {
      */
     function settings_page(): void
     {
-        include_once('src/ebs_SettingsSubMenu.php');
+        include_once(__DIR__ . '/src/ebs_SettingsSubMenu.php');
     }
 
     //In class function that calls the getValueFromDB() function from the DatabaseConnector.
