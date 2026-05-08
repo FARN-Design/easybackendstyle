@@ -67,11 +67,6 @@ jQuery(document).ready(function ($){
     $(this).toggleClass('active');
   });
 
-
-    function capitalizeFirstLetter(val) {
-        return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-    }
-
   //---------------- fill all fields automatically and live preview----------------
 
   function convertHexToHSL(hex) {
@@ -280,5 +275,12 @@ jQuery(document).ready(function ($){
     }
   });
 
+  let spanButtons = document.querySelectorAll(".wp-picker-input-wrap");
+
+    spanButtons.forEach(function(button) {
+        let pickerHolder = button.nextElementSibling;
+        let innerContainer = pickerHolder.querySelector(".iris-picker");
+        innerContainer.prepend(button);
+    })
 });
 
