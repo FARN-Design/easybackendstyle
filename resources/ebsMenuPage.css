@@ -48,31 +48,75 @@
     display: flex;
     flex-direction: column;
 }
+
 .wp-picker-container > .wp-picker-holder {
     position: absolute;
+}
+.ebs_main_colors{
+display: flex;
+}
+/* <span> text invisible "select color" */
+.wp-color-result-text {
+    display: none;
+}
+/* Size of color fields set in main colors settings */
+.ebs_main_colors > div > .wp-picker-container > button {
+    height: 100px;
+    width: 200px;
+}
+/* Size of color fields set in advanced color settings */
+.wp-picker-container > button {
+    height: 45px;
+    width: 45px;
+}
+.iris-picker{
+    width: 260px !important;
+    height: 240px !important;
+}
+.iris-square {
+    margin-top: 30px;
+    left:10px;
+}
+.iris-slider {
+    padding-bottom: 30px;
+}
+.iris-palette-container {
+    left: 20px !important;
+}
+.iris-strip {
+    height: 212px !important;
+}
+.wp-picker-input-wrap {
+    position: relative;
+    z-index: 1;
+    left: 40px;
+    top: 4px;
+}
+/*TODO: 1. Diese Option beibehalten? 2.
+ evtl unnötig, aber so sind beide buttons gleich lang */
+.wp-picker-default {
+    padding-bottom: 2px !important;
 }
 
 .ebs_main_colors > div > label,
 .ebs_advanced_settings_column > div > div > label {
     font-weight: bold;
     width:150px;
-    display: inline-block;
+    display: inline;
     cursor:default;
-    vertical-align: top;
     margin-top: 6px;
 }
 .ebs_main_colors > div{
     margin-bottom: 10px;
 }
 .ebs_advanced_settings_column > div {
+    display: flex;
     margin-bottom: 10px;
 }
-.ebs_main_colors .wp-picker-container,
-.ebs_advanced_settings_column .wp-picker-container{
+.ebs_advanced_settings_column .wp-picker-container {
     vertical-align: top;
 }
-.ebs_main_colors .wp-picker-container button,
-.ebs_advanced_settings_column .wp-picker-container button{
+.ebs_main_colors .wp-picker-container button {
     margin:0 !important;
 }
 .ebs_submitButton {
