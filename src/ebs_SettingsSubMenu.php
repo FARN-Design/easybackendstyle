@@ -66,7 +66,7 @@ class ebs_SettingsSubMenu
     <h1><?php _e('Easy Backend-Style settings', 'easybackendstyle') ?></h1>
 
     <p class="description">
-        <?php _e('Select two colors in the main color selectors. All other colors are selected automatically.', 'easybackendstyle') ?>
+        <?php _e('Select three colors in the main color selectors. All other colors are selected automatically.', 'easybackendstyle') ?>
     </p>
 
     <form action="" method="post" name="colorPickForm" id="colorPickForm">
@@ -76,15 +76,24 @@ class ebs_SettingsSubMenu
             <?php $mainColors = [];
 
             foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue){
-                    if($colorKey != "ebsPrimary" && $colorKey != "ebsSecondary" && $colorKey != "ebsTertiary"){
-                        continue;
-                    }
-                    if(in_array($colorKey, $mainColors)){
-                        continue;
-                    }
-                    $mainColors[] = $colorKey;?>
+                if($colorKey != "ebsPrimary" && $colorKey != "ebsSecondary" && $colorKey != "ebsTertiary"){
+                    continue;
+                }
+                if(in_array($colorKey, $mainColors)){
+                    continue;
+                }
+                $mainColors[] = $colorKey;?>
+
+                <!-- TODO: Farbwert von .hex-code muss noch dynamisch aktualisiert werden-->
                 <div class="wrapper_<?php echo $colorKey; ?>">
-                    <label for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?> </label>
+                    <div class="main_label_group">
+                        <label class="main_color_label" for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?></label>
+                        <small id="description_<?php echo $colorKey; ?>"><?php echo $colorValue[3]; ?></small>
+                        <label class="hex_code_label" for="<?php echo $colorKey; ?>"><?php echo $colorValue[2]; ?></label>
+                        <svg class="pencil_icon" width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 16H3.425L13.2 6.225L11.775 4.8L2 14.575V16ZM0 18V13.75L13.2 0.575C13.4 0.391667 13.6208 0.25 13.8625 0.15C14.1042 0.05 14.3583 0 14.625 0C14.8917 0 15.15 0.05 15.4 0.15C15.65 0.25 15.8667 0.4 16.05 0.6L17.425 2C17.625 2.18333 17.7708 2.4 17.8625 2.65C17.9542 2.9 18 3.15 18 3.4C18 3.66667 17.9542 3.92083 17.8625 4.1625C17.7708 4.40417 17.625 4.625 17.425 4.825L4.25 18H0ZM12.475 5.525L11.775 4.8L13.2 6.225L12.475 5.525Z"/>
+                        </svg>
+                    </div>
                     <input type="text" name="<?php echo $colorKey; ?>" id="<?php echo $colorKey; ?>"
                            value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
                            class="ebs_mainColorPicker"
@@ -119,6 +128,7 @@ class ebs_SettingsSubMenu
                             <div class="label_group">
                                 <label for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?></label>
                                 <small id="description_<?php echo $colorKey; ?>"><?php echo $colorValue[3]; ?></small>
+                                <label class="hex_code" for="<?php echo $colorKey; ?>"><?php echo $colorValue[2]; ?></label>
                             </div>
                         </div>
                     <?php } ?>

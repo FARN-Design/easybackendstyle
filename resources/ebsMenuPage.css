@@ -43,35 +43,25 @@
     grid-template-rows: repeat(5, auto);
     grid-auto-flow: column;
 }
-
-.label_group {
-    display: flex;
-    flex-direction: column;
-}
-
 .wp-picker-container > .wp-picker-holder {
     position: absolute;
-}
-.ebs_main_colors{
-display: flex;
 }
 /* <span> text invisible "select color" */
 .wp-color-result-text {
     display: none;
 }
-/* Size of color fields set in main colors settings */
-.ebs_main_colors > div > .wp-picker-container > button {
-    height: 100px;
-    width: 200px;
-}
 /* Size of color fields set in advanced color settings */
 .wp-picker-container > button {
-    height: 45px;
-    width: 45px;
+    height: 70px;
+    width: 70px;
 }
+/* Iris color picker design */
 .iris-picker{
     width: 260px !important;
     height: 240px !important;
+    box-shadow: 5px 5px 50px #aaa;
+    border-radius: 7px !important;
+    z-index: 1;
 }
 .iris-square {
     margin-top: 30px;
@@ -92,34 +82,121 @@ display: flex;
     left: 40px;
     top: 4px;
 }
-/*TODO: 1. Diese Option beibehalten? 2.
- evtl unnötig, aber so sind beide buttons gleich lang */
 .wp-picker-default {
     padding-bottom: 2px !important;
 }
-
-.ebs_main_colors > div > label,
-.ebs_advanced_settings_column > div > div > label {
+/* Size of color fields set in main colors settings */
+.ebs_main_colors .wp-picker-container {
+    width: 80%;
+}
+.ebs_main_colors > div > .wp-picker-container > button {
+    height: 125px;
+    width: calc(100%);
+}
+.ebs_main_colors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 80%;
+    justify-self: stretch;
+}
+.ebs_main_colors > div{
+    position: relative;
+    margin-bottom: 10px;
+}
+/* configuration for main_label_group */
+.wp-picker-container .wp-color-result.button {
+    padding: 20px !important;
+}
+.main_label_group {
+    position: relative;
+    width: 100%;
+    line-height: 1.5;
+    top: 20px;
+}
+.main_label_group > *:not(svg) {
+    width: calc(100% - 18px);
+    white-space: normal;
+    text-align: left;
+}
+.main_color_label {
+    font-weight: bold;
+}
+.main_label_group small {
+    font-size: inherit;
+}
+.hex_code {
+    font-size: small;
+}
+.ebs_advanced_settings_column .hex_code {
+    font-size: smaller;
+}
+.ebs_main_colors .wrapper_ebsSecondary .main_label_group,
+.ebs_main_colors .wrapper_ebsPrimary .main_label_group{
+    color: var(--ebsPrimaryText);
+}
+.ebs_main_colors .wrapper_ebsTertiary .main_label_group{
+    color: var(--ebsHighlightedText);
+}
+/* config for both label_groups */
+.label_group, .main_label_group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+/* config label_group */
+.label_group > label {
     font-weight: bold;
     width:150px;
     display: inline;
     cursor:default;
-    margin-top: 6px;
 }
-.ebs_main_colors > div{
-    margin-bottom: 10px;
+.label_group > small {
+    width: 75%;
+    line-height: 1.4;
 }
+small {
+    color: grey;
+    font-weight: normal;
+}
+
 .ebs_advanced_settings_column > div {
     display: flex;
-    margin-bottom: 10px;
-}
-.ebs_advanced_settings_column .wp-picker-container {
-    vertical-align: top;
-}
-.ebs_main_colors .wp-picker-container button {
-    margin:0 !important;
+    margin-bottom: 20px;
+    gap: 10px;
 }
 .ebs_submitButton {
     vertical-align: middle !important;
     margin-right: 10px !important;
+}
+/* position & color settings for pencil icon  */
+.wrapper_ebsPrimary .pencil_icon,
+.wrapper_ebsSecondary .pencil_icon{
+    fill: var(--ebsPrimaryText);
+}
+.wrapper_ebsTertiary svg {
+    fill: var(--ebsHighlightedText);
+}
+.pencil_icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.ebs_advanced_settings_column .button.wp-color-result::after {
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg class='pencil_icon' viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 16H3.425L13.2 6.225L11.775 4.8L2 14.575V16ZM0 18V13.75L13.2 0.575C13.4 0.391667 13.6208 0.25 13.8625 0.15C14.1042 0.05 14.3583 0 14.625 0C14.8917 0 15.15 0.05 15.4 0.15C15.65 0.25 15.8667 0.4 16.05 0.6L17.425 2C17.625 2.18333 17.7708 2.4 17.8625 2.65C17.9542 2.9 18 3.15 18 3.4C18 3.66667 17.9542 3.92083 17.8625 4.1625C17.7708 4.40417 17.625 4.625 17.425 4.825L4.25 18H0ZM12.475 5.525L11.775 4.8L13.2 6.225L12.475 5.525Z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border-left: none;
+}
+.ebs_advanced_settings_column .button.wp-color-result:hover::after {
+    opacity: 1;
+}
+.button.wp-color-result {
+    border-radius: 7px !important;
+    border: 1px solid black !important;
 }
