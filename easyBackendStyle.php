@@ -108,7 +108,8 @@ class easyBackendStyle {
 
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_backend_css'));
-        add_action('wp_head', array($this, 'ebs_backend_css'));
+        //Disabled because loading in frontend TODO implement test for future saftey
+        //add_action('wp_head', array($this, 'ebs_backend_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
 
         $this->initMigration();
