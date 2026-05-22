@@ -10,14 +10,12 @@ Author URI:        https://www.farn.de
 Version: 3.0.3
 Text Domain:       easybackendstyle
 Domain Path:       /src/languages
+License:           GPLv3
 @link              https://www.farn.de
 @since             1.0.0
 @package           EasyBackendStyle
 */
 
-/*  Licence Placeholder
-	See LICENCE.md file.
-*/
 //------------------------------------------Plugin Security----------------------------------------
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
@@ -176,7 +174,7 @@ class easyBackendStyle {
 
     function ebs_backend_css(): void
     {
-        echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css">';
+        echo '<link rel="stylesheet" href="' . esc_url(plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css '). '">';
         $cssRoot = "<style> :root {";
 
         foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
