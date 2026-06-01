@@ -3,7 +3,7 @@ Contributors: farndesign
 Tags: admin theme, backend theme, customize design, WordPress customization, Color scheme
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 3.0.3
+Stable tag: 3.1.0
 Requires PHP: 8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -60,6 +60,11 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 
 == Changelog ==
+
+= 3.1.0 =
+Tweak - Major design updates for a refreshed look.
+Tweak - Updated the iris color picker design for better usability.
+Fix - Escaped URL for backend CSS link to enhance security.
 
 = 3.0.3 =
 Tweak - Internal optimizations and stability improvements.
