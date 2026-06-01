@@ -230,21 +230,6 @@ jQuery(document).ready(function ($){
               case "ebsSubMenuText"             :       newColor = allText;         break;
               case "ebsSecondaryLighter"        :       newColor = subMenu;         break;
               case "ebsHighlightedText"         :       newColor = highlightedText; break;
-
-              /*
-              case "menuText"           :       newColor = menuText;           break;
-              case "baseMenu"           :       newColor = sc;                 break;
-              case "subMenu"            :       newColor = subMenu;            break;
-              case "notification"       :       newColor = '#d63638';          break;
-              case "notificationText"   :       newColor = '#f0f0f1';          break;
-              case "highlightText"      :       newColor = buttonText;         break;
-              case "background"         :       newColor = '#f0f0f1';          break;
-              case "linkHover"          :       newColor = linkHover;          break;
-              case "buttonHover"        :       newColor = linkHover;          break;
-              case "disabledButton"     :       newColor = '#969696';          break;
-              case "disabledButtonText" :       newColor = '#000000';          break;
-              case "icon"               :       newColor = menuText;           break;
-              */
           }
           $(this).val(newColor);
           $('.wrapper_'+colorInputName).find('button.wp-color-result').css('background-color',newColor);

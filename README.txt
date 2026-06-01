@@ -4,7 +4,7 @@ Tags: admin theme, backend theme, customize design, WordPress customization, Col
 Requires at least: 6.0
 Tested up to: 6.8
 Stable tag: 3.0.3
-Requires PHP: 8.0
+Requires PHP: 8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 

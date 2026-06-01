@@ -83,8 +83,6 @@ class ebs_SettingsSubMenu
                     continue;
                 }
                 $mainColors[] = $colorKey;?>
-
-                <!-- TODO: Farbwert von .hex-code muss noch dynamisch aktualisiert werden-->
                 <div class="wrapper_<?php echo $colorKey; ?>">
                     <div class="main_label_group">
                         <label class="main_color_label" for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?></label>

@@ -174,7 +174,7 @@ class easyBackendStyle {
 
     function ebs_backend_css(): void
     {
-        echo '<link rel="stylesheet" href="' . esc_url(plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css '). '">';
+        echo '<link rel="stylesheet" href="' . esc_url(plugin_dir_url(__FILE__) . 'resources/ebsMainCSS.css'). '">';
         $cssRoot = "<style> :root {";
 
         foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {

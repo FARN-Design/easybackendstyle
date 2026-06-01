@@ -97,11 +97,9 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 80%;
-    justify-self: stretch;
 }
 .ebs_main_colors > div{
     position: relative;
-    margin-bottom: 10px;
 }
 /* configuration for main_label_group */
 .wp-picker-container .wp-color-result.button {
