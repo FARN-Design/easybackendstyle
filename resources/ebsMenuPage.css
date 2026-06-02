@@ -102,14 +102,17 @@
     position: relative;
 }
 /* configuration for main_label_group */
-.wp-picker-container .wp-color-result.button {
+.ebs_main_colors .wp-picker-container .wp-color-result.button {
     padding: 20px !important;
+    margin: 0 !important;
 }
 .main_label_group {
-    position: relative;
-    width: 100%;
+    position: absolute;
+    width: 80%;
     line-height: 1.5;
-    top: 20px;
+    bottom: 0;
+    z-index: 1;
+    left: 4px;
 }
 .main_label_group > *:not(svg) {
     width: calc(100% - 18px);
@@ -156,7 +159,9 @@ small {
     color: grey;
     font-weight: normal;
 }
-
+.ebs_advanced_settings_column .wp-picker-container .wp-color-result.button {
+    padding: 0 !important;
+}
 .ebs_advanced_settings_column > div {
     display: flex;
     margin-bottom: 20px;
@@ -174,22 +179,31 @@ small {
 .wrapper_ebsTertiary svg {
     fill: var(--ebsHighlightedText);
 }
-.pencil_icon {
+.main_label_group .pencil_icon {
+    position: absolute;
+    right: 8px;
+    bottom: 5px;
+}
+.ebs_advanced_settings_column .pencil_icon {
     position: absolute;
     right: 0;
     bottom: 0;
 }
 .ebs_advanced_settings_column .button.wp-color-result::after {
     content: "";
-    background-image: url("data:image/svg+xml,%3Csvg class='pencil_icon' viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 16H3.425L13.2 6.225L11.775 4.8L2 14.575V16ZM0 18V13.75L13.2 0.575C13.4 0.391667 13.6208 0.25 13.8625 0.15C14.1042 0.05 14.3583 0 14.625 0C14.8917 0 15.15 0.05 15.4 0.15C15.65 0.25 15.8667 0.4 16.05 0.6L17.425 2C17.625 2.18333 17.7708 2.4 17.8625 2.65C17.9542 2.9 18 3.15 18 3.4C18 3.66667 17.9542 3.92083 17.8625 4.1625C17.7708 4.40417 17.625 4.625 17.425 4.825L4.25 18H0ZM12.475 5.525L11.775 4.8L13.2 6.225L12.475 5.525Z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 18px;
+    mask-image: url("data:image/svg+xml,%3Csvg class='pencil_icon' viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 16H3.425L13.2 6.225L11.775 4.8L2 14.575V16ZM0 18V13.75L13.2 0.575C13.4 0.391667 13.6208 0.25 13.8625 0.15C14.1042 0.05 14.3583 0 14.625 0C14.8917 0 15.15 0.05 15.4 0.15C15.65 0.25 15.8667 0.4 16.05 0.6L17.425 2C17.625 2.18333 17.7708 2.4 17.8625 2.65C17.9542 2.9 18 3.15 18 3.4C18 3.66667 17.9542 3.92083 17.8625 4.1625C17.7708 4.40417 17.625 4.625 17.425 4.825L4.25 18H0ZM12.475 5.525L11.775 4.8L13.2 6.225L12.475 5.525Z'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: 18px;
     display: block;
     width: 100%;
     height: 100%;
     opacity: 0;
     border-left: none;
+    background-color: #000000;
+}
+.ebs_advanced_settings_column .button.wp-color-result.is-dark::after {
+    background-color: #ffffff;
 }
 .ebs_advanced_settings_column .button.wp-color-result:hover::after {
     opacity: 1;
