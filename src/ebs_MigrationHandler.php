@@ -135,13 +135,15 @@ class ebs_MigrationHandler
         // info notice - only visible on settings_page
         if (get_option("ebs_plugin_notice_info") && $screen->id === "settings_page_easyBackendStyle") {
             wp_admin_notice(
-                'What\'s new in this update:
-                    A third primary color option has been added
-                    Various color values have been redistributed and reorganized
-                    New color settings have been introduced
-                    Please note: Your existing color profiles have been migrated where possible.
-                    Newly added color settings have been pre-filled with default values and
-                    may require manual adjustment to match your design. 
+                '<strong>What\'s new in this update:</strong>
+                    <ul>
+                        <li>A third primary color option has been added</li>
+                        <li>Various color values have been redistributed and reorganized</li>
+                        <li>New color settings have been introduced</li>
+                    </ul>
+                    <p>Please note: Your existing color profiles have been migrated where possible.</p>
+                    <p>Newly added color settings have been pre-filled with default values and
+                    may require manual adjustment to match your design.</p>
                     <a href="' . admin_url('admin.php?page=easyBackendStyle&dismiss_notice=info') . '" class="button">Verstanden</a>',
                 ["type" => "info", "dismissible" => false]
             );
@@ -149,20 +151,20 @@ class ebs_MigrationHandler
         // success & warning notices - visible throughout the admin menu
         if (get_option("ebs_plugin_notice_success")) {
             wp_admin_notice(
-                'Update Successful:
-                    Plugin Easy Backend-Style has received an update with new features and improvements.
-                    The plugin has been updated successfully.
-                    Your existing color profiles have been migrated. <a href="' . $current_url . $symbol . 'dismiss_notice=success" class="button">Verstanden</a>',
+                '<strong>Update Successful:</strong>
+                    <p>Plugin Easy Backend-Style has received an update with new features and improvements.</p>
+                    <p>The plugin has been updated successfully.</p>
+                    <p>Your existing color profiles have been migrated.</p> <a href="' . $current_url . $symbol . 'dismiss_notice=success" class="button">Verstanden</a>',
                 ['type' => 'success', 'dismissible' => false]
             );
         }
         if (get_option("ebs_plugin_notice_warning")) {
             wp_admin_notice(
-                'Update Warning:
-                    Plugin Easy Backend-Style has received an update with new features and improvements.
-                    Something went wrong during the update process.
-                    Your settings may not have been migrated correctly.
-                    Please check your Plugin-Settingspage. <a href="' . $current_url . $symbol . '&dismiss_notice=warning" class="button">Verstanden</a>',
+                '<strong>Update Warning:</strong>
+                    <p>Plugin Easy Backend-Style has received an update with new features and improvements.</p>
+                    <p>Something went wrong during the update process.</p>
+                    <p>Your settings may not have been migrated correctly.</p>
+                    <p>Please check your Plugin-Settingspage.</p> <a href="' . $current_url . $symbol . '&dismiss_notice=warning" class="button">Verstanden</a>',
                 ['type' => 'warning', 'dismissible' => false]
             );
         }
