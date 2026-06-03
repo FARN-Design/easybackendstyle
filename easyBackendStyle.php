@@ -71,6 +71,44 @@ class easyBackendStyle {
         $pluginActviationHandler = pluginActivationHandler::getInstance("ebs");
         $pluginActviationHandler->handleNotices();
 
+        $GLOBALS['ebsPlugin'] = $this;
+        add_action('init', array($this,'is_css_generated'), 9);
+
+        register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
+        register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
+
+        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
+        add_action('init', array($this, 'color_mapping'),8);
+        add_action('admin_menu', array($this, 'sub_settings_page'));
+        add_action('admin_head', array($this, 'ebs_backend_css'));
+        //Disabled because loading in frontend TODO implement test for future saftey
+        //add_action('wp_head', array($this, 'ebs_backend_css'));
+        add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
+
+        $this->initMigration();
+        if (!class_exists('ebsDatabaseConnector')) {
+            $this->dbc = new ebs_DatabaseConnector();
+        }
+        add_action('init', array($this, 'init_db'));
+    }
+
+    //On activation of the plugin
+    function activate(): void
+    {
+        $this->color_mapping();
+        $this->dbc->setup_Database();
+        $this->sub_settings_page();
+        flush_rewrite_rules();
+        $this->generateColorsCss();
+    }
+
+    //On deactivation of the plugin
+    function deactivate(): void
+    {
+        flush_rewrite_rules();
+    }
+
+    function color_mapping(): void{
         $GLOBALS['ebsColorMapping'] = [
             // key => [name, list of replaceable colors, default value, description]
             "ebsBackground" => ["background",["#f0f0f0"],'#f0f0f0', "Sets the background color of the page"],
@@ -92,44 +130,16 @@ class easyBackendStyle {
             "ebsSubMenuText" => ["submenu text", ["#e2ecf1"],'#e2ecf1', "Sets the color of the sub menu text"],
             "ebsHighlightedText" => ["highlight text", ["#fff"],'#ffffff', "Sets the color of the highlighted text"],
         ];
-
-        $GLOBALS['ebsPlugin'] = $this;
+    }
+    function is_css_generated(): void {
         $bool = get_option('is_css_generated', false);
         if ($bool === false) {
             $this->generateColorsCss();
         }
-
-        register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
-        register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
-
-        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
-
-        add_action('admin_menu', array($this, 'sub_settings_page'));
-        add_action('admin_head', array($this, 'ebs_backend_css'));
-        //Disabled because loading in frontend TODO implement test for future saftey
-        //add_action('wp_head', array($this, 'ebs_backend_css'));
-        add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
-
-        $this->initMigration();
-        if (!class_exists('ebsDatabaseConnector')) {
-            $this->dbc = new ebs_DatabaseConnector();
-        }
-        $this->dbc->checkFields();
     }
-
-    //On activation of the plugin
-    function activate(): void
+    function init_db():void
     {
         $this->dbc->setup_Database();
-        $this->sub_settings_page();
-        flush_rewrite_rules();
-        $this->generateColorsCss();
-    }
-
-    //On deactivation of the plugin
-    function deactivate(): void
-    {
-        flush_rewrite_rules();
     }
 
     /**
