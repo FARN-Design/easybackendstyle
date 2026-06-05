@@ -142,9 +142,9 @@ jQuery(document).ready(function ($){
         r = c; g = 0; b = x;
       }
       // Having obtained RGB, convert channels to hex
-      r = Math.round((r + m) * 255).toString(16);
-      g = Math.round((g + m) * 255).toString(16);
-      b = Math.round((b + m) * 255).toString(16);
+      r = Math.min(255, Math.max(0, Math.round((r + m) * 255))).toString(16);
+      g = Math.min(255, Math.max(0, Math.round((g + m) * 255))).toString(16);
+      b = Math.min(255, Math.max(0, Math.round((b + m) * 255))).toString(16);
     
       // Prepend 0s, if necessary
       if (r.length == 1)
