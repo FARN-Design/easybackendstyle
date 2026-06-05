@@ -267,6 +267,23 @@ class easyBackendStyle {
         $handler = new ebs_MigrationHandler();
         $handler->migration();
     }
+
+    function registerColorScheme()
+    {
+        $colorsArray = [];
+        $colorsArray[] = $this->getColor('ebsPrimary');
+        $colorsArray[] = $this->getColor('ebsSecondary');
+        $colorsArray[] = $this->getColor('ebsTertiary');
+
+        wp_admin_css_color(
+                'personalizedColorScheme',
+                __('Personalized Colors'),
+                plugin_dir_url(__FILE__) . 'resources/ebsMainCSS.css',
+                $colorsArray
+        );
+
+
+    }
 }
 
 
