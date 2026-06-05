@@ -72,15 +72,18 @@ class easyBackendStyle {
         $pluginActviationHandler->handleNotices();
 
         $GLOBALS['ebsPlugin'] = $this;
-        add_action('init', array($this,'is_css_generated'), 9);
 
         register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
         register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
 
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
         add_action('init', array($this, 'color_mapping'),8);
+        add_action('init', array($this,'is_css_generated'), 9);
+        add_action('init', array($this, 'init_db'));
+        add_action('admin_init', array($this, 'registerColorScheme'));
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_backend_css'));
+        add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
 
         // Design settings for the admin toolbar in the frontend view
         $self = $this;
@@ -99,14 +102,10 @@ class easyBackendStyle {
             </style>
         <?php
         });
-
-        add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
-
         $this->initMigration();
         if (!class_exists('ebsDatabaseConnector')) {
             $this->dbc = new ebs_DatabaseConnector();
         }
-        add_action('init', array($this, 'init_db'));
     }
 
     //On activation of the plugin
@@ -223,7 +222,8 @@ class easyBackendStyle {
         }
     }
 
-    function generateColorsCss(){
+    function generateColorsCss()
+    {
         $baseColorFilePath = ABSPATH . 'wp-admin/css/colors/blue/colors.css';
         $baseColorFileContent = file_get_contents($baseColorFilePath);
         if(!$baseColorFileContent){
@@ -263,7 +263,8 @@ class easyBackendStyle {
         add_option("is_css_generated", true);
     }
 
-    function initMigration(){
+    function initMigration()
+    {
         $handler = new ebs_MigrationHandler();
         $handler->migration();
     }
