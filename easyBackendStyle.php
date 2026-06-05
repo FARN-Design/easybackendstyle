@@ -81,8 +81,25 @@ class easyBackendStyle {
         add_action('init', array($this, 'color_mapping'),8);
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_backend_css'));
-        //Disabled because loading in frontend TODO implement test for future saftey
-        //add_action('wp_head', array($this, 'ebs_backend_css'));
+
+        // Design settings for the admin toolbar in the frontend view
+        $self = $this;
+        add_action('wp_head', function() use ($self){
+            if(!is_admin_bar_showing()) return;
+
+            $colorResult = $self->dbc->getValueFromDB('ebsPrimaryText');
+            $backgroundColorResult = $self->dbc->getValueFromDB('ebsSecondary');
+            $iconColorResult = $self->dbc->getValueFromDB('ebsIcon');
+            ?>
+            <style>
+                #wpadminbar .ab-empty-item, #wpadminbar a.ab-item, #wpadminbar > #wp-toolbar span.ab-label { color: <?php echo $colorResult[0][0]; ?> !important; }
+                #wpadminbar { background: <?php echo $backgroundColorResult[0][0]; ?>; }
+                #wpadminbar li .ab-icon::before, #wpadminbar li .ab-item::before { color: <?php echo $iconColorResult[0][0]; ?>; }
+                #wpadminbar li:hover .ab-icon::before, #wpadminbar li:hover .ab-item::before { color: <?php echo $colorResult[0][0]; ?>; }
+            </style>
+        <?php
+        });
+
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
 
         $this->initMigration();
