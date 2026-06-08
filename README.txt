@@ -2,7 +2,7 @@
 Contributors: farndesign
 Tags: admin theme, backend theme, customize design, WordPress customization, Color scheme
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 7.0
 Stable tag: 3.1.0
 Requires PHP: 8.2
 License: GPLv3 or later
@@ -13,7 +13,7 @@ This plugin allows you to easily customize the colors in the backend. The change
 == Description ==
 
 Seamlessly adjust color schemes, effortlessly transforming the look and feel of your backend interface.
-With an automated color generation feature from just two base colors, achieving a cohesive design is a breeze.
+With an automated color generation feature from just three base colors, achieving a cohesive design is a breeze.
 Dive deeper into customization with advanced fields, allowing precise adjustments to fine-tune your backend's appearance.
 This plugin seamlessly integrates with all WordPress backend styles, ensuring a consistent experience across the board.
 
@@ -49,7 +49,7 @@ https://wordpress.com/de/plugins/easybackendstyle
 After activating, the settings page can be found as a subpage of the settings section.
 
 
-Within the settings page, you have the ability to alter the primary pair of colors associated with your backend.
+Within the settings page, you have the ability to alter the primary trio of colors associated with your backend.
 This action subsequently prompts an automatic adjustment of all linked advanced fields, guaranteeing a smooth harmonization with your chosen style.
 In the event that a predilection for a more detailed design arises, you can manually select each distinct advanced field in the drop-down menu on the settings page.
 
