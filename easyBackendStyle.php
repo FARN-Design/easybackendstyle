@@ -84,7 +84,6 @@ class easyBackendStyle {
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_backend_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
-
         // Design settings for the admin toolbar in the frontend view
         $self = $this;
         add_action('wp_head', function() use ($self){
@@ -200,13 +199,11 @@ class easyBackendStyle {
 
     function ebs_backend_css(): void
     {
-        echo '<link rel="stylesheet" href="' . esc_url(plugin_dir_url(__FILE__) . 'resources/ebsMainCSS.css'). '">';
-        $cssRoot = "<style> :root {";
+        $cssRoot = "<style id='ebs-root-variables'> :root {";
 
         foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
             $cssRoot .= "--".$colorKey.": ".$this->getColor($colorKey).";";
         }
-
         $cssRoot .= "} </style>";
         echo $cssRoot;
     }
