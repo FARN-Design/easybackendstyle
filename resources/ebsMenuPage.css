@@ -111,7 +111,6 @@
     width: 80%;
     line-height: 1.5;
     bottom: 0;
-    z-index: 1;
     left: 4px;
 }
 .main_label_group > *:not(svg) {
@@ -121,9 +120,6 @@
 }
 .main_color_label {
     font-weight: bold;
-}
-.main_label_group small {
-    font-size: inherit;
 }
 .hex_code {
     font-size: small;
@@ -143,6 +139,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+.color_description {
+    opacity: 0.8;
 }
 /* config label_group */
 .label_group > label {
