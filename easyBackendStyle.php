@@ -80,7 +80,7 @@ class easyBackendStyle {
         add_action('init', array($this, 'color_mapping'),8);
         add_action('init', array($this,'is_css_generated'), 9);
         add_action('init', array($this, 'init_db'));
-        add_action('admin_init', array($this, 'registerColorScheme'));
+        add_action('admin_init', array($this, 'registerColorScheme'),0);
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_backend_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
@@ -274,7 +274,7 @@ class easyBackendStyle {
         $colorsArray[] = $this->getColor('ebsTertiary');
 
         wp_admin_css_color(
-                'personalizedColorScheme',
+                'personalizedcolorscheme',
                 __('Personalized Colors'),
                 plugin_dir_url(__FILE__) . 'resources/ebsMainCSS.css',
                 $colorsArray
