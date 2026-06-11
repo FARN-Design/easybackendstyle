@@ -14,7 +14,6 @@ class ebs_MigrationHandler
     private bool $is_migration_needed = false;
     private bool $first_step_successful = false;
     private bool $second_step_successful = false;
-    private bool $third_step_successful = false;
     private string $old_table_name;
     private string $new_table_name;
     private string $charset_collate;
@@ -105,7 +104,7 @@ class ebs_MigrationHandler
         // Query smth like: DROP TABLE IF EXISTS $oldTableName - wpdb::delete löscht nur reihen, keine tables
         $this->wpdb->query("DROP TABLE IF EXISTS $this->old_table_name;");
     }
-
+    // TODO: überprüfen ob die zwei DB-Tabellen evtl miteinander kollidieren könnten, bei fehlerhafter Migration
     private function validateMigrationsSteps() : void
     {
         if($this->first_step_successful && $this->second_step_successful){
@@ -142,7 +141,7 @@ class ebs_MigrationHandler
                         <li>' . __("New color settings have been introduced", "easybackendstyle") . '</li>
                     </ul>
                     <p>' . __("Please note: Your existing color profiles have been migrated where possible", "easybackendstyle") . '</p>
-                    <p>' . __("Newly added color settings have been pre-filled with default values andmay require manual adjustment to match your design.", "easybackendstyle") . '</p>
+                    <p>' . __("Newly added color settings have been pre-filled with default values and may require manual adjustment to match your design.", "easybackendstyle") . '</p>
                     <a href="' . admin_url('admin.php?page=easyBackendStyle&dismiss_notice=info') . '" class="button">' . __("Got it", "easybackendstyle") . '</a>',
                 ["type" => "info", "dismissible" => false]
             );
@@ -153,7 +152,7 @@ class ebs_MigrationHandler
                 '<strong>' . __("Update Successful:", "easybackendstyle") . '</strong>
                     <p>' . __("Plugin Easy Backend-Style has received an update with new features and improvements.", "easybackendstyle") . '</p>
                     <p>' . __("The plugin has been updated successfully.", "easybackendstyle") . '</p>
-                    <p>' . __("Your existing color profiles have been migrated.", "easybackendstyle") . '</p> <a href="' . $current_url . $symbol . 'dismiss_notice=success" class="button">' . __("Got it", "easybackendstyle") . '</a>',
+                    <p>' . __("Your existing color profiles have been migrated. Please check you administration color scheme.", "easybackendstyle") . '</p> <a href="' . $current_url . $symbol . 'dismiss_notice=success" class="button">' . __("Got it", "easybackendstyle") . '</a>',
                 ['type' => 'success', 'dismissible' => false]
             );
         }

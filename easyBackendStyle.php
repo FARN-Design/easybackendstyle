@@ -86,8 +86,8 @@ class easyBackendStyle {
         add_action('admin_head', array($this, 'ebs_backend_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
         // Design settings for the admin toolbar in the frontend view
-        $self = $this;
-        add_action('wp_head', function() use ($self){
+        add_action('wp_head', function() {
+            $self = $this;
             if(!is_admin_bar_showing()) return;
 
             $colorResult = $self->dbc->getValueFromDB('ebsPrimaryText');
@@ -209,7 +209,7 @@ class easyBackendStyle {
         echo $cssRoot;
     }
 
-    function addScriptsAndStylesToMenuPages($hook)
+    function addScriptsAndStylesToMenuPages($hook): void
     {
         $current_screen = get_current_screen();
         // scripts and styles for menu page
@@ -220,7 +220,7 @@ class easyBackendStyle {
         }
     }
 
-    function generateColorsCss()
+    function generateColorsCss(): void
     {
         $baseColorFilePath = ABSPATH . 'wp-admin/css/colors/blue/colors.css';
         $baseColorFileContent = file_get_contents($baseColorFilePath);
@@ -228,7 +228,7 @@ class easyBackendStyle {
             $pluginActviationHandler = pluginActivationHandler::getInstance("ebs");
             $pluginActviationHandler->createNotice(
                 Type::Error,
-                "Could not activate plugin. Failes to load CSS.",
+                "Could not activate plugin. Failed to load CSS.",
                 Severity::Hard
             );
         }
@@ -261,13 +261,13 @@ class easyBackendStyle {
         add_option("is_css_generated", true);
     }
 
-    function initMigration()
+    function initMigration(): void
     {
         $handler = new ebs_MigrationHandler();
         $handler->migration();
     }
 
-    function registerColorScheme()
+    function registerColorScheme(): void
     {
         $colorsArray = [];
         $colorsArray[] = $this->getColor('ebsPrimary');
@@ -280,6 +280,7 @@ class easyBackendStyle {
                 plugin_dir_url(__FILE__) . 'resources/ebsMainCSS.css',
                 $colorsArray
         );
+    }
 
     function changeAdminColorScheme(): void
     {
