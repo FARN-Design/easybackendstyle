@@ -135,36 +135,35 @@ class ebs_MigrationHandler
         // info notice - only visible on settings_page
         if (get_option("ebs_plugin_notice_info") && $screen->id === "settings_page_easyBackendStyle") {
             wp_admin_notice(
-                '<strong>What\'s new in this update:</strong>
+                '<strong>' . __("What's new in this update:", "easybackendstyle") . '</strong>
                     <ul>
-                        <li>A third primary color option has been added</li>
-                        <li>Various color values have been redistributed and reorganized</li>
-                        <li>New color settings have been introduced</li>
+                        <li>' . __("A third primary color option has been added", "easybackendstyle") . '</li>
+                        <li>' . __("Various color values have been redistributed and reorganized", "easybackendstyle") . '</li>
+                        <li>' . __("New color settings have been introduced", "easybackendstyle") . '</li>
                     </ul>
-                    <p>Please note: Your existing color profiles have been migrated where possible.</p>
-                    <p>Newly added color settings have been pre-filled with default values and
-                    may require manual adjustment to match your design.</p>
-                    <a href="' . admin_url('admin.php?page=easyBackendStyle&dismiss_notice=info') . '" class="button">Verstanden</a>',
+                    <p>' . __("Please note: Your existing color profiles have been migrated where possible", "easybackendstyle") . '</p>
+                    <p>' . __("Newly added color settings have been pre-filled with default values andmay require manual adjustment to match your design.", "easybackendstyle") . '</p>
+                    <a href="' . admin_url('admin.php?page=easyBackendStyle&dismiss_notice=info') . '" class="button">' . __("Got it", "easybackendstyle") . '</a>',
                 ["type" => "info", "dismissible" => false]
             );
         }
         // success & warning notices - visible throughout the admin menu
         if (get_option("ebs_plugin_notice_success")) {
             wp_admin_notice(
-                '<strong>Update Successful:</strong>
-                    <p>Plugin Easy Backend-Style has received an update with new features and improvements.</p>
-                    <p>The plugin has been updated successfully.</p>
-                    <p>Your existing color profiles have been migrated.</p> <a href="' . $current_url . $symbol . 'dismiss_notice=success" class="button">Verstanden</a>',
+                '<strong>' . __("Update Successful:", "easybackendstyle") . '</strong>
+                    <p>' . __("Plugin Easy Backend-Style has received an update with new features and improvements.", "easybackendstyle") . '</p>
+                    <p>' . __("The plugin has been updated successfully.", "easybackendstyle") . '</p>
+                    <p>' . __("Your existing color profiles have been migrated.", "easybackendstyle") . '</p> <a href="' . $current_url . $symbol . 'dismiss_notice=success" class="button">' . __("Got it", "easybackendstyle") . '</a>',
                 ['type' => 'success', 'dismissible' => false]
             );
         }
         if (get_option("ebs_plugin_notice_warning")) {
             wp_admin_notice(
-                '<strong>Update Warning:</strong>
-                    <p>Plugin Easy Backend-Style has received an update with new features and improvements.</p>
-                    <p>Something went wrong during the update process.</p>
-                    <p>Your settings may not have been migrated correctly.</p>
-                    <p>Please check your Plugin-Settingspage.</p> <a href="' . $current_url . $symbol . '&dismiss_notice=warning" class="button">Verstanden</a>',
+                '<strong>' . __("Update Warning:", "easybackendstyle") . '</strong>
+                    <p>' . __("Plugin Easy Backend-Style has received an update with new features and improvements.", "easybackendstyle") . '</p>
+                    <p>' . __("Something went wrong during the update process.", "easybackendstyle") . '</p>
+                    <p>' . __("Your settings may not have been migrated correctly.", "easybackendstyle") . '</p>
+                    <p>' . __("Please check your Plugin-Settingspage.", "easybackendstyle") . '</p> <a href="' . $current_url . $symbol . '&dismiss_notice=warning" class="button">' . __("Got it", "easybackendstyle") . '</a>',
                 ['type' => 'warning', 'dismissible' => false]
             );
         }
