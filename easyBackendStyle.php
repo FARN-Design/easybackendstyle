@@ -77,7 +77,8 @@ class easyBackendStyle {
         register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
 
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
-        add_action('init', array($this, 'color_mapping'),8);
+        add_action('init', array($this, 'color_mapping'),7);
+        add_action('init', array($this, 'initMigration'), 8);
         add_action('init', array($this,'is_css_generated'), 9);
         add_action('init', array($this, 'init_db'));
         add_action('admin_init', array($this, 'registerColorScheme'),0);
@@ -101,7 +102,6 @@ class easyBackendStyle {
             </style>
         <?php
         });
-        $this->initMigration();
         if (!class_exists('ebsDatabaseConnector')) {
             $this->dbc = new ebs_DatabaseConnector();
         }
