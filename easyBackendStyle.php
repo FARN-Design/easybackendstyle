@@ -115,6 +115,7 @@ class easyBackendStyle {
         $this->sub_settings_page();
         flush_rewrite_rules();
         $this->generateColorsCss();
+        $this->changeAdminColorScheme();
     }
 
     //On deactivation of the plugin
@@ -280,7 +281,10 @@ class easyBackendStyle {
                 $colorsArray
         );
 
-
+    function changeAdminColorScheme(): void
+    {
+        $currentUser = get_current_user_id();
+        update_user_option($currentUser, 'admin_color', 'personalizedcolorscheme', true);
     }
 }
 
