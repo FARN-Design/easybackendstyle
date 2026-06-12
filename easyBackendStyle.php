@@ -81,6 +81,7 @@ class easyBackendStyle {
         add_action('init', array($this, 'initMigration'), 8);
         add_action('init', array($this,'is_css_generated'), 9);
         add_action('init', array($this, 'init_db'));
+        add_action('wp_login', array($this,'checkEbsColorSchemeOption'), 10, 2);
         add_action('admin_init', array($this, 'registerColorScheme'),0);
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_backend_css'));
@@ -115,7 +116,7 @@ class easyBackendStyle {
         $this->sub_settings_page();
         flush_rewrite_rules();
         $this->generateColorsCss();
-        $this->changeAdminColorScheme();
+        $this->changeAdminColorScheme(get_current_user_id());
     }
 
     //On deactivation of the plugin
@@ -282,10 +283,20 @@ class easyBackendStyle {
         );
     }
 
-    function changeAdminColorScheme(): void
+    function changeAdminColorScheme($user_id): void
     {
-        $currentUser = get_current_user_id();
-        update_user_option($currentUser, 'admin_color', 'personalizedcolorscheme', true);
+        update_user_option($user_id, 'admin_color', 'personalizedcolorscheme', true);
+        if (get_user_option('admin_color', $user_id) === 'personalizedcolorscheme'){
+            update_user_meta($user_id, 'ebs_scheme_initialized', true);
+        }
+    }
+
+    function checkEbsColorSchemeOption($user_login, $user): void
+    {
+        error_log(var_export(get_user_meta($user->ID, 'ebs_scheme_initialized', true) !== '1', true));
+        if (get_user_meta($user->ID, 'ebs_scheme_initialized', true) !== '1') {
+            $this->changeAdminColorScheme($user->ID);
+        }
     }
 }
 
