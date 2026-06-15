@@ -42,12 +42,17 @@ class ebs_MigrationHandler
     /**
      * This function checks whether a migration process is necessary.
      */
+    // For now, the is_migration_needed option has been added both here and at the end of startMigration,
+    // to catch all pages (including those that have already been migrated), so that migrationNeeded()
+    // can be removed or deprecated later
     private function migrationNeeded() : bool
     {
         if($this->wpdb->get_var("show tables like '" . $this->new_table_name . "'") == $this->new_table_name){
             $this->is_migration_needed = false;
+            update_option("is_migration_needed", false);
         } elseif($this->wpdb->get_var("show tables like '" . $this->old_table_name . "'") == $this->old_table_name){
             $this->is_migration_needed = true;
+            update_option("is_migration_needed", true);
         } else {
             $this->is_migration_needed = false;
         }
@@ -56,10 +61,11 @@ class ebs_MigrationHandler
 
     private function startMigration() : void
     {
-        // manages the various steps of the migration process
+        // manages the various steps of the migration process + add an option, for future updates
             $this->createNewTable();
             $this->migrateValues();
             $this->validateMigrationsSteps();
+            add_option("is_migration_needed", false);
     }
 
     private function migrateValues() : void
@@ -104,10 +110,9 @@ class ebs_MigrationHandler
         // Query smth like: DROP TABLE IF EXISTS $oldTableName - wpdb::delete löscht nur reihen, keine tables
         $this->wpdb->query("DROP TABLE IF EXISTS $this->old_table_name;");
     }
-    // TODO: überprüfen ob die zwei DB-Tabellen evtl miteinander kollidieren könnten, bei fehlerhafter Migration
     private function validateMigrationsSteps() : void
     {
-        if($this->first_step_successful && $this->second_step_successful){
+        if($this->first_step_successful && $this->second_step_successful) {
             $this->deleteOldTable();
             update_option('ebs_plugin_notice_success', true);
             update_option('ebs_plugin_notice_warning', false);
