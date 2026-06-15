@@ -78,10 +78,10 @@ class easyBackendStyle {
 
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
         add_action('init', array($this, 'color_mapping'),7);
-        add_action('init', array($this, 'initMigration'), 8);
+        add_action('init', array($this, 'is_migration_needed'), 8);
         add_action('init', array($this,'is_css_generated'), 9);
         add_action('init', array($this, 'init_db'));
-        add_action('wp_login', array($this,'checkEbsColorSchemeOption'), 10, 2);
+        add_action('init', array($this,'checkEbsColorSchemeOption'), 10, 2);
         add_action('admin_init', array($this, 'registerColorScheme'),0);
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_backend_css'));
@@ -261,13 +261,17 @@ class easyBackendStyle {
         file_put_contents(EBS_PLUGIN_PATH."/resources/ebsMainCSS.css", $newContent);
         add_option("is_css_generated", true);
     }
-
+    function is_migration_needed(): void {
+        $bool = get_option('is_migration_needed', false);
+        if ($bool !== '1') {
+            $this->initMigration();
+        }
+    }
     function initMigration(): void
     {
         $handler = new ebs_MigrationHandler();
         $handler->migration();
     }
-
     function registerColorScheme(): void
     {
         $colorsArray = [];
@@ -290,10 +294,8 @@ class easyBackendStyle {
             update_user_meta($user_id, 'ebs_scheme_initialized', true);
         }
     }
-
     function checkEbsColorSchemeOption($user_login, $user): void
     {
-        error_log(var_export(get_user_meta($user->ID, 'ebs_scheme_initialized', true) !== '1', true));
         if (get_user_meta($user->ID, 'ebs_scheme_initialized', true) !== '1') {
             $this->changeAdminColorScheme($user->ID);
         }
