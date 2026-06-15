@@ -294,10 +294,11 @@ class easyBackendStyle {
             update_user_meta($user_id, 'ebs_scheme_initialized', true);
         }
     }
-    function checkEbsColorSchemeOption($user_login, $user): void
+    function checkEbsColorSchemeOption(): void
     {
-        if (get_user_meta($user->ID, 'ebs_scheme_initialized', true) !== '1') {
-            $this->changeAdminColorScheme($user->ID);
+        $user_id = get_current_user_id();
+        if (get_user_meta($user_id, 'ebs_scheme_initialized', true) !== '1') {
+            $this->changeAdminColorScheme($user_id);
         }
     }
 }
