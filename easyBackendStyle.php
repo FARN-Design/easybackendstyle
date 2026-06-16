@@ -131,6 +131,7 @@ class easyBackendStyle {
             "ebsSubMenu" => [__('submenu', 'easybackendstyle'), ["#4796b3"],'#4796b3', __('Sets the color of the sub menu', 'easybackendstyle')],
             "ebsSubMenuText" => [__('submenu text', 'easybackendstyle'), ["#e2ecf1"],'#e2ecf1', __('Sets the color of the sub menu text', 'easybackendstyle')],
             "ebsHighlightedText" => [__('highlight text', 'easybackendstyle'), ["#fff"],'#ffffff', __('Sets the color of the highlighted text', 'easybackendstyle')],
+            "ebsPrimaryButtonText" => [__('button text', 'easybackendstyle'), ["#fff"],'#ffffff', __('Sets the color of the button text', 'easybackendstyle')],
         ];
     }
     function is_css_generated(): void {
@@ -233,13 +234,15 @@ class easyBackendStyle {
                 '/(#adminmenu li\.current a\.menu-top,\s*#adminmenu li\.wp-has-current-submenu a\.wp-has-current-submenu,\s*#adminmenu li\.wp-has-current-submenu \.wp-submenu \.wp-submenu-head,\s*.folded #adminmenu li\.current\.menu-top\s*\{\s*color:\s*)#fff(;)/',
                 '/(#adminmenu a:hover,\n#adminmenu li\.menu-top:hover,\n#adminmenu li\.opensub > a\.menu-top,\n#adminmenu li > a\.menu-top:focus \{\n  color: )#fff(;)/',
                 '/(#adminmenu li\.menu-top:hover div\.wp-menu-image:before,\n#adminmenu li\.opensub > a\.menu-top div\.wp-menu-image:before \{\n  color: )#fff(;)/',
+                '/(\.wp-core-ui\s+\.button-primary\s*\{[^}]*?color:\s*)#fff(;)/',
             ],
             [
                 '$1var(--ebsHighlightedText)$2',
                 '$1var(--ebsHighlightedText)$2',
                 '$1var(--ebsHighlightedText)$2',
                 '$1var(--ebsHighlightedText)$2',
-                '$1var(--ebsHighlightedText)$2'
+                '$1var(--ebsHighlightedText)$2',
+                '$1var(--ebsPrimaryButtonText)$2',
             ], $newContent
         );
         foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
