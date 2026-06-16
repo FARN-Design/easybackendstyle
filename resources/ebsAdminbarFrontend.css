@@ -1,7 +1,28 @@
-
-#wpadminbar .ab-empty-item, #wpadminbar a.ab-item, #wpadminbar > #wp-toolbar span.ab-label { color: var(--ebsPrimaryText) !important; }
+/* Color setting adminbar */
 #wpadminbar { background: var(--ebsSecondary); }
-#wpadminbar li .ab-icon::before, #wpadminbar li .ab-item::before { color: var(--ebsIcon); }
-#wpadminbar li:hover .ab-icon::before, #wpadminbar li:hover .ab-item::before { color: var(--ebsPrimaryText); }
+
+/* color setting for all labels */
+#wpadminbar .ab-empty-item,
+#wpadminbar a.ab-item,
+#wpadminbar > #wp-toolbar span.ab-label { color: var(--ebsPrimaryText) !important; }
+
+/* Icon colors for the desktop view */
+#wpadminbar:not(.mobile) li .ab-icon::before,
+#wpadminbar:not(.mobile) li .ab-item::before,
+#wpadminbar:not(.mobile) li:hover .ab-icon::before,
+#wpadminbar:not(.mobile) li:hover .ab-item::before { color: var(--ebsIcon); !important; }
+
+/* Icon colors for the mobile view */
+#wpadminbar.mobile .quicklinks .ab-item::before,
+#wpadminbar.mobile .quicklinks .hover .ab-item::before,
+#wpadminbar.mobile .quicklinks .ab-icon::before,
+#wpadminbar.mobile .quicklinks .hover .ab-icon::before { color: var(--ebsIcon); !important; }
+
+/* color setting für buttons/items */
+#wpadminbar:not(.mobile) .ab-top-menu > li > .ab-item { background: var(--ebsSecondary) !important; }
+
+/* color setting for buttons/items while hovering*/
 #wpadminbar:not(.mobile) .ab-top-menu > li:hover > .ab-item { background: var(--ebsSubMenu) !important; }
+
+/* color setting for the dropdown menu*/
 #wpadminbar .menupop .ab-sub-wrapper { background: var(--ebsSubMenu); }

@@ -83,10 +83,11 @@ class easyBackendStyle {
         add_action('init', array($this,'checkEbsColorSchemeOption'), 10, 2);
         add_action('admin_init', array($this, 'registerColorScheme'),0);
         add_action('admin_menu', array($this, 'sub_settings_page'));
-        add_action('admin_head', array($this, 'ebs_backend_css'));
+        add_action('admin_head', array($this, 'ebs_root_variables_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
-        // Design settings for the admin toolbar in the frontend view
         add_action('wp_enqueue_scripts', array($this, 'addStylesToFrontendAdminbar'));
+        add_action('wp_head', array($this, 'ebs_root_variables_css'));
+
         if (!class_exists('ebsDatabaseConnector')) {
             $this->dbc = new ebs_DatabaseConnector();
         }
@@ -183,7 +184,7 @@ class easyBackendStyle {
         return $links;
     }
 
-    function ebs_backend_css(): void
+    function ebs_root_variables_css(): void
     {
         $cssRoot = "<style id='ebs-root-variables'> :root {";
 
