@@ -50,7 +50,10 @@ class ebs_SettingsSubMenu
             $this->dbc->resetDefaults();
         }
 
-        $this->ebs->ebs_backend_css();
+        if (get_user_option('admin_color') != 'personalizedcolorscheme') {
+            echo '<h5 style="color: #CC0000">' . _e('Please select the personalized admin color scheme and reload the site to apply changes.', 'easybackendstyle') . '</h5>';
+        }
+        $this->ebs->ebs_root_variables_css();
     }
 }
 
