@@ -17,11 +17,10 @@ With an automated color generation feature from just three base colors, achievin
 Dive deeper into customization with advanced fields, allowing precise adjustments to fine-tune your backend's appearance.
 This plugin seamlessly integrates with all WordPress backend styles, ensuring a consistent experience across the board.
 
-** Plugin Demo **
 
-[Demo Video](https://www.youtube.com/watch?v=82_csWeNwFc)
+[Demo Video](https://www.youtube.com/watch?v=Kbb0_5kB4eM)
 
-[youtube https://www.youtube.com/watch?v=82_csWeNwFc]
+[youtube https://www.youtube.com/watch?v=Kbb0_5kB4eM]
 
 == Frequently Asked Questions ==
 
@@ -55,8 +54,10 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 == Screenshots ==
 
-1. Advanced color settings
-2. Color auto population
+1. Color settings overview
+2. Customize main colors with color picker
+3. Customize advanced colors with color picker
+4. Personalized Admin Color Scheme
 
 
 == Changelog ==
