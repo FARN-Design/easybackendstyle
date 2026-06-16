@@ -86,22 +86,7 @@ class easyBackendStyle {
         add_action('admin_head', array($this, 'ebs_backend_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
         // Design settings for the admin toolbar in the frontend view
-        add_action('wp_head', function() {
-            $self = $this;
-            if(!is_admin_bar_showing()) return;
-
-            $colorResult = $self->dbc->getValueFromDB('ebsPrimaryText');
-            $backgroundColorResult = $self->dbc->getValueFromDB('ebsSecondary');
-            $iconColorResult = $self->dbc->getValueFromDB('ebsIcon');
-            ?>
-            <style>
-                #wpadminbar .ab-empty-item, #wpadminbar a.ab-item, #wpadminbar > #wp-toolbar span.ab-label { color: <?php echo $colorResult[0][0]; ?> !important; }
-                #wpadminbar { background: <?php echo $backgroundColorResult[0][0]; ?>; }
-                #wpadminbar li .ab-icon::before, #wpadminbar li .ab-item::before { color: <?php echo $iconColorResult[0][0]; ?>; }
-                #wpadminbar li:hover .ab-icon::before, #wpadminbar li:hover .ab-item::before { color: <?php echo $colorResult[0][0]; ?>; }
-            </style>
-        <?php
-        });
+        add_action('wp_enqueue_scripts', array($this, 'addStylesToFrontendAdminbar'));
         if (!class_exists('ebsDatabaseConnector')) {
             $this->dbc = new ebs_DatabaseConnector();
         }
@@ -218,6 +203,11 @@ class easyBackendStyle {
             wp_enqueue_script('ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__), array('wp-color-picker'), false, true);
             wp_enqueue_style('ebs_menuPageCSS', plugins_url('resources/ebsMenuPage.css', __FILE__));
         }
+    }
+
+    function addStylesToFrontendAdminbar($hook): void
+    {
+        wp_enqueue_style('ebsAdminbarFrontend', plugins_url('resources/ebsAdminbarFrontend.css', __FILE__));
     }
 
     function generateColorsCss(): void

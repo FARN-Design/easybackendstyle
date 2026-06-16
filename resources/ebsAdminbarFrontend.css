@@ -1,0 +1,7 @@
+
+#wpadminbar .ab-empty-item, #wpadminbar a.ab-item, #wpadminbar > #wp-toolbar span.ab-label { color: var(--ebsPrimaryText) !important; }
+#wpadminbar { background: var(--ebsSecondary); }
+#wpadminbar li .ab-icon::before, #wpadminbar li .ab-item::before { color: var(--ebsIcon); }
+#wpadminbar li:hover .ab-icon::before, #wpadminbar li:hover .ab-item::before { color: var(--ebsPrimaryText); }
+#wpadminbar:not(.mobile) .ab-top-menu > li:hover > .ab-item { background: var(--ebsSubMenu) !important; }
+#wpadminbar .menupop .ab-sub-wrapper { background: var(--ebsSubMenu); }
