@@ -213,7 +213,6 @@ jQuery(document).ready(function ($){
           subMenu = convertHSLToHex([scHSL[0], scHSL[1], scHSL[2] + 10]);
       }
 
-      // TODO: Buttontextfarb-Variable raussuchen & ändern, damit das hier wieder klappt?
       // colors based on pcLightness
       let buttonText = "#000000";
       if(pcLightness == "dark"){
@@ -253,6 +252,7 @@ jQuery(document).ready(function ($){
               case "ebsSubMenuText"             :       newColor = allText;         break;
               case "ebsSecondaryLighter"        :       newColor = subMenu;         break;
               case "ebsHighlightedText"         :       newColor = highlightedText; break;
+              case "ebsPrimaryButtonText"       :       newColor = buttonText;      break;
           }
           $(this).val(newColor);
           $('.wrapper_'+colorInputName).find('button.wp-color-result').css('background-color',newColor);

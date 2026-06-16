@@ -128,8 +128,10 @@
 .ebs_advanced_settings_column .hex_code {
     font-size: smaller;
 }
-.ebs_main_colors .wrapper_ebsSecondary .main_label_group,
-.ebs_main_colors .wrapper_ebsPrimary .main_label_group{
+.ebs_main_colors .wrapper_ebsPrimary .main_label_group {
+    color: var(--ebsPrimaryButtonText);
+}
+.ebs_main_colors .wrapper_ebsSecondary .main_label_group {
     color: var(--ebsPrimaryText);
 }
 .ebs_main_colors .wrapper_ebsTertiary .main_label_group{
