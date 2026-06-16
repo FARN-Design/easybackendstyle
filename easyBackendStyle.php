@@ -105,7 +105,6 @@ class easyBackendStyle {
         if (!class_exists('ebsDatabaseConnector')) {
             $this->dbc = new ebs_DatabaseConnector();
         }
-        $this->dbc->checkFields();
     }
 
     //On activation of the plugin
