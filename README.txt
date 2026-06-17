@@ -3,7 +3,7 @@ Contributors: farndesign
 Tags: admin theme, backend theme, customize design, WordPress customization, Color scheme
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 3.2.0
+Stable tag: 3.2.1
 Requires PHP: 8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -61,6 +61,11 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 
 == Changelog ==
+
+= 3.2.1 =
+New - Added styling for the admin bar search icon.
+Fix - Allowed clicks to pass through label group to color picker button.
+Fix - Added admin note regarding the color scheme change.
 
 = 3.2.0 =
 Fix - Restored admin toolbar styling in frontend view.
