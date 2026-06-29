@@ -85,6 +85,7 @@ class easyBackendStyle {
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_root_variables_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
+        add_action('upgrader_process_complete', array($this, 'newCssAfterUpgrade'), 10, 2);
         add_action('wp_enqueue_scripts', array($this, 'addStylesToFrontendAdminbar'));
         add_action('wp_head', array($this, 'ebs_root_variables_css'));
 
@@ -134,7 +135,19 @@ class easyBackendStyle {
             "ebsPrimaryButtonText" => [__('button text', 'easybackendstyle'), ["#fff"],'#ffffff', __('Sets the color of the button text', 'easybackendstyle')],
         ];
     }
-    function is_css_generated(): void {
+
+    function newCssAfterUpgrade($upgrader_object, $options)
+    {
+        $current_plugin_path_name = plugin_basename( __FILE__ );
+
+        if ($options['action'] == 'update' && $options['type'] == 'plugin' ) {
+            if (in_array($current_plugin_path_name, $options['plugins'])) {
+                $this->generateColorsCss();
+            }
+        }
+    }
+    function is_css_generated(): void
+    {
         $bool = get_option('is_css_generated', false);
         if ($bool === false) {
             $this->generateColorsCss();
@@ -275,7 +288,7 @@ class easyBackendStyle {
         wp_admin_css_color(
                 'personalizedcolorscheme',
                 __('Personalized Colors'),
-                plugin_dir_url(__FILE__) . 'resources/ebsMainCSS.css',
+                plugin_dir_url(__FILE__) . 'resources/ebsMainCSS.css' . '?' . filemtime( EBS_PLUGIN_PATH . '/resources/ebsMainCSS.css' ),
                 $colorsArray
         );
     }
