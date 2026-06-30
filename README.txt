@@ -18,9 +18,9 @@ Dive deeper into customization with advanced fields, allowing precise adjustment
 This plugin seamlessly integrates with all WordPress backend styles, ensuring a consistent experience across the board.
 
 
-[Demo Video](https://www.youtube.com/watch?v=Kbb0_5kB4eM)
+[Demo Video](https://www.youtube.com/watch?v=Csqn_lJujb8)
 
-[youtube https://www.youtube.com/watch?v=Kbb0_5kB4eM]
+[youtube https://www.youtube.com/watch?v=Csqn_lJujb8]
 
 == Frequently Asked Questions ==
 
