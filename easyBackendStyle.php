@@ -79,13 +79,13 @@ class easyBackendStyle {
         add_action('init', array($this, 'color_mapping'),7);
         add_action('init', array($this, 'is_migration_needed'), 8);
         add_action('init', array($this,'is_css_generated'), 9);
+        add_action('init', array($this, 'afterUpdateValidation'), 10, 2);
         add_action('init', array($this, 'init_db'));
         add_action('init', array($this,'checkEbsColorSchemeOption'), 10, 2);
         add_action('admin_init', array($this, 'registerColorScheme'),0);
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_root_variables_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
-        add_action('upgrader_process_complete', array($this, 'newCssAfterUpgrade'), 10, 2);
         add_action('wp_enqueue_scripts', array($this, 'addStylesToFrontendAdminbar'));
         add_action('wp_head', array($this, 'ebs_root_variables_css'));
 
@@ -305,6 +305,19 @@ class easyBackendStyle {
         $user_id = get_current_user_id();
         if (get_user_meta($user_id, 'ebs_scheme_initialized', true) !== '1') {
             $this->changeAdminColorScheme($user_id);
+        }
+    }
+
+    function afterUpdateValidation():void
+    {
+        $version_number = get_plugin_data(__FILE__)["Version"];
+        $option_name = "ebs_css_updated_after_update_" . $version_number;
+
+        $css_updated = get_option($option_name , false);
+
+        if (!$css_updated){
+            $this->generateColorsCss();
+            update_option($option_name, true);
         }
     }
 }
