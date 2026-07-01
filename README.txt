@@ -3,7 +3,7 @@ Contributors: farndesign
 Tags: admin theme, backend theme, customize design, WordPress customization, Color scheme
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 3.2.2
+Stable tag: 3.2.3
 Requires PHP: 8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -61,6 +61,10 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 
 == Changelog ==
+
+= 3.2.3 =
+New - Added a feature to regenerate CSS files during plugin updates.
+Tweak - Updated the YouTube link in the readme.
 
 = 3.2.2 =
 New - Added a feature to generate new CSS files during plugin updates.

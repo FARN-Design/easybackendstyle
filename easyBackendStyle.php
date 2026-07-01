@@ -4,7 +4,7 @@
 Plugin Name:       Easy Backend-Style
 Plugin URI:        https://github.com/farndesign/easyBackendStyle
 Description:       Easily modify your backend interface's color schemes for a fresh look using an automated color generation feature based on two base colors, and have advanced customization options to fine-tune your backend's appearance.
-Version: 3.2.2
+Version: 3.2.3
 Author:            FARN – digital brand design
 Author URI:        https://www.farn.de
 Text Domain:       easybackendstyle
@@ -310,7 +310,7 @@ class easyBackendStyle {
 
     function afterUpdateValidation():void
     {
-        $version_number = get_plugin_data(__FILE__)["Version"];
+Version: 3.2.3
         $option_name = "ebs_css_updated_after_update_" . $version_number;
 
         $css_updated = get_option($option_name , false);
