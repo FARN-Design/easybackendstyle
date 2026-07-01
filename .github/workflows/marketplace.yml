@@ -14,8 +14,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: sed -i "s/.*Stable tag.*/Stable tag:\ ${{  github.ref_name }}/" README.txt
-      - run: sed -i 's/.*Version.*/Version:\ ${{  github.ref_name }}/' ${{ env.MAIN_PLUGIN_FILE }}
+      - run: sed -i "0,/.*Stable tag.*/s//Stable tag:\ ${{  github.ref_name }}/" README.txt
+      - run: sed -i '0,/.*Version.*/s//Version:\ ${{  github.ref_name }}/' ${{ env.MAIN_PLUGIN_FILE }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
