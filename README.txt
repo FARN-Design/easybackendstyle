@@ -63,9 +63,7 @@ In the event that a predilection for a more detailed design arises, you can manu
 == Changelog ==
 
 = 3.2.3 =
-New - Added a feature to regenerate CSS files during plugin updates.
-Tweak - Updated the YouTube link in the readme.
-
+New - Added a feature to generate new CSS files during plugin updates.
 = 3.2.2 =
 New - Added a feature to generate new CSS files during plugin updates.
 
