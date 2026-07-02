@@ -64,6 +64,7 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 = 3.2.3 =
 New - Added a feature to generate new CSS files during plugin updates.
+Tweak - Updated YouTube link in the readme.
 = 3.2.2 =
 New - Added a feature to generate new CSS files during plugin updates.
 
