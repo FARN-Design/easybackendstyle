@@ -181,10 +181,15 @@ class easyBackendStyle {
         include_once(__DIR__ . '/src/ebs_SettingsSubMenu.php');
     }
 
+    //TODO We need a check if the fields are set. PLease check if the return type of null dose not break the system!
     //In class function that calls the getValueFromDB() function from the DatabaseConnector.
     function getColor($name)
     {
-        return $this->dbc->getValueFromDB($name)[0][0];
+        if (isset($this->dbc->getValueFromDB($name)[0]) && $this->dbc->getValueFromDB($name)[0][0]){
+            return $this->dbc->getValueFromDB($name)[0][0];
+        } else {
+            return null;
+        }
     }
 
     function linkToEBSSettingsPage($links)
