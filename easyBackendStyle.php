@@ -310,7 +310,7 @@ class easyBackendStyle {
 
     function afterUpdateValidation():void
     {
-Version: 3.2.3
+        $version_number = get_plugin_data(__FILE__)["Version"];
         $option_name = "ebs_css_updated_after_update_" . $version_number;
 
         $css_updated = get_option($option_name , false);
