@@ -1,6 +1,6 @@
-=== Easy Backend-Style ===
+=== Easy Backend-Style – Custom WordPress admin and dashboard design ===
 Contributors: farndesign
-Tags: admin theme, backend theme, customize design, WordPress customization, Color scheme
+Tags: admin design, dashboard design, backend design, wordpress admin, custom colors
 Requires at least: 6.0
 Tested up to: 7.0
 Stable tag: 3.2.3
@@ -8,15 +8,19 @@ Requires PHP: 8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
-This plugin allows you to easily customize the colors in the backend. The changes are easily made via predefined fields.
+Customize your WordPress admin dashboard design effortlessly with Easy Backend-Style.
 
 == Description ==
 
-Seamlessly adjust color schemes, effortlessly transforming the look and feel of your backend interface.
-With an automated color generation feature from just three base colors, achieving a cohesive design is a breeze.
-Dive deeper into customization with advanced fields, allowing precise adjustments to fine-tune your backend's appearance.
-This plugin seamlessly integrates with all WordPress backend styles, ensuring a consistent experience across the board.
+Transform your WordPress admin dashboard design in minutes. Simply select your colors, and the plugin automatically applies them to menus, buttons, and other elements of your backend interface.
 
+**Easy. Fast. No coding required.**
+
+* Define Your Colors: Set your base colors, and the plugin generates a cohesive admin design.
+* Fine-Tuning: Optionally adjust specific elements for a perfect look.
+* Fully Compatible: Works with any WordPress theme and all standard backend styles.
+
+Ideal for agencies looking to provide clients with a tailored admin design, or anyone wanting to personalize their dashboard design for a better workflow experience.
 
 [Demo Video](https://www.youtube.com/watch?v=Csqn_lJujb8)
 
