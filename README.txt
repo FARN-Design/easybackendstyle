@@ -3,7 +3,7 @@ Contributors: farndesign
 Tags: admin design, dashboard design, backend design, wordpress admin, custom colors
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 3.2.3
+Stable tag: 3.2.4
 Requires PHP: 8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -65,6 +65,9 @@ In the event that a predilection for a more detailed design arises, you can manu
 
 
 == Changelog ==
+
+= 3.2.4 =
+Tweak - Internal optimizations and stability improvements.
 
 = 3.2.3 =
 New - Added a feature to generate new CSS files during plugin updates.
