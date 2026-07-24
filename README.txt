@@ -1,6 +1,6 @@
 === Easy Backend-Style – Custom WordPress admin and dashboard design ===
 Contributors: farndesign
-Tags: admin design, dashboard design, backend design, wordpress admin, custom colors
+Tags: admin theme, dashboard design, backend design, wordpress admin, custom colors
 Requires at least: 6.0
 Tested up to: 7.0
 Stable tag: 3.2.4
