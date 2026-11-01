@@ -1,32 +1,9 @@
-import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
-  testDir: './',
-  testMatch: '*.spec.ts',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'line',
-  use: {
-    /* Collect trace when retrying the failed test. */
-    trace: 'on-first-retry',
-    headless: true,
-  },
-
-  /* Configure projects for major browsers */
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ]
+  testDir: './', testMatch: '*.spec.ts', workers: 1, forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 1 : 0,
+  webServer: { command: 'node scripts/serve-e2e.mjs', cwd: new URL('../..', import.meta.url).pathname,
+    wait: { stdout: /WordPress is running on/ }, reuseExistingServer: false, timeout: 120000 },
+  use: { baseURL: 'http://127.0.0.1:8081', trace: 'retain-on-failure' },
+  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
 });

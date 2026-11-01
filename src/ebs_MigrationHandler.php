@@ -1,178 +1,74 @@
 <?php
-
 namespace Farn\EasyBackendStyle;
-use Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector as oldDataBaseConnector;
-use Farn\EasyBackendStyle\ebs_DatabaseConnector;
-use Farn\EasyBackendStyle\pluginActivationHandler;
-use wpdb;
 
-class ebs_MigrationHandler
-{
-    // Keep historical update announcements disabled; migration warnings remain active.
-    private const SHOW_UPDATE_NOTICES = false;
+/** Recoverable upgrade; never drops the original table or replaces existing modern colors. */
+class ebs_MigrationHandler {
+    public const VERSION = '2';
+    public const VERSION_OPTION = 'ebs_schema_version';
+    private const PENDING = 'ebs_migration_pending';
+    private const BACKUP = 'ebs_legacy_colors_backup';
+    private const LOCK = 'ebs_migration_lock';
 
-    private wpdb $wpdb;
-    private oldDataBaseConnector $odbc;
-    private ebs_DatabaseConnector $dbc;
-    private bool $is_migration_needed = false;
-    private bool $first_step_successful = false;
-    private bool $second_step_successful = false;
-    private string $old_table_name;
-    private string $new_table_name;
-    private string $charset_collate;
-
-    function __construct()
-    {
-        global $wpdb;
-        $this->wpdb = $wpdb;
-        $this->odbc = new oldDataBaseConnector();
-        $this->dbc = new ebs_DatabaseConnector();
-        $this->old_table_name = $this->odbc->tableName;
-        $this->new_table_name = $this->dbc->tableName;
-        $this->charset_collate = $wpdb->get_charset_collate();
-
-        add_action('admin_notices', [$this, 'userFeedback']);
-    }
-
-    public function migration()
-    {
-        $this->migrationNeeded();
-
-        if($this->is_migration_needed){
-            $this->startMigration();
+    public function migration(): bool {
+        if (get_option(self::VERSION_OPTION) === self::VERSION) return true;
+        // A unique option serializes concurrent upgrades; an interrupted request can retry.
+        $lock = get_option(self::LOCK);
+        if ($lock && (int) $lock < time() - 300) {
+            global $wpdb;
+            // Compare-and-delete: never remove a lock acquired by a competing request.
+            $wpdb->delete($wpdb->options, ['option_name' => self::LOCK, 'option_value' => (string) $lock], ['%s', '%s']);
+            wp_cache_delete(self::LOCK, 'options');
         }
-    }
-    /**
-     * This function checks whether a migration process is necessary.
-     */
-    // For now, the is_migration_needed option has been added both here and at the end of startMigration,
-    // to catch all pages (including those that have already been migrated), so that migrationNeeded()
-    // can be removed or deprecated later
-    private function migrationNeeded() : bool
-    {
-        if($this->wpdb->get_var("show tables like '" . $this->new_table_name . "'") == $this->new_table_name){
-            $this->is_migration_needed = false;
-            update_option("is_migration_needed", false);
-        } elseif($this->wpdb->get_var("show tables like '" . $this->old_table_name . "'") == $this->old_table_name){
-            $this->is_migration_needed = true;
-            update_option("is_migration_needed", true);
-        } else {
-            $this->is_migration_needed = false;
-        }
-        return $this->is_migration_needed;
-    }
-
-    private function startMigration() : void
-    {
-        // manages the various steps of the migration process + add an option, for future updates
-            $this->createNewTable();
-            $this->migrateValues();
-            $this->validateMigrationsSteps();
-            add_option("is_migration_needed", false);
-    }
-
-    private function migrateValues() : void
-    {
-        $map = [
-            "primaryColor" => "ebsPrimary",
-            "menuText" => "ebsPrimaryText",
-            "secondaryColor" => "ebsSecondary",
-            "subMenu" => "ebsSubMenu",
-            "menuText" => "ebsSubMenuText",
-            "notification" => "ebsNotification",
-            "icon" => "ebsIcon",
-            "background" => "ebsBackground",
-            "links" => "ebsLinks",
-            "linkHover" => "ebsLinksHover",
-            "disabledButton" => "ebsDisabledButtonBorder",
-            "disabledButtonText" => "ebsDisabledButtonText",
-            "highlight" => "ebsTertiary",
-            "highlightText" => "ebsHighlightedText",
-            "buttonHover" => "ebsPrimaryDarker10",
-        ];
-
-        foreach ($map as $old_key => $new_key) {
-            $temp_value = $this->odbc->getValueFromDB($old_key);
-            $this->dbc->saveValueInDB($temp_value[0][0], $new_key);
-        }
-        if(empty($this->wpdb->last_error)){
-            $this->second_step_successful = true;
+        if (!add_option(self::LOCK, time(), '', false)) return false;
+        try {
+            return $this->upgrade();
+        } finally {
+            delete_option(self::LOCK);
         }
     }
 
-    private function createNewTable() : void
-    {
-        $this->dbc->setup_Database();
-        if(empty($this->wpdb->last_error)){
-            $this->first_step_successful = true;
+    private function upgrade(): bool {
+        $old = new deprecated\ebs_DatabaseConnector();
+        $new = new ebs_DatabaseConnector();
+        $pending = get_option(self::PENDING, false);
+        if (!$new->tableExists() && $old->tableExists() && !$pending) {
+            // Persist the exact old values before creating anything. Retain unmapped keys too.
+            $snapshot = $old->allColors();
+            global $wpdb;
+            if ($wpdb->last_error) return false;
+            if (get_option(self::BACKUP, null) === null && !add_option(self::BACKUP, $snapshot, '', false)) return false;
+            if (!add_option(self::PENDING, '1', '', false)) return false;
+            $pending = true;
         }
-    }
-
-    private function deleteOldTable() : void
-    {
-        // Query smth like: DROP TABLE IF EXISTS $oldTableName - wpdb::delete löscht nur reihen, keine tables
-        $this->wpdb->query("DROP TABLE IF EXISTS $this->old_table_name;");
-    }
-    private function validateMigrationsSteps() : void
-    {
-        if($this->first_step_successful && $this->second_step_successful) {
-            $this->deleteOldTable();
-            update_option('ebs_plugin_notice_success', true);
-            update_option('ebs_plugin_notice_warning', false);
-        } else {
-            update_option('ebs_plugin_notice_success', false);
-            update_option('ebs_plugin_notice_warning', true);
+        if (!$new->setup_Database()) return false;
+        if ($pending) {
+            $snapshot = get_option(self::BACKUP, null);
+            if (!is_array($snapshot)) return false;
+            // Destination keys are unique: menuText intentionally feeds two fields.
+            $map = [
+                'ebsPrimary' => 'primaryColor', 'ebsSecondary' => 'secondaryColor',
+                'ebsPrimaryText' => 'menuText', 'ebsSubMenuText' => 'menuText',
+                'ebsSubMenu' => 'subMenu', 'ebsNotification' => 'notification',
+                'ebsIcon' => 'icon', 'ebsBackground' => 'background',
+                'ebsLinks' => 'links', 'ebsLinksHover' => 'linkHover',
+                'ebsDisabledButtonText' => 'disabledButtonText', 'ebsTertiary' => 'highlight',
+                'ebsHighlightedText' => 'highlightText', 'ebsPrimaryDarker10' => 'buttonHover',
+                'ebsPrimaryButtonText' => 'buttonText',
+            ];
+            $values = [];
+            foreach ($map as $destination => $source) {
+                $value = $snapshot[$source] ?? $old->defaults()[$source];
+                if (!is_string($value) || !sanitize_hex_color($value)) return false;
+                $values[$destination] = $value;
+            }
+            if (!$new->saveColors($values)) return false;
         }
-        update_option('ebs_plugin_notice_info', true);
-    }
-
-    public function userFeedback(): void
-    {
-        if (isset($_GET['dismiss_notice'])) {
-            $which = $_GET['dismiss_notice'];
-            if($which === 'info') delete_option('ebs_plugin_notice_info');
-            if($which === 'success') delete_option('ebs_plugin_notice_success');
-            if($which === 'warning') delete_option('ebs_plugin_notice_warning');
-        }
-
-        $screen = get_current_screen();
-        $current_url = $_SERVER['REQUEST_URI'];
-        $symbol = str_contains($current_url, '?') ? '&' : '?';
-
-        // info notice - only visible on settings_page
-        if (self::SHOW_UPDATE_NOTICES && get_option("ebs_plugin_notice_info") && $screen->id === "settings_page_easyBackendStyle") {
-            wp_admin_notice(
-                '<strong>' . __("What's new in this update:", "easybackendstyle") . '</strong>
-                    <ul>
-                        <li>' . __("A third primary color option has been added", "easybackendstyle") . '</li>
-                        <li>' . __("Various color values have been redistributed and reorganized", "easybackendstyle") . '</li>
-                        <li>' . __("New color settings have been introduced", "easybackendstyle") . '</li>
-                    </ul>
-                    <p>' . __("Please note: Your existing color profiles have been migrated where possible", "easybackendstyle") . '</p>
-                    <p>' . __("Newly added color settings have been pre-filled with default values and may require manual adjustment to match your design.", "easybackendstyle") . '</p>
-                    <a href="' . admin_url('admin.php?page=easyBackendStyle&dismiss_notice=info') . '" class="button">' . __("Got it", "easybackendstyle") . '</a>',
-                ["type" => "info", "dismissible" => false]
-            );
-        }
-        // success & warning notices - visible throughout the admin menu
-        if (self::SHOW_UPDATE_NOTICES && get_option("ebs_plugin_notice_success")) {
-            wp_admin_notice(
-                '<strong>' . __("Update Successful:", "easybackendstyle") . '</strong>
-                    <p>' . __("Plugin Easy Backend-Style has received an update with new features and improvements.", "easybackendstyle") . '</p>
-                    <p>' . __("The plugin has been updated successfully.", "easybackendstyle") . '</p>
-                    <p>' . __("Your existing color profiles have been migrated. Please check you administration color scheme.", "easybackendstyle") . '</p> <a href="' . $current_url . $symbol . 'dismiss_notice=success" class="button">' . __("Got it", "easybackendstyle") . '</a>',
-                ['type' => 'success', 'dismissible' => false]
-            );
-        }
-        if (get_option("ebs_plugin_notice_warning")) {
-            wp_admin_notice(
-                '<strong>' . __("Update Warning:", "easybackendstyle") . '</strong>
-                    <p>' . __("Plugin Easy Backend-Style has received an update with new features and improvements.", "easybackendstyle") . '</p>
-                    <p>' . __("Something went wrong during the update process.", "easybackendstyle") . '</p>
-                    <p>' . __("Your settings may not have been migrated correctly.", "easybackendstyle") . '</p>
-                    <p>' . __("Please check your Plugin-Settingspage.", "easybackendstyle") . '</p> <a href="' . $current_url . $symbol . '&dismiss_notice=warning" class="button">' . __("Got it", "easybackendstyle") . '</a>',
-                ['type' => 'warning', 'dismissible' => false]
-            );
-        }
+        // A failed marker write must not turn a partial upgrade into a completed one.
+        update_option(self::VERSION_OPTION, self::VERSION, false);
+        if (get_option(self::VERSION_OPTION) !== self::VERSION) return false;
+        delete_option(self::PENDING);
+        // Remove obsolete announcements only after successful verification.
+        foreach (['is_migration_needed', 'ebs_plugin_notice_info', 'ebs_plugin_notice_success', 'ebs_plugin_notice_warning', '_transient_ebs_pah_error_on_activation', '_transient_timeout_ebs_pah_error_on_activation'] as $name) delete_option($name);
+        return true;
     }
 }

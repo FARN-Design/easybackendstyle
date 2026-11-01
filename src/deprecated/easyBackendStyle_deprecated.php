@@ -26,34 +26,39 @@ class easyBackendStyle_deprecated
     function __construct()
     {
         $GLOBALS['ebsPlugin'] = $this;
-        register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
-        register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
+        register_activation_hook( EBS_PLUGIN_PATH . 'easyBackendStyle.php', array( $GLOBALS['ebsPlugin'], 'activate' ) );
+        register_deactivation_hook( EBS_PLUGIN_PATH . 'easyBackendStyle.php', array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
 
-        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
+        add_filter('plugin_action_links_' . plugin_basename(EBS_PLUGIN_PATH . 'easyBackendStyle.php'), array($this, 'linkToEBSSettingsPage'));
 
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_backend_css'));
-        add_action('wp_head', array($this, 'ebs_backend_css'));
+        add_action('admin_init', [$this, 'initialize']);
+        add_action('wp_enqueue_scripts', [$this, 'frontendAdminbar']);
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
 
-        if (!class_exists('ebsDatabaseConnector')) {
-            $this->dbc = new ebs_DatabaseConnector();
-        }
-        $this->dbc->checkFields();
+        $this->dbc = new ebs_DatabaseConnector();
     }
 
-    //On activation of the plugin
-    function activate(): void
-    {
-        $this->dbc->setup_Database();
-        $this->sub_settings_page();
-        flush_rewrite_rules();
+    public function initialize(): void {
+        if (current_user_can('manage_options') && get_option('ebs_legacy_schema_version') !== '1') $this->activate();
     }
 
-    //On deactivation of the plugin
-    function deactivate(): void
-    {
-        flush_rewrite_rules();
+    public function activate(): void {
+        if ($this->dbc->setup_Database()) update_option('ebs_legacy_schema_version', '1', false);
+        else \Farn\EasyBackendStyle\AdminSettings::databaseWarning();
+    }
+
+    public function deactivate(): void {}
+
+    public function frontendAdminbar(): void {
+        if (!is_user_logged_in() || !is_admin_bar_showing() || get_user_option('admin_color') !== 'fresh') return;
+        if (get_option('ebs_legacy_schema_version') !== '1') return;
+        wp_enqueue_style('ebsAdminbarFrontend', plugins_url('resources/ebsAdminbarFrontend.css', EBS_PLUGIN_PATH . 'easyBackendStyle.php'), [], filemtime(EBS_PLUGIN_PATH . 'resources/ebsAdminbarFrontend.css'));
+        $map = ['ebsSecondary' => 'baseMenu', 'ebsPrimaryText' => 'menuText', 'ebsIcon' => 'icon', 'ebsSubMenu' => 'subMenu'];
+        $css = '#wpadminbar {';
+        foreach ($map as $target => $key) $css .= '--' . $target . ':' . $this->getColor($key) . ';';
+        wp_add_inline_style('ebsAdminbarFrontend', $css . '}');
     }
 
     /**
@@ -82,7 +87,7 @@ class easyBackendStyle_deprecated
     //In class function that calls the getValueFromDB() function from the DatabaseConnector.
     function getColor($name)
     {
-        return $this->dbc->getValueFromDB($name)[0][0];
+        return sanitize_hex_color($this->dbc->getValueFromDB($name)[0][0] ?? '') ?: ($this->dbc->defaults()[$name] ?? '#000000');
     }
 
     function linkToEBSSettingsPage($links)
@@ -92,7 +97,7 @@ class easyBackendStyle_deprecated
     }
     function ebs_backend_css(): void
     {
-        if (get_user_option('admin_color') != 'fresh') {
+        if (!is_admin() || get_user_option('admin_color') !== 'fresh') {
             return;
         }
         echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css">';

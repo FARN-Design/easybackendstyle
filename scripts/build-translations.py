@@ -17,7 +17,7 @@ root = Path(__file__).resolve().parents[1]
 languages = root / 'src/languages'
 cli = [args.php, '-d', 'error_reporting=22527', args.wp_cli] if args.wp_cli.endswith('.phar') else [args.wp_cli]
 locales = ['de_DE', 'de_DE_formal']
-exclude = 'vendor,vendor-prefixed,node_modules,tests,output,docs,build,src/core/resources/vendor,src/core/resources/jsx/sidebar_additions/node_modules'
+exclude = 'vendor,node_modules,tests,output,docs,build'
 
 
 def run(*arguments):

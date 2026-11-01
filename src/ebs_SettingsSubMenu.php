@@ -2,24 +2,27 @@
 namespace Farn\EasyBackendStyle;
 
 $plugin = $GLOBALS['ebsPlugin'];
-$plugin->dbc->checkFields();
 $definitions = $GLOBALS['ebsColorMapping'];
 $defaults = array_map(static fn($definition) => $definition[2], $definitions);
-AdminSettings::handle($plugin->dbc, $defaults);
+if (get_option(ebs_MigrationHandler::VERSION_OPTION) === ebs_MigrationHandler::VERSION && $plugin->dbc->checkFields()) {
+    AdminSettings::handle($plugin->dbc, $defaults);
+} elseif (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
+    AdminSettings::saveFailure();
+}
 $plugin->ebs_root_variables_css();
 $main = ['ebsPrimary', 'ebsSecondary', 'ebsTertiary'];
 $renderColor = static function ($key, $definition, $isMain) use ($plugin) {
     $value = sanitize_hex_color($plugin->getColor($key)) ?: $definition[2];
     ?>
     <div class="<?php echo esc_attr('wrapper_' . $key); ?> ebs-color-field">
+        <input type="text" name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>"
+            value="<?php echo esc_attr($value); ?>" class="<?php echo $isMain ? 'ebs_mainColorPicker' : 'ebs_colorPicker'; ?>"
+            data-default-color="<?php echo esc_attr($definition[2]); ?>" aria-describedby="<?php echo esc_attr('description_' . $key); ?>" />
         <div class="<?php echo $isMain ? 'main_label_group' : 'label_group'; ?>">
             <label class="main_color_label" for="<?php echo esc_attr($key); ?>"><?php echo esc_html($definition[0]); ?></label>
             <small class="color_description" id="<?php echo esc_attr('description_' . $key); ?>"><?php echo esc_html($definition[3]); ?></small>
             <span class="hex_code"><?php echo esc_html($value); ?></span>
         </div>
-        <input type="text" name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>"
-            value="<?php echo esc_attr($value); ?>" class="<?php echo $isMain ? 'ebs_mainColorPicker' : 'ebs_colorPicker'; ?>"
-            data-default-color="<?php echo esc_attr($definition[2]); ?>" aria-describedby="<?php echo esc_attr('description_' . $key); ?>" />
     </div>
     <?php
 };

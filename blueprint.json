@@ -1,22 +1,19 @@
 {
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "preferredVersions": {
+    "php": "8.5",
+    "wp": "latest"
+  },
+  "landingPage": "/wp-admin/options-general.php?page=easyBackendStyle",
   "steps": [
     {
-      "step": "defineWpConfigConsts",
-      "consts": {
-        "WP_DEBUG": true
-      }
-    },
-    {
       "step": "activatePlugin",
-      "pluginPath": "/wordpress/wp-content/plugins/easybackendstyle/easybackendstyle.php"
-    },
-    {
-      "step": "wp-cli",
-      "command": "wp post create --post_title='Test post' --post_excerpt='Some content'"
+      "pluginPath": "easybackendstyle/easyBackendStyle.php"
     },
     {
       "step": "login",
-      "username": "admin"
+      "username": "admin",
+      "password": "password"
     }
   ]
 }

@@ -1,9 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Easy Backend-Style\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/"
-"easybackendstyle/\n"
-"POT-Creation-Date: 2026-11-01 00:00+0000\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ebs-hardening\n"
+"POT-Creation-Date: 2026-11-01T21:59:14+00:00\n"
 "PO-Revision-Date: 2026-11-01 00:00+0000\n"
 "Last-Translator: FARN Labs\n"
 "Language-Team: FARN Labs\n"
@@ -43,195 +42,213 @@ msgstr "FARN Labs"
 msgid "https://www.farnlabs.com"
 msgstr "https://www.farnlabs.de"
 
-#: easyBackendStyle.php:116 src/deprecated/ebs_SettingsSubMenu.php:148
+#: easyBackendStyle.php:113 src/deprecated/ebs_SettingsSubMenu.php:145
 msgid "background"
 msgstr "Hintergrund"
 
-#: easyBackendStyle.php:116
+#: easyBackendStyle.php:113
 msgid "Sets the background color of the page"
 msgstr "Legt die Hintergrundfarbe der Seite fest"
 
-#: easyBackendStyle.php:117 src/deprecated/ebs_SettingsSubMenu.php:155
+#: easyBackendStyle.php:114 src/deprecated/ebs_SettingsSubMenu.php:152
 msgid "links"
 msgstr "Links"
 
-#: easyBackendStyle.php:117
+#: easyBackendStyle.php:114
 msgid "Sets the links color of the page"
 msgstr "Legt die Linkfarbe der Seite fest"
 
-#: easyBackendStyle.php:118 src/deprecated/ebs_SettingsSubMenu.php:162
+#: easyBackendStyle.php:115 src/deprecated/ebs_SettingsSubMenu.php:159
 msgid "link hover"
 msgstr "Links beim Darüberfahren"
 
-#: easyBackendStyle.php:118
+#: easyBackendStyle.php:115
 msgid "Sets the links hover color of the page"
 msgstr "Legt die Linkfarbe beim Darüberfahren fest"
 
-#: easyBackendStyle.php:119
+#: easyBackendStyle.php:116
 msgid "primary"
 msgstr "Primärfarbe"
 
-#: easyBackendStyle.php:119
+#: easyBackendStyle.php:116
 msgid "Sets the main color for headings and buttons"
 msgstr "Legt die Hauptfarbe für Überschriften und Buttons fest"
 
-#: easyBackendStyle.php:120 src/deprecated/ebs_SettingsSubMenu.php:185
+#: easyBackendStyle.php:117 src/deprecated/ebs_SettingsSubMenu.php:182
 msgid "button hover"
 msgstr "Buttons beim Darüberfahren"
 
-#: easyBackendStyle.php:120
+#: easyBackendStyle.php:117
 msgid "Sets the button color when hovering over it"
 msgstr "Legt die Buttonfarbe beim Darüberfahren fest"
 
-#: easyBackendStyle.php:121
+#: easyBackendStyle.php:118
 msgid "button click"
 msgstr "Buttons beim Anklicken"
 
-#: easyBackendStyle.php:121
+#: easyBackendStyle.php:118
 msgid "Sets the button color when clicking it"
 msgstr "Legt die Buttonfarbe beim Anklicken fest"
 
-#: easyBackendStyle.php:122
+#: easyBackendStyle.php:119
 msgid "nested submenu"
 msgstr "Verschachtelte Untermenüs"
 
-#: easyBackendStyle.php:122
+#: easyBackendStyle.php:119
 msgid "Sets the adaptive accent color for image borders and nested menus"
 msgstr "Legt die Akzentfarbe für Bildränder und verschachtelte Menüs fest"
 
-#: easyBackendStyle.php:123
+#: easyBackendStyle.php:120
 msgid "delete links"
 msgstr "Löschlinks"
 
-#: easyBackendStyle.php:123
+#: easyBackendStyle.php:120
 msgid "Sets the color of links that trigger a deletion"
 msgstr "Legt die Farbe von Links zum Löschen fest"
 
-#: easyBackendStyle.php:124
+#: easyBackendStyle.php:121
 msgid "delete links hover"
 msgstr "Löschlinks beim Darüberfahren"
 
-#: easyBackendStyle.php:124
+#: easyBackendStyle.php:121
 msgid "Sets the color of delete links when hovering over them"
 msgstr "Legt die Farbe von Löschlinks beim Darüberfahren fest"
 
-#: easyBackendStyle.php:125
+#: easyBackendStyle.php:122
 msgid "disabled button text"
 msgstr "Text deaktivierter Buttons"
 
-#: easyBackendStyle.php:125
+#: easyBackendStyle.php:122
 msgid "Sets the color of disabled button text"
 msgstr "Legt die Textfarbe deaktivierter Buttons fest"
 
-#: easyBackendStyle.php:126
+#: easyBackendStyle.php:123
 msgid "secondary"
 msgstr "Sekundärfarbe"
 
-#: easyBackendStyle.php:126
+#: easyBackendStyle.php:123
 msgid "Sets the color of the menu"
 msgstr "Legt die Menüfarbe fest"
 
-#: easyBackendStyle.php:127
+#: easyBackendStyle.php:124
 msgid "tertiary"
 msgstr "Tertiärfarbe"
 
-#: easyBackendStyle.php:127
+#: easyBackendStyle.php:124
 msgid "Sets the color used to highlight the current menu item"
 msgstr "Legt die Farbe für den aktiven Menüpunkt fest"
 
-#: easyBackendStyle.php:128 src/deprecated/ebs_SettingsSubMenu.php:125
+#: easyBackendStyle.php:125 src/deprecated/ebs_SettingsSubMenu.php:122
 msgid "notification"
 msgstr "Benachrichtigungen"
 
-#: easyBackendStyle.php:128
+#: easyBackendStyle.php:125
 msgid "Sets the color of the notification"
 msgstr "Legt die Farbe von Benachrichtigungen fest"
 
-#: easyBackendStyle.php:129 src/deprecated/ebs_SettingsSubMenu.php:139
+#: easyBackendStyle.php:126 src/deprecated/ebs_SettingsSubMenu.php:136
 msgid "icon"
 msgstr "Icons"
 
-#: easyBackendStyle.php:129
+#: easyBackendStyle.php:126
 msgid "Sets the color of the icons"
 msgstr "Legt die Iconfarbe fest"
 
-#: easyBackendStyle.php:130
+#: easyBackendStyle.php:127
 msgid "primary text"
 msgstr "Haupttext"
 
-#: easyBackendStyle.php:130
+#: easyBackendStyle.php:127
 msgid "Sets the color of all text"
 msgstr "Legt die allgemeine Textfarbe fest"
 
-#: easyBackendStyle.php:131
+#: easyBackendStyle.php:128
 msgid "submenu"
 msgstr "Untermenü"
 
-#: easyBackendStyle.php:131
+#: easyBackendStyle.php:128
 msgid "Sets the color of the sub menu"
 msgstr "Legt die Hintergrundfarbe der Untermenüs fest"
 
-#: easyBackendStyle.php:132
+#: easyBackendStyle.php:129
 msgid "submenu text"
 msgstr "Untermenütext"
 
-#: easyBackendStyle.php:132
+#: easyBackendStyle.php:129
 msgid "Sets the color of the sub menu text"
 msgstr "Legt die Textfarbe der Untermenüs fest"
 
-#: easyBackendStyle.php:133 src/deprecated/ebs_SettingsSubMenu.php:118
+#: easyBackendStyle.php:130 src/deprecated/ebs_SettingsSubMenu.php:115
 msgid "highlight text"
 msgstr "Hervorgehobener Text"
 
-#: easyBackendStyle.php:133
+#: easyBackendStyle.php:130
 msgid "Sets the color of the highlighted text"
 msgstr "Legt die Farbe hervorgehobener Texte fest"
 
-#: easyBackendStyle.php:134 src/deprecated/ebs_SettingsSubMenu.php:192
+#: easyBackendStyle.php:131 src/deprecated/ebs_SettingsSubMenu.php:189
 msgid "button text"
 msgstr "Buttontext"
 
-#: easyBackendStyle.php:134
+#: easyBackendStyle.php:131
 msgid "Sets the color of the button text"
 msgstr "Legt die Textfarbe der Buttons fest"
 
-#: easyBackendStyle.php:180 src/AdminSettings.php:36
-#: src/deprecated/easyBackendStyle_deprecated.php:90
+#: easyBackendStyle.php:165 src/AdminSettings.php:60
+#: src/deprecated/easyBackendStyle_deprecated.php:95
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: easyBackendStyle.php:244
+#: easyBackendStyle.php:229
 msgid "Personalized Colors"
 msgstr "Eigene Farben"
 
-#: src/AdminSettings.php:8
+#: src/AdminSettings.php:21
 msgid "You are not allowed to change these settings."
 msgstr "Du darfst diese Einstellungen nicht ändern."
 
-#: src/AdminSettings.php:15
+#: src/AdminSettings.php:28
 msgid "Default colors restored."
 msgstr "Standardfarben wiederhergestellt."
 
-#: src/AdminSettings.php:23
+#: src/AdminSettings.php:36
 msgid ""
 "Please enter a valid hex color in every color field. No changes were saved."
 msgstr ""
 "Bitte gib in jedem Farbfeld eine gültige Hex-Farbe ein. Es wurden keine "
 "Änderungen gespeichert."
 
-#: src/AdminSettings.php:29
+#: src/AdminSettings.php:42
 msgid "Changes saved."
 msgstr "Änderungen gespeichert."
 
-#: src/AdminSettings.php:37
+#: src/AdminSettings.php:46
+msgid ""
+"The colors could not be saved. Please try again. If the problem persists, "
+"contact your administrator."
+msgstr ""
+"Die Farben konnten nicht gespeichert werden. Bitte versuche es erneut. Falls "
+"das Problem weiterhin besteht, wende dich an deine Administration."
+
+#: src/AdminSettings.php:52
+msgid ""
+"Easy Backend-Style could not finish updating its color settings. The "
+"original settings have been retained. Please try again or contact your "
+"administrator."
+msgstr ""
+"Easy Backend-Style konnte die Aktualisierung der Farbeinstellungen nicht "
+"abschließen. Die ursprünglichen Einstellungen wurden beibehalten. Bitte "
+"versuche es erneut oder wende dich an deine Administration."
+
+#: src/AdminSettings.php:61
 msgid "https://www.farnlabs.com/easy-backend-style/documentation"
 msgstr "https://www.farnlabs.de/easy-backend-style/dokumentation"
 
-#: src/AdminSettings.php:37
+#: src/AdminSettings.php:61
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:47
+#: src/deprecated/ebs_SettingsSubMenu.php:44
 msgid ""
 "Please select the default admin color scheme and reload the site to apply "
 "changes."
@@ -239,7 +256,7 @@ msgstr ""
 "Bitte wähle das Standard-Farbschema in deinem Benutzerprofil und lade die "
 "Seite neu, um die Änderungen anzuwenden."
 
-#: src/deprecated/ebs_SettingsSubMenu.php:61
+#: src/deprecated/ebs_SettingsSubMenu.php:58
 msgid ""
 "Select two colors in the main color selectors. All other colors are selected "
 "automatically."
@@ -247,140 +264,67 @@ msgstr ""
 "Wähle zwei Hauptfarben. Alle weiteren Farben werden automatisch daraus "
 "abgeleitet."
 
-#: src/deprecated/ebs_SettingsSubMenu.php:66
+#: src/deprecated/ebs_SettingsSubMenu.php:63
 msgid "Main colors fields"
 msgstr "Hauptfarben"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:69
+#: src/deprecated/ebs_SettingsSubMenu.php:66
 msgid "primary color"
 msgstr "Primärfarbe"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:76
+#: src/deprecated/ebs_SettingsSubMenu.php:73
 msgid "secondary color"
 msgstr "Sekundärfarbe"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:84
+#: src/deprecated/ebs_SettingsSubMenu.php:81
 msgid "All color fields"
 msgstr "Alle Farben"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:90
+#: src/deprecated/ebs_SettingsSubMenu.php:87
 msgid "menu text"
 msgstr "Menütext"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:97
+#: src/deprecated/ebs_SettingsSubMenu.php:94
 msgid "base menu"
 msgstr "Hauptmenü"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:104
+#: src/deprecated/ebs_SettingsSubMenu.php:101
 msgid "sub menu"
 msgstr "Untermenü"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:111
+#: src/deprecated/ebs_SettingsSubMenu.php:108
 msgid "highlight"
 msgstr "Hervorhebung"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:132
+#: src/deprecated/ebs_SettingsSubMenu.php:129
 msgid "notification text"
 msgstr "Benachrichtigungstext"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:169
+#: src/deprecated/ebs_SettingsSubMenu.php:166
 msgid "form inputs"
 msgstr "Formularfelder"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:178
+#: src/deprecated/ebs_SettingsSubMenu.php:175
 msgid "button"
 msgstr "Buttons"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:200
+#: src/deprecated/ebs_SettingsSubMenu.php:197
 msgid "disabled button"
 msgstr "Deaktivierte Buttons"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:207
+#: src/deprecated/ebs_SettingsSubMenu.php:204
 msgid "disabled button color"
 msgstr "Text deaktivierter Buttons"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:218
+#: src/deprecated/ebs_SettingsSubMenu.php:215
 msgid "Save"
 msgstr "Speichern"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:220
+#: src/deprecated/ebs_SettingsSubMenu.php:217
 msgid "Reset Defaults"
 msgstr "Standardwerte wiederherstellen"
 
-#: src/ebs_MigrationHandler.php:145
-msgid "What's new in this update:"
-msgstr "Neu in diesem Update:"
-
-#: src/ebs_MigrationHandler.php:147
-msgid "A third primary color option has been added"
-msgstr "Eine dritte Hauptfarbe wurde ergänzt"
-
-#: src/ebs_MigrationHandler.php:148
-msgid "Various color values have been redistributed and reorganized"
-msgstr "Verschiedene Farbwerte wurden neu zugeordnet"
-
-#: src/ebs_MigrationHandler.php:149
-msgid "New color settings have been introduced"
-msgstr "Neue Farbeinstellungen wurden ergänzt"
-
-#: src/ebs_MigrationHandler.php:151
-msgid ""
-"Please note: Your existing color profiles have been migrated where possible"
-msgstr "Hinweis: Deine bisherigen Farbprofile wurden soweit möglich übernommen"
-
-#: src/ebs_MigrationHandler.php:152
-msgid ""
-"Newly added color settings have been pre-filled with default values and may "
-"require manual adjustment to match your design."
-msgstr ""
-"Neue Farbeinstellungen wurden mit Standardwerten vorbelegt. Passe sie bei "
-"Bedarf an dein Design an."
-
-#: src/ebs_MigrationHandler.php:153 src/ebs_MigrationHandler.php:163
-#: src/ebs_MigrationHandler.php:173
-msgid "Got it"
-msgstr "Verstanden"
-
-#: src/ebs_MigrationHandler.php:160
-msgid "Update Successful:"
-msgstr "Update erfolgreich:"
-
-#: src/ebs_MigrationHandler.php:161 src/ebs_MigrationHandler.php:170
-msgid ""
-"Plugin Easy Backend-Style has received an update with new features and "
-"improvements."
-msgstr ""
-"Easy Backend-Style wurde um neue Funktionen und Verbesserungen ergänzt."
-
-#: src/ebs_MigrationHandler.php:162
-msgid "The plugin has been updated successfully."
-msgstr "Das Plugin wurde erfolgreich aktualisiert."
-
-#: src/ebs_MigrationHandler.php:163
-msgid ""
-"Your existing color profiles have been migrated. Please check you "
-"administration color scheme."
-msgstr ""
-"Deine bisherigen Farbprofile wurden übernommen. Bitte prüfe dein Admin-"
-"Farbschema."
-
-#: src/ebs_MigrationHandler.php:169
-msgid "Update Warning:"
-msgstr "Warnung zum Update:"
-
-#: src/ebs_MigrationHandler.php:171
-msgid "Something went wrong during the update process."
-msgstr "Beim Aktualisieren ist ein Fehler aufgetreten."
-
-#: src/ebs_MigrationHandler.php:172
-msgid "Your settings may not have been migrated correctly."
-msgstr "Deine Einstellungen wurden möglicherweise nicht korrekt übernommen."
-
-#: src/ebs_MigrationHandler.php:173
-msgid "Please check your Plugin-Settingspage."
-msgstr "Bitte prüfe deine Plugin-Einstellungen."
-
-#: src/ebs_SettingsSubMenu.php:30
+#: src/ebs_SettingsSubMenu.php:33
 msgid ""
 "Please select the personalized admin color scheme and reload the site to "
 "apply changes."
@@ -388,11 +332,11 @@ msgstr ""
 "Bitte wähle „Eigene Farben“ in deinem Benutzerprofil und lade die Seite neu, "
 "um die Änderungen anzuwenden."
 
-#: src/ebs_SettingsSubMenu.php:35
+#: src/ebs_SettingsSubMenu.php:38
 msgid "Main colors"
 msgstr "Hauptfarben"
 
-#: src/ebs_SettingsSubMenu.php:36
+#: src/ebs_SettingsSubMenu.php:39
 msgid ""
 "Select three colors in the main color selectors. All other colors are "
 "selected automatically."
@@ -400,22 +344,22 @@ msgstr ""
 "Wähle drei Hauptfarben. Alle weiteren Farben werden automatisch daraus "
 "abgeleitet."
 
-#: src/ebs_SettingsSubMenu.php:42
+#: src/ebs_SettingsSubMenu.php:45
 msgid "Advanced colors"
 msgstr "Weitere Farben"
 
-#: src/ebs_SettingsSubMenu.php:44
+#: src/ebs_SettingsSubMenu.php:47
 msgid ""
 "Fine-tune individual colors. Changing a main color recalculates these values."
 msgstr ""
 "Passe einzelne Farben nach Bedarf an. Wenn du eine Hauptfarbe änderst, "
 "werden diese Werte neu berechnet."
 
-#: src/ebs_SettingsSubMenu.php:51
+#: src/ebs_SettingsSubMenu.php:54
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
-#: src/ebs_SettingsSubMenu.php:52
+#: src/ebs_SettingsSubMenu.php:55
 msgid "Restore defaults"
 msgstr "Standardwerte wiederherstellen"
 

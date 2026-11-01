@@ -1,7 +1,7 @@
 {
-  "name": "farn-automated-playground-tests",
+  "name": "easybackendstyle-tests",
   "version": "1.0.0",
-  "description": "This repository contains the code and instructions for the workshop \"Building Automated Tests with WordPress Playground\" for WordCamp EU 2025.",
+  "description": "Easy Backend Style release and regression tests",
   "type": "module",
   "scripts": {
     "test": "vitest run --config=tests/integration/vitest.config.ts && npx playwright test --config=tests/end-to-end/playwright.config.ts",
@@ -15,7 +15,7 @@
   "devDependencies": {
     "@playwright/test": "^1.51.1",
     "@types/node": "^22.14.1",
-    "@wp-playground/cli": "^1.1.1",
+    "@wp-playground/cli": "3.0.54",
     "fetch-cookie": "^3.1.0",
     "vitest": "^3.1.1"
   }

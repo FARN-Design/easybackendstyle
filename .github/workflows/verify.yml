@@ -1,0 +1,62 @@
+name: Verify Easy Backend Style
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      wordpress:
+        value: ${{ jobs.preflight.outputs.wordpress }}
+        description: Resolved stable WordPress tested in this run
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    outputs:
+      wordpress: ${{ steps.wordpress.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: wp-cli
+      - run: sudo apt-get update && sudo apt-get install -y gettext
+      - name: Resolve current stable WordPress
+        id: wordpress
+        run: |
+          curl --fail --silent --show-error --location https://api.wordpress.org/core/version-check/1.7/ -o /tmp/wp-versions.json
+          python3 - <<'PY'
+          import json, os, re
+          version = next(o['version'] for o in json.load(open('/tmp/wp-versions.json'))['offers'] if o.get('response') == 'upgrade')
+          assert re.fullmatch(r'\d+\.\d+(?:\.\d+)?', version)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('version=' + version + '\n')
+          PY
+      - name: Validate declarations, translations and release gates
+        run: |
+          python3 scripts/release.py
+          python3 scripts/build-translations.py --check-source
+          python3 tests/release/test_release.py
+          php tests/test_admin_color_runtime.php
+          php tests/test_settings_requests.php
+      - name: Verify reviewed color CSS against current WordPress
+        env:
+          WORDPRESS_VERSION: ${{ steps.wordpress.outputs.version }}
+        run: |
+          python3 scripts/build-admin-colors.py --check
+          python3 tests/test_admin_colors.py
+          curl --fail --silent --show-error --location "https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz" -o /tmp/wordpress.tar.gz
+          tar -xzf /tmp/wordpress.tar.gz -C /tmp
+          python3 scripts/build-admin-colors.py --check --wordpress-root /tmp/wordpress
+  tests:
+    needs: preflight
+    uses: FARN-Design/ci-workflow/.github/workflows/plugin-tests.yml@75d814ac14a12a748efd80c29e5fe9e7cfd211d3
+    with:
+      main_plugin_file: easyBackendStyle.php
+      blueprint: blueprint.json
+      php_versions: '["8.2","8.3","8.4","8.5"]'
+      wordpress_version: ${{ needs.preflight.outputs.wordpress }}
+    secrets:
+      FARN_CORE_TOKEN: ${{ secrets.FARN_CORE_TOKEN }}

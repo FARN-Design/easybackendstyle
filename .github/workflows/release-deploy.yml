@@ -1,0 +1,138 @@
+name: Release Easy Backend Style
+on:
+  release:
+    types: [published, released]
+permissions:
+  contents: write
+concurrency:
+  group: backendstyle-release-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    # Avoid double runs on stable publication; support prerelease promotion.
+    if: >-
+      github.event.release.draft == false &&
+      ((github.event.action == 'published' && github.event.release.prerelease == true) ||
+       (github.event.action == 'released' && github.event.release.prerelease == false))
+    uses: ./.github/workflows/verify.yml
+    secrets: inherit
+  package:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2, wp-cli
+      - name: Require reviewed compatibility before stable release
+        if: '!github.event.release.prerelease'
+        env:
+          WORDPRESS_VERSION: ${{ needs.verify.outputs.wordpress }}
+        run: python3 scripts/release.py --wordpress "$WORDPRESS_VERSION" --stable
+      - name: Collect commits for the stable changelog
+        if: '!github.event.release.prerelease'
+        id: commits
+        run: |
+          previous=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || git rev-list --max-parents=0 HEAD)
+          git log --format='%h %s' --no-merges "$previous..HEAD" > /tmp/ebs-commits.txt
+          python3 - <<'PY'
+          import os, uuid
+          delimiter = str(uuid.uuid4())
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('messages<<' + delimiter + '\n' + open('/tmp/ebs-commits.txt').read() + '\n' + delimiter + '\n')
+          PY
+      - name: Checkout changelog action
+        if: '!github.event.release.prerelease'
+        uses: actions/checkout@v6
+        with:
+          repository: FARN-Design/easy-changelog
+          ref: main
+          path: .github/actions/easy-changelog
+          token: ${{ secrets.FARN_CORE_TOKEN }}
+      - name: Prepare changelog before packaging
+        if: '!github.event.release.prerelease'
+        uses: ./.github/actions/easy-changelog
+        with:
+          open-ai-api-key: ${{ secrets.OPEN_AI_API_KEY }}
+          new-version: ${{ github.event.release.tag_name }}
+          commit-messages: ${{ steps.commits.outputs.messages }}
+          mode: wordpress_marketplace
+          readme-path: README.txt
+      - name: Regenerate translations and color CSS
+        run: |
+          sudo apt-get update && sudo apt-get install -y gettext
+          python3 scripts/build-translations.py --check-source
+          python3 scripts/build-admin-colors.py
+      - name: Install production dependencies
+        run: |
+          composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
+          composer check-platform-reqs --no-dev
+      - name: Build the candidate ZIP and matching PO exports
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: python3 scripts/release.py --version "$RELEASE_TAG"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: backendstyle-candidate
+          path: |
+            output/easybackendstyle.zip
+            output/translations/*.po
+            output/package-manifest.txt
+            output/SHA256SUMS
+          if-no-files-found: error
+  compatibility:
+    needs: [verify, package]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.5']
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v7
+        with:
+          name: backendstyle-candidate
+          path: artifacts
+      - name: Validate the actual ZIP and packaged PHP dependencies
+        run: |
+          cd artifacts
+          shasum -a 256 -c SHA256SUMS
+          unzip -q easybackendstyle.zip -d unpacked
+          cd ..
+          python3 scripts/release.py --package artifacts/unpacked/easybackendstyle
+      - name: Activate ZIP, preserve existing colors and verify preview on SQLite
+        env:
+          FARN_TEST_PHP_VERSION: ${{ matrix.php }}
+          FARN_TEST_WP_VERSION: ${{ needs.verify.outputs.wordpress }}
+        run: node scripts/test-package.mjs artifacts/easybackendstyle.zip
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: backendstyle-package-php-${{ matrix.php }}
+          path: test-results
+          if-no-files-found: error
+  publish:
+    needs: [verify, package, compatibility]
+    uses: FARN-Design/ci-workflow/.github/workflows/plugin-deploy.yml@75d814ac14a12a748efd80c29e5fe9e7cfd211d3
+    with:
+      release_targets: '["wordpress-org"]'
+      artifact_name: backendstyle-candidate
+      plugin_slug: easybackendstyle
+      plugin_name: Easy Backend-Style
+      main_plugin_file: easyBackendStyle.php
+      wordpress_version: ${{ needs.verify.outputs.wordpress }}
+    secrets:
+      SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+      SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}

@@ -12,8 +12,9 @@ require dirname(__DIR__) . '/src/AdminSettings.php';
 $db = new class {
     public array $writes = [];
     public bool $reset = false;
-    function saveValueInDB($value, $key) { $this->writes[$key] = $value; }
-    function resetDefaults() { $this->reset = true; }
+    public bool $fail = false;
+    function saveColors($values) { if ($this->fail) return false; $this->writes = $values; return true; }
+    function resetDefaults() { if ($this->fail) return false; $this->reset = true; return true; }
 };
 function check($condition, $message) { if (!$condition) throw new RuntimeException($message); }
 $defaults = ['primary' => '#123456', 'secondary' => '#abcdef'];
@@ -35,4 +36,11 @@ try { \Farn\EasyBackendStyle\AdminSettings::handle($db, $defaults); throw new Lo
 $GLOBALS['allowed'] = true;
 \Farn\EasyBackendStyle\AdminSettings::handle($db, $defaults);
 check($db->reset, 'Authorized reset failed');
+$_POST = ['submit'=>'', 'ebs_nonce'=>'valid', 'primary'=>'#123', 'secondary'=>'#456'];
+$db->fail = true;
+\Farn\EasyBackendStyle\AdminSettings::handle($db, $defaults);
+check($GLOBALS['notice'] === ['database', 'error'], 'Write failure reported success');
+$_POST = ['resetDefaults'=>'', 'ebs_nonce'=>'valid'];
+\Farn\EasyBackendStyle\AdminSettings::handle($db, $defaults);
+check($GLOBALS['notice'] === ['database', 'error'], 'Reset failure reported success');
 echo 'Settings request validation passed on PHP '.PHP_VERSION."\n";

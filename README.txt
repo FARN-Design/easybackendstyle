@@ -2,7 +2,7 @@
 Contributors: farndesign
 Tags: admin theme, dashboard design, backend design, wordpress admin, custom colors
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 3.2.5
 Requires PHP: 8.2
 License: GPLv3 or later

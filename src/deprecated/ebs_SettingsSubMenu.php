@@ -2,11 +2,7 @@
 
 namespace Farn\EasyBackendStyle\deprecated;
 
-use easyBackendStyle_deprecated;
-
-if (!class_exists('ebsSettingsSubMenu')) {
-    $GLOBALS['ebsSettingsSubMenu'] = new ebs_SettingsSubMenu();
-}
+$GLOBALS['ebsSettingsSubMenu'] = new ebs_SettingsSubMenu();
 
 $GLOBALS['ebsSettingsSubMenu']->handleRequest();
 
@@ -28,7 +24,7 @@ class ebs_SettingsSubMenu
         $this->dbc = $GLOBALS['ebsPlugin']->dbc;
 
         //Runs a check if all fields in the database are set correctly
-        $this->dbc->checkFields();
+
     }
 
     /**
@@ -41,6 +37,7 @@ class ebs_SettingsSubMenu
     public function handleRequest(): void
     {
 
+        if (!$this->dbc->checkFields()) { \Farn\EasyBackendStyle\AdminSettings::saveFailure(); return; }
         \Farn\EasyBackendStyle\AdminSettings::handle($this->dbc, array_fill_keys(['primaryColor', 'secondaryColor', 'menuText', 'baseMenu', 'subMenu', 'highlight', 'highlightText', 'notification', 'notificationText', 'background', 'links', 'buttons', 'buttonText', 'formInputs', 'linkHover', 'buttonHover', 'disabledButton', 'disabledButtonText', 'icon'], ''));
 
         if (get_user_option('admin_color') != 'fresh') {
@@ -68,16 +65,16 @@ class ebs_SettingsSubMenu
             <div class="wrapper_primaryColor">
                 <label for="primaryColor"><?php _e('primary color', 'easybackendstyle') ?></label>
                 <input type="text" name="primaryColor" id="primaryColor"
-                       value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("primaryColor")[0][0]); ?>"
+                       value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("primaryColor")); ?>"
                        class="ebs_mainColorPicker"
-                       data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("primaryColor")[0][0]); ?>"/>
+                       data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("primaryColor")); ?>"/>
             </div>
             <div class="wrapper_secondaryColor">
                 <label for="secondaryColor"><?php _e('secondary color', 'easybackendstyle') ?></label>
                 <input type="text" name="secondaryColor" id="secondaryColor"
-                       value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("secondaryColor")[0][0]); ?>"
+                       value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("secondaryColor")); ?>"
                        class="ebs_mainColorPicker"
-                       data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("secondaryColor")[0][0]); ?>"/>
+                       data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("secondaryColor")); ?>"/>
             </div>
         </div>
         <div class="ebs_advanced_settings_toggle">
@@ -89,126 +86,126 @@ class ebs_SettingsSubMenu
                     <div class="wrapper_menuText">
                         <label for="menuText"><?php _e('menu text', 'easybackendstyle') ?></label>
                         <input type="text" name="menuText" id="menuText"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("menuText")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("menuText")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("menuText")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("menuText")); ?>"/>
                     </div>
                     <div class="wrapper_baseMenu">
                         <label for="baseMenu"><?php _e('base menu', 'easybackendstyle') ?></label>
                         <input type="text" name="baseMenu" id="baseMenu"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("baseMenu")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("baseMenu")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("baseMenu")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("baseMenu")); ?>"/>
                     </div>
                     <div class="wrapper_subMenu">
                         <label for="subMenu"><?php _e('sub menu', 'easybackendstyle') ?></label>
                         <input type="text" name="subMenu" id="subMenu"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("subMenu")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("subMenu")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("subMenu")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("subMenu")); ?>"/>
                     </div>
                     <div class="wrapper_highlight">
                         <label for="highlight"><?php _e('highlight', 'easybackendstyle') ?></label>
                         <input type="text" name="highlight" id="highlight"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("highlight")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("highlight")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("highlight")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("highlight")); ?>"/>
                     </div>
                     <div class="wrapper_highlightText">
                         <label for="highlightText"><?php _e('highlight text', 'easybackendstyle') ?></label>
                         <input type="text" name="highlightText" id="highlightText"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("highlightText")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("highlightText")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("highlightText")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("highlightText")); ?>"/>
                     </div>
                     <div class="wrapper_notification">
                         <label for="notification"><?php _e('notification', 'easybackendstyle') ?></label>
                         <input type="text" name="notification" id="notification"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("notification")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("notification")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("notification")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("notification")); ?>"/>
                     </div>
                     <div class="wrapper_notificationText">
                         <label for="notificationText"><?php _e('notification text', 'easybackendstyle') ?></label>
                         <input type="text" name="notificationText" id="notificationText"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("notificationText")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("notificationText")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("notificationText")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("notificationText")); ?>"/>
                     </div>
                     <div class="wrapper_icon">
                         <label for="icon"><?php _e('icon', 'easybackendstyle') ?></label>
                         <input type="text" name="icon" id="icon"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("icon")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("icon")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("icon")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("icon")); ?>"/>
                     </div>
                 </div>
                 <div class="ebs_advanced_settings_column">
                     <div class="wrapper_background">
                         <label for="background"><?php _e('background', 'easybackendstyle') ?></label>
                         <input type="text" name="background" id="background"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("background")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("background")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("background")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("background")); ?>"/>
                     </div>
                     <div class="wrapper_links">
                         <label for="links"><?php _e('links', 'easybackendstyle') ?></label>
                         <input type="text" name="links" id="links"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("links")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("links")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("links")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("links")); ?>"/>
                     </div>
                     <div class="wrapper_linkHover">
                         <label for="linkHover"><?php _e('link hover', 'easybackendstyle') ?></label>
                         <input type="text" name="linkHover" id="linkHover"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("linkHover")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("linkHover")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("linkHover")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("linkHover")); ?>"/>
                     </div>
                     <div class="wrapper_formInputs">
                         <label for="formInputs"><?php _e('form inputs', 'easybackendstyle') ?></label>
                         <input type="text" name="formInputs" id="formInputs"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("formInputs")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("formInputs")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("formInputs")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("formInputs")); ?>"/>
                     </div>
                 </div>
                 <div class="ebs_advanced_settings_column">
                     <div class="wrapper_buttons">
                         <label for="buttons"><?php _e('button', 'easybackendstyle') ?></label>
                         <input type="text" name="buttons" id="buttons"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttons")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("buttons")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttons")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("buttons")); ?>"/>
                     </div>
                     <div class="wrapper_buttonHover">
                         <label for="buttonHover"><?php _e('button hover', 'easybackendstyle') ?></label>
                         <input type="text" name="buttonHover" id="buttonHover"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttonHover")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("buttonHover")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttonHover")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("buttonHover")); ?>"/>
                     </div>
                     <div class="wrapper_buttonText">
                         <label for="buttonText"><?php _e('button text', 'easybackendstyle') ?></label>
                         <input type="text" name="buttonText" id="buttonText"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttonText")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("buttonText")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("buttonText")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("buttonText")); ?>"/>
                     </div>
 
                     <div class="wrapper_disabledButton">
                         <label for="disabledButton"><?php _e('disabled button', 'easybackendstyle') ?></label>
                         <input type="text" name="disabledButton" id="disabledButton"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("disabledButton")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("disabledButton")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("disabledButton")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("disabledButton")); ?>"/>
                     </div>
                     <div class="wrapper_disabledButtonText">
                         <label for="disabledButtonText"><?php _e('disabled button color', 'easybackendstyle') ?></label>
                         <input type="text" name="disabledButtonText" id="disabledButtonText"
-                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("disabledButtonText")[0][0]); ?>"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("disabledButtonText")); ?>"
                                class="ebs_colorPicker"
-                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB("disabledButtonText")[0][0]); ?>"/>
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("disabledButtonText")); ?>"/>
                     </div>
                 </div>
             </div>

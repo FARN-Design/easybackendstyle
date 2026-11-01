@@ -24,7 +24,7 @@ final class AdminSettings {
         if (!isset($_POST['submit']) && !isset($_POST['resetDefaults'])) return;
         check_admin_referer('ebs_save_colors', 'ebs_nonce');
         if (isset($_POST['resetDefaults'])) {
-            $database->resetDefaults();
+            if (!$database->resetDefaults()) { self::saveFailure(); return; }
             add_settings_error('ebs_colors', 'reset', __('Default colors restored.', 'easybackendstyle'), 'success');
             return;
         }
@@ -38,8 +38,19 @@ final class AdminSettings {
             }
             $values[$key] = $color;
         }
-        foreach ($values as $key => $color) $database->saveValueInDB($color, $key);
+        if (!$database->saveColors($values)) { self::saveFailure(); return; }
         add_settings_error('ebs_colors', 'saved', __('Changes saved.', 'easybackendstyle'), 'success');
+    }
+
+    public static function saveFailure(): void {
+        add_settings_error('ebs_colors', 'database', __('The colors could not be saved. Please try again. If the problem persists, contact your administrator.', 'easybackendstyle'));
+    }
+
+    public static function databaseWarning(): void {
+        add_action('admin_notices', static function () {
+            if (!current_user_can('manage_options')) return;
+            echo '<div class="notice notice-warning"><p>' . esc_html__('Easy Backend-Style could not finish updating its color settings. The original settings have been retained. Please try again or contact your administrator.', 'easybackendstyle') . '</p></div>';
+        });
     }
 
     public static function header(): void {

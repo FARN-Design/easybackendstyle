@@ -22,9 +22,12 @@ node_modules/
 *.sql
 *.sqlite
 /.idea/
-/composer.lock
 /vendor/
-/vendor-prefixed/
-/bin/strauss.phar
 .vscode/sftp.json
 .DS_Store
+
+/output/
+/test-results/
+/playwright-report/
+__pycache__/
+.phpunit.result.cache

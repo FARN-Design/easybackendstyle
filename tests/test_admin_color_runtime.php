@@ -1,4 +1,6 @@
 <?php
+function is_admin() { return true; }
+function get_user_option($key) { return "personalizedcolorscheme"; }
 function __($s, $domain = null) { return $s; }
 function sanitize_hex_color($value) { return is_string($value) && preg_match('/^#(?:[a-f0-9]{3}|[a-f0-9]{6})$/i', $value) ? $value : null; }
 $source = file_get_contents(dirname(__DIR__) . '/easyBackendStyle.php');

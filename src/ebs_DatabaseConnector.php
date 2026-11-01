@@ -1,114 +1,110 @@
 <?php
-
 namespace Farn\EasyBackendStyle;
-use wpdb;
 
-/**
- * This is the DatabaseConnector class which controls the interaction with the Database.
- */
-class ebs_DatabaseConnector
-{
+/** Request-local color cache and checked, non-recursive database operations. */
+class ebs_DatabaseConnector {
+    protected \wpdb $wpdb;
+    public string $tableName;
+    public string $charset_collate;
+    private ?array $colors = null;
+    private ?bool $exists = null;
 
-    private wpdb $wpdb;
-    var string $tableName;
-    var string $charset_collate;
-
-    function __construct()
-    {
-
+    public function __construct() {
         global $wpdb;
-
         $this->wpdb = $wpdb;
         $this->tableName = $wpdb->prefix . 'ebs_easyBackendStyle';
         $this->charset_collate = $wpdb->get_charset_collate();
     }
 
-    /***
-     * This function sets up the Database. This function checks if the database table from the plugin exists and if not create it.
-     */
-    public function setup_Database(): void
-    {
-
-        if ($this->wpdb->get_var("show tables like '" . $this->tableName . "'") != $this->tableName) {
-            $sql = "CREATE TABLE " . $this->tableName . " (
-	  		id mediumint(9) NOT NULL AUTO_INCREMENT,
-	    	Variable varchar(128) NOT NULL UNIQUE,
-	    	Value varchar(128) NOT NULL,
-	    	UNIQUE KEY id (id)
-	  	) $this->charset_collate;";
-
-            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
-
-            $this->checkFields();
-        }
+    public function defaults(): array {
+        return array_map(static fn($definition) => $definition[2], $GLOBALS['ebsColorMapping'] ?? []);
     }
 
-    /***
-     * This function checks if all field in the database are present.
-     * If not it will fill the missing field with the default values.
-     */
-    public function checkFields(): void
-    {
-
-        if ($this->wpdb->get_var("show tables like '" . $this->tableName . "'") != $this->tableName) {
-            $this->setup_Database();
+    public function tableExists(): bool {
+        if ($this->exists === null) {
+            $this->exists = $this->wpdb->get_var($this->wpdb->prepare('SHOW TABLES LIKE %s', $this->wpdb->esc_like($this->tableName))) === $this->tableName;
         }
+        return $this->exists;
+    }
 
-        $results = $this->wpdb->get_results('SELECT * FROM ' . $this->tableName, ARRAY_N);
-
-        $databaseVariables = array();
-
-        for ($x = 0; $x < count($results); $x++) {
-            $databaseVariables[] = $results[$x][1];
+    public function setup_Database(): bool {
+        if (!$this->tableExists()) {
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+            dbDelta("CREATE TABLE {$this->tableName} (
+                id mediumint(9) NOT NULL AUTO_INCREMENT,
+                Variable varchar(128) NOT NULL UNIQUE,
+                Value varchar(128) NOT NULL,
+                UNIQUE KEY id (id)
+            ) {$this->charset_collate};");
+            $this->exists = null;
+            if (!$this->tableExists()) return false;
         }
+        return $this->checkFields();
+    }
 
-        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
-
-            if (!in_array($colorKey, $databaseVariables)) {
-                $this->wpdb->insert($this->tableName,
-                    array(
-                        'Variable' => $colorKey,
-                        'Value' => $colorValue[2]));
+    /** Only called during authorized admin setup, activation or a settings request. */
+    public function checkFields(): bool {
+        if (!$this->tableExists()) return false;
+        $colors = $this->allColors();
+        if ($this->wpdb->last_error) return false;
+        foreach ($this->defaults() as $key => $value) {
+            if (!array_key_exists($key, $colors) && false === $this->wpdb->insert($this->tableName, ['Variable' => $key, 'Value' => $value], ['%s', '%s'])) {
+                $this->colors = null;
+                return false;
             }
         }
+        $this->colors = null;
+        $actual = $this->allColors();
+        return !$this->wpdb->last_error && !array_diff_key($this->defaults(), $actual);
     }
 
-    /**
-     * A helper function that gets a value from a variable out of the ebs database table.
-     *
-     * @param string $ebs_var A String name of a variable present in the database table.
-     *
-     * @return array returns the result in a 2D array. $results[0][0] contains the value of the variable.
-     */
-    public function getValueFromDB(string $ebs_var): array
-    {
-
-        $sql = $this->wpdb->prepare("SELECT Value FROM {$this->tableName} WHERE Variable = %s", $ebs_var);
-        $result = $this->wpdb->get_results($sql, ARRAY_N);
-
-        return $result;
+    public function allColors(): array {
+        if ($this->colors !== null) return $this->colors;
+        $this->colors = [];
+        if (!$this->tableExists()) return $this->colors;
+        $rows = $this->wpdb->get_results("SELECT Variable, Value FROM {$this->tableName}", ARRAY_A);
+        if (!is_array($rows) || $this->wpdb->last_error) return $this->colors;
+        foreach ($rows as $row) $this->colors[$row['Variable']] = $row['Value'];
+        return $this->colors;
     }
 
-    /**
-     * A helper function that stores a new value to a variable present in the database table.
-     *
-     * @param string $ebs_var A String name of a variable present in the database table.
-     * @param string $ebs_value The value as a String to store in the database table.
-     */
-    public function saveValueInDB(string $ebs_value, string $ebs_var): void
-    {
-
-        $this->wpdb->update($this->tableName, ['Value' => $ebs_value], ['Variable' => $ebs_var], ['%s'], ['%s']);
+    public function getValueFromDB(string $key): array {
+        $colors = $this->allColors();
+        return isset($colors[$key]) ? [[$colors[$key]]] : [];
     }
 
-    // A reset function that writes every default value to the corresponding datable table field.
-    public function resetDefaults(): void
-    {
-
-        foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
-            $this->saveValueInDB($colorValue[2], $colorKey);
+    /** One statement prevents partial form saves when an individual SQL write fails. */
+    public function saveColors(array $values): bool {
+        if (!$values) return true;
+        foreach ($values as $key => $value) {
+            if (!is_string($value) || !sanitize_hex_color($value) || !array_key_exists($key, $this->defaults())) return false;
         }
+        $before = $this->allColors();
+        if ($this->wpdb->last_error || array_diff_key($values, $before)) return false;
+        $cases = [];
+        $arguments = [];
+        foreach ($values as $key => $value) {
+            $cases[] = 'WHEN %s THEN %s';
+            $arguments[] = $key;
+            $arguments[] = $value;
+        }
+        $placeholders = implode(', ', array_fill(0, count($values), '%s'));
+        $arguments = array_merge($arguments, array_keys($values));
+        $sql = "UPDATE {$this->tableName} SET Value = CASE Variable " . implode(' ', $cases) . " ELSE Value END WHERE Variable IN ($placeholders)";
+        $result = $this->wpdb->query($this->wpdb->prepare($sql, $arguments));
+        $this->colors = null;
+        if ($result === false) return false;
+        $actual = $this->allColors();
+        if ($this->wpdb->last_error) return false;
+        foreach ($values as $key => $value) if (($actual[$key] ?? null) !== $value) return false;
+        return true;
+    }
 
+    public function saveValueInDB(string $value, string $key): bool {
+        return $this->saveColors([$key => $value]);
+    }
+
+    public function resetDefaults(): bool {
+        return $this->saveColors($this->defaults());
     }
 }

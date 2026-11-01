@@ -13,7 +13,7 @@
 #wpadminbar:not(.mobile) li:hover .ab-item::before,
 #wpadminbar:not(.mobile) #adminbarsearch::before,
 #wpadminbar:not(.mobile) li #adminbarsearch::before,
-#wpadminbar:not(.mobile) li:hover #adminbarsearch::before { color: var(--ebsIcon); !important; }
+#wpadminbar:not(.mobile) li:hover #adminbarsearch::before { color: var(--ebsIcon) !important; }
 
 /* Icon colors for the mobile view */
 #wpadminbar.mobile .quicklinks .ab-item::before,
@@ -22,7 +22,7 @@
 #wpadminbar.mobile .quicklinks .hover .ab-icon::before,
 #wpadminbar.mobile #adminbarsearch::before,
 #wpadminbar.mobile li #adminbarsearch::before,
-#wpadminbar.mobile li:hover #adminbarsearch::before{ color: var(--ebsIcon); !important; }
+#wpadminbar.mobile li:hover #adminbarsearch::before{ color: var(--ebsIcon) !important; }
 
 /* color setting für buttons/items */
 #wpadminbar:not(.mobile) .ab-top-menu > li > .ab-item { background: var(--ebsSecondary) !important; }

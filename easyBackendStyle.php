@@ -5,6 +5,8 @@ Plugin Name:       Easy Backend-Style
 Plugin URI:        https://www.farnlabs.com/easy-backend-style
 Description:       Easily modify your backend interface's color schemes for a fresh look using an automated color generation feature based on your base colors, and have advanced customization options to fine-tune your backend's appearance.
 Version: 3.2.5
+Requires at least: 6.0
+Requires PHP: 8.2
 Author:            FARN Labs
 Author URI:        https://www.farnlabs.com
 Text Domain:       easybackendstyle
@@ -26,9 +28,6 @@ define('EBS_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 use Farn\EasyBackendStyle\deprecated\easyBackendStyle_deprecated;
 use Farn\EasyBackendStyle\ebs_DatabaseConnector;
 use Farn\EasyBackendStyle\ebs_MigrationHandler;
-use Farn\EasyBackendStyle\pluginActivationHandler;
-use Farn\EasyBackendStyle\Severity;
-use Farn\EasyBackendStyle\Type;
 
 //------------------------------------------Plugin Code--------------------------------------------
 
@@ -36,14 +35,16 @@ include_once __DIR__ . "/vendor/autoload.php";
 require_once __DIR__ . "/src/AdminSettings.php";
 
 
-add_action('init', [\Farn\EasyBackendStyle\AdminSettings::class, 'loadTranslations'], 0);
+add_action('init', static function () {
+    if (is_admin()) \Farn\EasyBackendStyle\AdminSettings::loadTranslations();
+}, 0);
 add_action('change_locale', [\Farn\EasyBackendStyle\AdminSettings::class, 'loadTranslations'], 20);
 
 if ( version_compare( $GLOBALS['wp_version'], '7.0-alpha', '<' ) ) {
     easyBackendStyle_deprecated::Instance();
 } else {
     //New 7.X version
-    new easyBackendStyle();
+    easyBackendStyle::Instance();
 }
 
 
@@ -67,45 +68,42 @@ class easyBackendStyle {
     public ebs_DatabaseConnector $dbc;
     function __construct()
     {
-        $pluginActviationHandler = pluginActivationHandler::getInstance("ebs");
-        $pluginActviationHandler->handleNotices();
-
         $GLOBALS['ebsPlugin'] = $this;
 
         register_activation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'activate' ) );
         register_deactivation_hook( __FILE__, array( $GLOBALS['ebsPlugin'], 'deactivate' ) );
 
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'linkToEBSSettingsPage'));
-        add_action('init', array($this, 'color_mapping'),7);
-        add_action('init', array($this, 'is_migration_needed'), 8);
-        add_action('init', array($this, 'init_db'));
-        add_action('init', array($this,'checkEbsColorSchemeOption'), 10, 2);
-        add_action('admin_init', array($this, 'registerColorScheme'),0);
+        add_action('admin_init', [$this, 'initialize'], 0);
         add_action('admin_menu', array($this, 'sub_settings_page'));
         add_action('admin_head', array($this, 'ebs_root_variables_css'));
         add_action('admin_enqueue_scripts', array($this, 'addScriptsAndStylesToMenuPages'));
         add_action('wp_enqueue_scripts', array($this, 'addStylesToFrontendAdminbar'));
-        add_action('wp_head', array($this, 'ebs_root_variables_css'));
 
-        if (!class_exists('ebsDatabaseConnector')) {
-            $this->dbc = new ebs_DatabaseConnector();
-        }
+        $this->dbc = new ebs_DatabaseConnector();
     }
 
-    //On activation of the plugin
-    function activate(): void
-    {
+    /** Schema changes are confined to activation and authorized admin requests. */
+    public function initialize(): void {
         $this->color_mapping();
-        $this->dbc->setup_Database();
-        $this->sub_settings_page();
-        flush_rewrite_rules();
+        if (current_user_can('manage_options') && !(new ebs_MigrationHandler())->migration()) {
+            \Farn\EasyBackendStyle\AdminSettings::databaseWarning();
+        }
+        $this->checkEbsColorSchemeOption();
+        $this->registerColorScheme();
+    }
+
+    public function activate(): void {
+        $this->color_mapping();
+        if (!(new ebs_MigrationHandler())->migration()) {
+            \Farn\EasyBackendStyle\AdminSettings::databaseWarning();
+            return;
+        }
         $this->changeAdminColorScheme(get_current_user_id());
     }
 
-    //On deactivation of the plugin
-    function deactivate(): void
-    {
-        flush_rewrite_rules();
+    public function deactivate(): void {
+        // No rewrite rules or persistent color data belong to deactivation.
     }
 
     function color_mapping(): void{
@@ -135,11 +133,6 @@ class easyBackendStyle {
     }
 
 
-    function init_db():void
-    {
-        $this->dbc->setup_Database();
-    }
-
     /**
      * Creates a new submenu page in the general settings.
      */
@@ -163,15 +156,8 @@ class easyBackendStyle {
         include_once(__DIR__ . '/src/ebs_SettingsSubMenu.php');
     }
 
-    //TODO We need a check if the fields are set. PLease check if the return type of null dose not break the system!
-    //In class function that calls the getValueFromDB() function from the DatabaseConnector.
-    function getColor($name)
-    {
-        if (isset($this->dbc->getValueFromDB($name)[0]) && $this->dbc->getValueFromDB($name)[0][0]){
-            return $this->dbc->getValueFromDB($name)[0][0];
-        } else {
-            return null;
-        }
+    public function getColor($name) {
+        return $this->dbc->getValueFromDB($name)[0][0] ?? null;
     }
 
     function linkToEBSSettingsPage($links)
@@ -181,11 +167,17 @@ class easyBackendStyle {
     }
     function ebs_root_variables_css(): void
     {
+        if (!is_admin() || get_user_option('admin_color') !== 'personalizedcolorscheme') return;
+        $this->renderVariables(':root');
+    }
+
+    private function renderVariables(string $selector): void {
+        if (empty($GLOBALS['ebsColorMapping'])) $this->color_mapping();
         $colors = [];
         foreach ($GLOBALS['ebsColorMapping'] as $key => $definition) {
             $colors[$key] = sanitize_hex_color($this->getColor($key)) ?: $definition[2];
         }
-        $cssRoot = "<style id='ebs-root-variables'> :root {";
+        $cssRoot = "<style id='ebs-root-variables'> " . $selector . " {";
 
         foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
             $cssRoot .= "--".$colorKey.": ".($colors[$colorKey]).";";
@@ -214,22 +206,17 @@ class easyBackendStyle {
         }
     }
 
-    function addStylesToFrontendAdminbar($hook): void
-    {
-        wp_enqueue_style('ebsAdminbarFrontend', plugins_url('resources/ebsAdminbarFrontend.css', __FILE__));
+    function addStylesToFrontendAdminbar(): void {
+        if (!is_user_logged_in() || !is_admin_bar_showing() || get_user_option('admin_color') !== 'personalizedcolorscheme') return;
+        if (get_option(ebs_MigrationHandler::VERSION_OPTION) !== ebs_MigrationHandler::VERSION) return;
+        wp_enqueue_style('ebsAdminbarFrontend', plugins_url('resources/ebsAdminbarFrontend.css', __FILE__), [], filemtime(EBS_PLUGIN_PATH . 'resources/ebsAdminbarFrontend.css'));
+        // No document-wide variables or backend CSS on the public website.
+        ob_start();
+        $this->renderVariables('#wpadminbar');
+        $css = ob_get_clean();
+        wp_add_inline_style('ebsAdminbarFrontend', strip_tags($css));
     }
 
-    function is_migration_needed(): void {
-        $bool = get_option('is_migration_needed', false);
-        if ($bool !== '1') {
-            $this->initMigration();
-        }
-    }
-    function initMigration(): void
-    {
-        $handler = new ebs_MigrationHandler();
-        $handler->migration();
-    }
     function registerColorScheme(): void
     {
         $colorsArray = [];
@@ -247,6 +234,7 @@ class easyBackendStyle {
 
     function changeAdminColorScheme($user_id): void
     {
+        if (!$user_id) return;
         update_user_option($user_id, 'admin_color', 'personalizedcolorscheme', true);
         if (get_user_option('admin_color', $user_id) === 'personalizedcolorscheme'){
             update_user_meta($user_id, 'ebs_scheme_initialized', true);
