@@ -1,0 +1,43 @@
+name: Verify admin colors
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+jobs:
+  colors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check reproducible CSS and regression tests
+        run: |
+          python3 scripts/build-admin-colors.py --check
+          python3 tests/test_admin_colors.py
+      - name: Compare latest stable WordPress with reviewed CSS
+        run: |
+          curl --fail --location --silent --show-error https://wordpress.org/latest.tar.gz -o /tmp/wordpress.tar.gz
+          tar -xzf /tmp/wordpress.tar.gz -C /tmp
+          python3 scripts/build-admin-colors.py --check --wordpress-root /tmp/wordpress
+  php-color-output:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.2', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - run: |
+          php tests/test_admin_color_runtime.php
+          php tests/test_settings_requests.php
+  translations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: wp-cli
+      - run: sudo apt-get update && sudo apt-get install -y gettext
+      - run: python3 scripts/build-translations.py --check-source

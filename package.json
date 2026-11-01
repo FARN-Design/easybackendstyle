@@ -6,7 +6,9 @@
   "scripts": {
     "test": "vitest run --config=tests/integration/vitest.config.ts && npx playwright test --config=tests/end-to-end/playwright.config.ts",
     "test:integration": "vitest --config=tests/integration/vitest.config.ts",
-    "test:e2e": "npx playwright test --config=tests/end-to-end/playwright.config.ts"
+    "test:e2e": "npx playwright test --config=tests/end-to-end/playwright.config.ts",
+    "build:colors": "python3 scripts/build-admin-colors.py",
+    "test:colors": "python3 scripts/build-admin-colors.py --check && python3 tests/test_admin_colors.py"
   },
   "author": "",
   "license": "ISC",

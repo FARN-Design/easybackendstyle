@@ -8,6 +8,9 @@ use wpdb;
 
 class ebs_MigrationHandler
 {
+    // Keep historical update announcements disabled; migration warnings remain active.
+    private const SHOW_UPDATE_NOTICES = false;
+
     private wpdb $wpdb;
     private oldDataBaseConnector $odbc;
     private ebs_DatabaseConnector $dbc;
@@ -137,7 +140,7 @@ class ebs_MigrationHandler
         $symbol = str_contains($current_url, '?') ? '&' : '?';
 
         // info notice - only visible on settings_page
-        if (get_option("ebs_plugin_notice_info") && $screen->id === "settings_page_easyBackendStyle") {
+        if (self::SHOW_UPDATE_NOTICES && get_option("ebs_plugin_notice_info") && $screen->id === "settings_page_easyBackendStyle") {
             wp_admin_notice(
                 '<strong>' . __("What's new in this update:", "easybackendstyle") . '</strong>
                     <ul>
@@ -152,7 +155,7 @@ class ebs_MigrationHandler
             );
         }
         // success & warning notices - visible throughout the admin menu
-        if (get_option("ebs_plugin_notice_success")) {
+        if (self::SHOW_UPDATE_NOTICES && get_option("ebs_plugin_notice_success")) {
             wp_admin_notice(
                 '<strong>' . __("Update Successful:", "easybackendstyle") . '</strong>
                     <p>' . __("Plugin Easy Backend-Style has received an update with new features and improvements.", "easybackendstyle") . '</p>

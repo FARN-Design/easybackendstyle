@@ -41,34 +41,10 @@ class ebs_SettingsSubMenu
     public function handleRequest(): void
     {
 
-        if (isset($_REQUEST['submit'])) {
-            $this->dbc->saveValueInDB($_REQUEST['primaryColor'], 'primaryColor');
-            $this->dbc->saveValueInDB($_REQUEST['secondaryColor'], 'secondaryColor');
-            $this->dbc->saveValueInDB($_REQUEST['menuText'], 'menuText');
-            $this->dbc->saveValueInDB($_REQUEST['baseMenu'], 'baseMenu');
-            $this->dbc->saveValueInDB($_REQUEST['subMenu'], 'subMenu');
-            $this->dbc->saveValueInDB($_REQUEST['highlight'], 'highlight');
-            $this->dbc->saveValueInDB($_REQUEST['highlightText'], 'highlightText');
-            $this->dbc->saveValueInDB($_REQUEST['notification'], 'notification');
-            $this->dbc->saveValueInDB($_REQUEST['notificationText'], 'notificationText');
-            $this->dbc->saveValueInDB($_REQUEST['background'], 'background');
-            $this->dbc->saveValueInDB($_REQUEST['links'], 'links');
-            $this->dbc->saveValueInDB($_REQUEST['buttons'], 'buttons');
-            $this->dbc->saveValueInDB($_REQUEST['buttonText'], 'buttonText');
-            $this->dbc->saveValueInDB($_REQUEST['formInputs'], 'formInputs');
-            $this->dbc->saveValueInDB($_REQUEST['linkHover'], 'linkHover');
-            $this->dbc->saveValueInDB($_REQUEST['buttonHover'], 'buttonHover');
-            $this->dbc->saveValueInDB($_REQUEST['disabledButton'], 'disabledButton');
-            $this->dbc->saveValueInDB($_REQUEST['disabledButtonText'], 'disabledButtonText');
-            $this->dbc->saveValueInDB($_REQUEST['icon'], 'icon');
-        }
-
-        if (isset($_REQUEST['resetDefaults'])) {
-            $this->dbc->resetDefaults();
-        }
+        \Farn\EasyBackendStyle\AdminSettings::handle($this->dbc, array_fill_keys(['primaryColor', 'secondaryColor', 'menuText', 'baseMenu', 'subMenu', 'highlight', 'highlightText', 'notification', 'notificationText', 'background', 'links', 'buttons', 'buttonText', 'formInputs', 'linkHover', 'buttonHover', 'disabledButton', 'disabledButtonText', 'icon'], ''));
 
         if (get_user_option('admin_color') != 'fresh') {
-            echo '<h5 style="color: #CC0000">' . _e('Please select the default admin color scheme and reload the site to apply changes.', 'easybackendstyle') . '</h5>';
+            echo '<p class="notice notice-warning">' . esc_html__('Please select the default admin color scheme and reload the site to apply changes.', 'easybackendstyle') . '</p>';
         }
 
         $this->ebs->ebs_backend_css();
@@ -77,15 +53,16 @@ class ebs_SettingsSubMenu
 
 ?>
 <!-- HTML content for the settings page -->
-<div class="wrap">
+<div class="wrap ebs-admin">
 
-    <h1><?php _e('Easy Backend-Style settings', 'easybackendstyle') ?></h1>
+    <?php \Farn\EasyBackendStyle\AdminSettings::header(); ?>
 
     <p class="description">
         <?php _e('Select two colors in the main color selectors. All other colors are selected automatically.', 'easybackendstyle') ?>
     </p>
 
     <form action="" method="post" name="colorPickForm" id="colorPickForm">
+        <?php wp_nonce_field('ebs_save_colors', 'ebs_nonce'); ?>
         <h2><?php _e('Main colors fields', 'easybackendstyle') ?></h2>
         <div class="ebs_main_colors">
             <div class="wrapper_primaryColor">

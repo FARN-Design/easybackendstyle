@@ -106,7 +106,7 @@ class ebs_DatabaseConnector
     public function getValueFromDB(string $ebs_var): array
     {
 
-        $sql = "SELECT Value FROM " . $this->tableName . " WHERE Variable = \"" . $ebs_var . "\";";
+        $sql = $this->wpdb->prepare("SELECT Value FROM {$this->tableName} WHERE Variable = %s", $ebs_var);
         $result = $this->wpdb->get_results($sql, ARRAY_N);
 
         return $result;
@@ -121,8 +121,7 @@ class ebs_DatabaseConnector
     public function saveValueInDB(string $ebs_value, string $ebs_var): void
     {
 
-        $sql = "UPDATE $this->tableName SET Value = \"" . $ebs_value . "\" WHERE Variable = \"" . $ebs_var . "\";";
-        $this->wpdb->get_results($sql, ARRAY_N);
+        $this->wpdb->update($this->tableName, ['Value' => $ebs_value], ['Variable' => $ebs_var], ['%s'], ['%s']);
     }
 
     //A reset function that writes every default value to the corresponding datable table field.

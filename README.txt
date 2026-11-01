@@ -26,6 +26,8 @@ Ideal for agencies looking to provide clients with a tailored admin design, or a
 
 [youtube https://www.youtube.com/watch?v=Csqn_lJujb8]
 
+Built by [FARN Labs](https://www.farnlabs.com). See the [documentation](https://www.farnlabs.com/easy-backend-style/documentation).
+
 == Frequently Asked Questions ==
 
 = How to install the plugin? =
@@ -45,7 +47,7 @@ Ideal for agencies looking to provide clients with a tailored admin design, or a
 
 #### Install via Wordpress Plugin Store
 
-https://wordpress.com/de/plugins/easybackendstyle
+https://wordpress.org/plugins/easybackendstyle/
 
 = How to use the plugin? =
 

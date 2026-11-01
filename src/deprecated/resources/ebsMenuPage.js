@@ -1,70 +1,29 @@
 jQuery(document).ready(function ($){
 
-  //Initial loading Hash
-  let calcHash = 0;
-  //Check if form was submitted
-  let formSubmit = false;
-
-  //----------------Generate initial hash----------------
-
-  const loadingElements = document.querySelectorAll('[type="color"]');
-  loadingElements.forEach(getHash)
-
-  function getHash(item){
-      calcHash = generateHash(item.value) ^ calcHash;
-  }
-  console.log("Loading Hash: "+ calcHash)
-
-  //----------------Hash function----------------
-
-  function generateHash(string){
-      let hash = 0;
-      let char;
-
-      for (let i = 0; i < string.length; i++) {
-          char = string.charCodeAt(i);
-          hash = ((hash << 5) - hash) + char;
-      }
-
-      return Math.abs(hash);
-  }
-
-  //----------------Check form submit----------------
-
-  var submit = document.getElementById('submit');
-  submit.onclick = function() {
-      formSubmit = true
-  }
-
-  //TODO Sollte Meldung geben ob man alles zurücksetzen möchte
-  var resetDefaults = document.getElementById('resetDefaults');
-  resetDefaults.onclick = function() {
-      formSubmit = true
-  }
-
-  //----------------Check for change before leaving site----------------
-
-  window.onbeforeunload = function(){
-      let newHash = 0;
-      const currentElements = document.querySelectorAll('[type="color"]');
-
-      currentElements.forEach(newGetHash)
-
-      function newGetHash(item){
-          newHash = newHash ^ generateHash(item.value)
-      }
-      console.log("Exiting Hash: "+newHash)
-
-      if (newHash !== calcHash && !formSubmit){
-          //TODO Spachen Check
-          return 'Are you sure you want to leave?';
-      }
-  };
+  const { __ } = wp.i18n;
+  const form = document.getElementById('colorPickForm');
+  const fields = () => [...form.querySelectorAll('.ebs_mainColorPicker, .ebs_colorPicker')].map(input => input.value).join('|');
+  const initialValues = fields();
+  let submitted = false;
+  form.addEventListener('submit', function(event) {
+    if (event.submitter && event.submitter.name === 'resetDefaults' && !window.confirm(__('Restore all default colors?', 'easybackendstyle'))) {
+      event.preventDefault();
+      return;
+    }
+    submitted = true;
+  });
+  window.addEventListener('beforeunload', function(event) {
+    if (!submitted && fields() !== initialValues) {
+      event.preventDefault();
+      event.returnValue = '';
+    }
+  });
 
   //---------------- toggle advanced settings ----------------
   $('.ebs_advanced_settings_toggle').click(function(){
     $('.ebs_advanced_settings').slideToggle();
     $(this).toggleClass('active');
+    $(this).attr('aria-expanded', $(this).hasClass('active') ? 'true' : 'false');
   });
 
   //---------------- fill all fields automatically and live preview----------------
@@ -158,7 +117,7 @@ jQuery(document).ready(function ($){
   }
 
   function checkLightness(hsl){
-      l = hsl[2];
+      const l = hsl[2];
       return l <= 65 ? "dark" : "light";
   }
 
@@ -228,7 +187,8 @@ jQuery(document).ready(function ($){
     },
     clear: function (event) {
       var colorInputName = $(this).attr('name');
-      var newColor = ui.color.toString();
+      var newColor = $(this).data('default-color');
+      $(this).val(newColor);
       colorPreview(colorInputName, newColor);
     }
   });

@@ -1,143 +1,55 @@
 <?php
-
-
 namespace Farn\EasyBackendStyle;
-if (!class_exists('ebsSettingsSubMenu')) {
-    $GLOBALS['ebsSettingsSubMenu'] = new ebs_SettingsSubMenu();
-}
 
-$GLOBALS['ebsSettingsSubMenu']->handleRequest();
-
-/**
- * This class manages the content and Requests on the SubSetting page of the plugin.
- */
-class ebs_SettingsSubMenu
-{
-
-    //An object of the ebs_DatabaseConnector class
-    private \Farn\EasyBackendStyle\ebs_DatabaseConnector $dbc;
-    //An object of the main ebs plugin class
-    private \easyBackendStyle $ebs;
-
-    //Set a reference to the ebs plugin main php class and the ebs databaseConnector class.
-    function __construct()
-    {
-        $this->ebs = $GLOBALS['ebsPlugin'];
-        $this->dbc = $GLOBALS['ebsPlugin']->dbc;
-
-        //Runs a check if all fields in the database are set correctly
-        $this->dbc->checkFields();
-    }
-
-
-    /**
-     * Handels all possible Request that can appear on the settings page.
-     *
-     * Writes an Error on the page if
-     *  1. The wrong scheme is loaded
-     *  2. if the custom CSS field is not filled out correctly
-     */
-    public function handleRequest(): void
-    {
-        if (isset($_REQUEST['submit'])) {
-
-            foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue) {
-                $this->dbc->saveValueInDB($_REQUEST[$colorKey], $colorKey);
-            }
-        }
-
-        if (isset($_REQUEST['resetDefaults'])) {
-            $this->dbc->resetDefaults();
-        }
-
-        if (get_user_option('admin_color') != 'personalizedcolorscheme') {
-            echo '<h5 style="color: #CC0000">' . _e('Please select the personalized admin color scheme and reload the site to apply changes.', 'easybackendstyle') . '</h5>';
-        }
-        $this->ebs->ebs_root_variables_css();
-    }
-}
-
+$plugin = $GLOBALS['ebsPlugin'];
+$plugin->dbc->checkFields();
+$definitions = $GLOBALS['ebsColorMapping'];
+$defaults = array_map(static fn($definition) => $definition[2], $definitions);
+AdminSettings::handle($plugin->dbc, $defaults);
+$plugin->ebs_root_variables_css();
+$main = ['ebsPrimary', 'ebsSecondary', 'ebsTertiary'];
+$renderColor = static function ($key, $definition, $isMain) use ($plugin) {
+    $value = sanitize_hex_color($plugin->getColor($key)) ?: $definition[2];
+    ?>
+    <div class="<?php echo esc_attr('wrapper_' . $key); ?> ebs-color-field">
+        <div class="<?php echo $isMain ? 'main_label_group' : 'label_group'; ?>">
+            <label class="main_color_label" for="<?php echo esc_attr($key); ?>"><?php echo esc_html($definition[0]); ?></label>
+            <small class="color_description" id="<?php echo esc_attr('description_' . $key); ?>"><?php echo esc_html($definition[3]); ?></small>
+            <span class="hex_code"><?php echo esc_html($value); ?></span>
+        </div>
+        <input type="text" name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>"
+            value="<?php echo esc_attr($value); ?>" class="<?php echo $isMain ? 'ebs_mainColorPicker' : 'ebs_colorPicker'; ?>"
+            data-default-color="<?php echo esc_attr($definition[2]); ?>" aria-describedby="<?php echo esc_attr('description_' . $key); ?>" />
+    </div>
+    <?php
+};
 ?>
-<!-- HTML content for the settings page -->
-<div class="wrap">
-
-    <h1><?php _e('Easy Backend-Style settings', 'easybackendstyle') ?></h1>
-
-    <p class="description">
-        <?php _e('Select three colors in the main color selectors. All other colors are selected automatically.', 'easybackendstyle') ?>
-    </p>
-
-    <form action="" method="post" name="colorPickForm" id="colorPickForm">
-        <h2><?php _e('Main colors fields', 'easybackendstyle') ?></h2>
-        <div class="ebs_main_colors">
-
-            <?php $mainColors = [];
-
-            foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue){
-                if($colorKey != "ebsPrimary" && $colorKey != "ebsSecondary" && $colorKey != "ebsTertiary"){
-                    continue;
-                }
-                if(in_array($colorKey, $mainColors)){
-                    continue;
-                }
-                $mainColors[] = $colorKey;?>
-                <div class="wrapper_<?php echo $colorKey; ?>">
-                    <div class="main_label_group">
-                        <label class="main_color_label" for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?></label>
-                        <label class="color_description" id="description_<?php echo $colorKey; ?>"><?php echo $colorValue[3]; ?></label>
-                        <label class="hex_code" for="<?php echo $colorKey; ?>"><?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]; ?></label>
-                        <svg class="pencil_icon" width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2 16H3.425L13.2 6.225L11.775 4.8L2 14.575V16ZM0 18V13.75L13.2 0.575C13.4 0.391667 13.6208 0.25 13.8625 0.15C14.1042 0.05 14.3583 0 14.625 0C14.8917 0 15.15 0.05 15.4 0.15C15.65 0.25 15.8667 0.4 16.05 0.6L17.425 2C17.625 2.18333 17.7708 2.4 17.8625 2.65C17.9542 2.9 18 3.15 18 3.4C18 3.66667 17.9542 3.92083 17.8625 4.1625C17.7708 4.40417 17.625 4.625 17.425 4.825L4.25 18H0ZM12.475 5.525L11.775 4.8L13.2 6.225L12.475 5.525Z"/>
-                        </svg>
-                    </div>
-                    <input type="text" name="<?php echo $colorKey; ?>" id="<?php echo $colorKey; ?>"
-                           value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
-                           class="ebs_mainColorPicker"
-                           data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"/>
-                </div>
-            <?php } ?>
-
-
-        </div>
-        <div class="ebs_advanced_settings_toggle">
-            <h2><?php _e('All color fields', 'easybackendstyle') ?></h2>
-        </div>
-        <div class="ebs_advanced_settings">
-            <div class="ebs_advanced_settings_columns">
+<div class="wrap ebs-admin">
+    <?php AdminSettings::header(); ?>
+    <?php if (get_user_option('admin_color') !== 'personalizedcolorscheme') : ?>
+        <div class="notice notice-warning inline"><p><?php esc_html_e('Please select the personalized admin color scheme and reload the site to apply changes.', 'easybackendstyle'); ?></p></div>
+    <?php endif; ?>
+    <form method="post" id="colorPickForm">
+        <?php wp_nonce_field('ebs_save_colors', 'ebs_nonce'); ?>
+        <section class="ebs-panel" aria-labelledby="ebs-main-heading">
+            <h2 id="ebs-main-heading"><?php esc_html_e('Main colors', 'easybackendstyle'); ?></h2>
+            <p class="description"><?php esc_html_e('Select three colors in the main color selectors. All other colors are selected automatically.', 'easybackendstyle'); ?></p>
+            <div class="ebs_main_colors">
+                <?php foreach ($main as $key) $renderColor($key, $definitions[$key], true); ?>
+            </div>
+        </section>
+        <section class="ebs-panel">
+            <button type="button" class="ebs_advanced_settings_toggle" aria-expanded="false" aria-controls="ebs-advanced-colors"><?php esc_html_e('Advanced colors', 'easybackendstyle'); ?><span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span></button>
+            <div class="ebs_advanced_settings" id="ebs-advanced-colors">
+                <p class="description"><?php esc_html_e('Fine-tune individual colors. Changing a main color recalculates these values.', 'easybackendstyle'); ?></p>
                 <div class="ebs_advanced_settings_column">
-
-                    <?php $advancedColorFields = [];
-                    foreach ($GLOBALS['ebsColorMapping'] as $colorKey => $colorValue){
-                        if($colorKey == "ebsPrimary" || $colorKey == "ebsSecondary" || $colorKey == "ebsTertiary"){
-                            continue;
-                        }
-                        if(in_array($colorKey, $advancedColorFields)){
-                            continue;
-                        }
-                        $advancedColorFields[] = $colorKey;?>
-                        <div class="wrapper_<?php echo $colorKey; ?>">
-                            <input type="text" name="<?php echo $colorKey; ?>" id="<?php echo $colorKey; ?>"
-                                   value="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
-                                   class="ebs_colorPicker"
-                                   data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]); ?>"
-                                   aria-describedby="description_<?php echo $colorKey; ?>"/>
-                            <div class="label_group">
-                                <label for="<?php echo $colorKey; ?>"> <?php echo $colorValue[0]; ?></label>
-                                <small id="description_<?php echo $colorKey; ?>"><?php echo $colorValue[3]; ?></small>
-                                <label class="hex_code" for="<?php echo $colorKey; ?>"><?php echo $GLOBALS['ebsPlugin']->dbc->getValueFromDB($colorKey)[0][0]; ?></label>
-                            </div>
-                        </div>
-                    <?php } ?>
+                    <?php foreach ($definitions as $key => $definition) if (!in_array($key, $main, true)) $renderColor($key, $definition, false); ?>
                 </div>
             </div>
+        </section>
+        <div class="ebs-actions">
+            <button type="submit" class="button button-primary" name="submit" id="submit"><?php esc_html_e('Save changes', 'easybackendstyle'); ?></button>
+            <button type="submit" class="button button-secondary" name="resetDefaults" id="resetDefaults"><?php esc_html_e('Restore defaults', 'easybackendstyle'); ?></button>
         </div>
-        <br>
-        <input type="submit" class="ebs_submitButton button button-primary" name="submit" id="submit"
-               value="<?php _e('Save', 'easybackendstyle') ?>">
-        <input type="submit" class="ebs_submitButton button-link" name="resetDefaults" id="resetDefaults"
-               value="<?php _e('Reset Defaults', 'easybackendstyle') ?>">
     </form>
-
-</div><!-- .wrap -->
-
-
+</div>

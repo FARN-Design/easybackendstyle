@@ -87,20 +87,9 @@ class easyBackendStyle_deprecated
 
     function linkToEBSSettingsPage($links)
     {
-
-        //TODO Variablen Check
-        if (get_user_locale() == "de_DE") {
-            $links[] = '<a href="' . admin_url('options-general.php?page=easyBackendStyle') . '">' . esc_html('Einstellungen') . '</a>';
-        } else {
-            $links[] = '<a href="' . admin_url('options-general.php?page=easyBackendStyle') . '">' . esc_html('Settings') . '</a>';
-        }
-
+        $links[] = '<a href="' . esc_url(admin_url('options-general.php?page=easyBackendStyle')) . '">' . esc_html__('Settings', 'easybackendstyle') . '</a>';
         return $links;
     }
-
-    /**
-     * Main CSS injection of the selected colors from the database.
-     */
     function ebs_backend_css(): void
     {
         if (get_user_option('admin_color') != 'fresh') {
@@ -134,12 +123,13 @@ class easyBackendStyle_deprecated
 
     function addScriptsAndStylesToMenuPages($hook)
     {
-        $current_screen = get_current_screen();
-        // scripts and styles for menu page
-        if (strpos($current_screen->base, 'easyBackendStyle')) {
+        // Load assets only on this plugin's Settings submenu.
+        if ($hook === 'settings_page_easyBackendStyle') {
             wp_enqueue_style('wp-color-picker');
-            wp_enqueue_script('ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__), array('wp-color-picker'), false, true);
-            wp_enqueue_style('ebs_menuPageCSS', plugins_url('resources/ebsMenuPage.css', __FILE__));
+            wp_enqueue_script('ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__), array('wp-color-picker', 'wp-i18n'), filemtime(__DIR__ . '/resources/ebsMenuPage.js'), true);
+            wp_set_script_translations('ebs_menuPageJS', 'easybackendstyle', EBS_PLUGIN_PATH . '/src/languages');
+            wp_enqueue_style('ebs_adminLayout', plugins_url('resources/admin-layout.css', EBS_PLUGIN_PATH . '/easyBackendStyle.php'), [], filemtime(EBS_PLUGIN_PATH . '/resources/admin-layout.css'));
+            wp_enqueue_style('ebs_menuPageCSS', plugins_url('resources/ebsMenuPage.css', __FILE__), ['ebs_adminLayout'], filemtime(__DIR__ . '/resources/ebsMenuPage.css'));
         }
     }
 }

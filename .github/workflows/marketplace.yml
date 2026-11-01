@@ -13,7 +13,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  verify-colors:
+    uses: ./.github/workflows/admin-colors.yml
+
   package:
+    needs: [verify-colors]
     name: Build & Package Release Asset
     runs-on: ubuntu-latest
     env:
@@ -33,10 +37,20 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer
+          tools: composer, wp-cli
 
       - name: Setup Composer Authentication
         run: composer config --global github-oauth.github.com ${{ secrets.FARN_CORE_TOKEN }}
+
+      - name: Regenerate and validate translations
+        run: |
+          sudo apt-get update && sudo apt-get install -y gettext
+          python3 scripts/build-translations.py --check-source
+
+      - name: Build reviewed admin colors
+        run: |
+          python3 scripts/build-admin-colors.py
+          python3 tests/test_admin_colors.py
 
       - name: Install dependencies
         run: composer install --no-dev --optimize-autoloader
@@ -45,14 +59,14 @@ jobs:
         shell: bash
         run: |
           mkdir -p temp_package/easybackendstyle
-          rsync -rc --exclude='.git*' --exclude='.github' --exclude='tests' --exclude='node_modules' ./ temp_package/easybackendstyle/
+          rsync -rc --exclude='.git*' --exclude='.github' --exclude='tests' --exclude='node_modules' --exclude='build' --exclude='docs' --exclude='temp_package' ./ temp_package/easybackendstyle/
           cd temp_package && zip -qq -r ../easybackendstyle.zip easybackendstyle && cd ..
 
       - name: Upload Release Asset to GitHub
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload "${{ github.event.release.tag_name }}" "./easybackendstyle.zip" --clobber --repo "${{ github.repository }}"
+          gh release upload "${{ github.event.release.tag_name }}" "./easybackendstyle.zip" docs/generated/plugin-*.po --clobber --repo "${{ github.repository }}"
 
   deploy-wordpress-org:
     name: Deploy to WordPress.org Marketplace
@@ -76,10 +90,20 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer
+          tools: composer, wp-cli
 
       - name: Setup Composer Authentication
         run: composer config --global github-oauth.github.com ${{ secrets.FARN_CORE_TOKEN }}
+
+      - name: Regenerate and validate translations
+        run: |
+          sudo apt-get update && sudo apt-get install -y gettext
+          python3 scripts/build-translations.py --check-source
+
+      - name: Build reviewed admin colors
+        run: |
+          python3 scripts/build-admin-colors.py
+          python3 tests/test_admin_colors.py
 
       - name: Install dependencies
         run: composer install --no-dev --optimize-autoloader

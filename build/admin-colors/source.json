@@ -1,0 +1,32 @@
+{
+  "wordpress": "7.1.4",
+  "path": "wp-admin/css/colors/blue/colors.css",
+  "sha256": "6dbc931fd9b4c186464c3546e4eceff45caa5c86598f0fa2c89268ac856f7712",
+  "license": "GPL-2.0-or-later; WordPress contributors",
+  "colors": {
+    "#f0f0f0": "ebsBackground",
+    "#0073aa": "ebsLinks",
+    "rgb(0, 149.5, 221)": "ebsLinksHover",
+    "#949494": "ebsDisabledButtonText",
+    "#cc1818": "ebsDeleteLinks",
+    "rgb(158.3684210526, 18.6315789474, 18.6315789474)": "ebsDeleteLinksHover",
+    "#245278": "ebsSecondary",
+    "#437aa8": "ebsTertiary",
+    "#e1a948": "ebsNotification",
+    "rgb(202.5, 152.1, 64.8)": "ebsNotification",
+    "#e5f8ff": "ebsIcon",
+    "#fff": "ebsPrimaryText",
+    "#ffffff": "ebsPrimaryText",
+    "rgb(27.7615384615, 63.2346153846, 92.5384615385)": "ebsSubMenu",
+    "#e2ecf1": "ebsSubMenuText",
+    "rgb(50.9479615385, 100.1263846154, 140.7520384615)": "ebsSecondaryLighter",
+    "rgb(44.2384615385, 100.7653846154, 147.4615384615)": "ebsSecondaryLighter",
+    "rgb(94.8638297872, 147.2893617021, 191.1361702128)": "ebsSecondaryLighter",
+    "rgb(59.729787234, 108.7617021277, 149.770212766)": "ebsTertiary"
+  },
+  "unchanged_colors": [
+    "#1e1e1e",
+    "#dddddd",
+    "#fbfbfc"
+  ]
+}

@@ -1,16 +1,13 @@
-
-.ebs_advanced_settings_toggle {
+.ebs-admin .ebs_advanced_settings_toggle {
     cursor: pointer;
     margin-top: 4em;
     padding:0 2em 2em 0;
     display: block;
-}
-.ebs_advanced_settings_toggle h2 {
+}.ebs-admin .ebs_advanced_settings_toggle h2 {
     position: relative;
     display: inline-block;
     margin:0;
-}
-.ebs_advanced_settings_toggle h2::after {
+}.ebs-admin .ebs_advanced_settings_toggle h2::after {
     width: 8px;
     height: 8px;
     display: inline-block;
@@ -21,177 +18,126 @@
     content: "";
     transform: translateY(3px) rotate(45deg);
     transition: 0.2s;
-}
-
-.ebs_advanced_settings_toggle.active h2::after {
+}.ebs-admin .ebs_advanced_settings_toggle.active h2::after {
     transform: translateY(7px) rotate(-135deg);
-}
-
-.ebs_advanced_settings {
+}.ebs-admin .ebs_advanced_settings {
     display: none;
     margin-bottom: 2em;
     width:80%;
-}
-
-.ebs_advanced_settings_columns {
+}.ebs-admin .ebs_advanced_settings_columns {
     justify-content: space-between;
-}
-
-.ebs_advanced_settings_column {
+}.ebs-admin .ebs_advanced_settings_column {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(5, auto);
     grid-auto-flow: column;
-}
-.wp-picker-container > .wp-picker-holder {
+}.ebs-admin .wp-picker-container > .wp-picker-holder {
     position: absolute;
-}
-/* <span> text invisible "select color" */
-.wp-color-result-text {
+}.ebs-admin .wp-color-result-text {
     display: none;
-}
-/* Size of color fields set in advanced color settings */
-.wp-picker-container > button {
+}.ebs-admin .wp-picker-container > button {
     height: 70px;
     width: 70px;
-}
-/* Iris color picker design */
-.iris-picker{
+}.ebs-admin .iris-picker {
     width: 260px !important;
     height: 240px !important;
     box-shadow: 5px 5px 50px #aaa;
     border-radius: 7px !important;
     z-index: 1;
-}
-.iris-square {
+}.ebs-admin .iris-square {
     margin-top: 30px;
     left:10px;
-}
-.iris-slider {
+}.ebs-admin .iris-slider {
     padding-bottom: 30px;
-}
-.iris-palette-container {
+}.ebs-admin .iris-palette-container {
     left: 20px !important;
-}
-.iris-strip {
+}.ebs-admin .iris-strip {
     height: 212px !important;
-}
-.wp-picker-input-wrap {
+}.ebs-admin .wp-picker-input-wrap {
     position: relative;
     z-index: 1;
     left: 40px;
     top: 4px;
-}
-.wp-picker-default {
+}.ebs-admin .wp-picker-default {
     padding-bottom: 2px !important;
-}
-/* Size of color fields set in main colors settings */
-.ebs_main_colors .wp-picker-container {
+}.ebs-admin .ebs_main_colors .wp-picker-container {
     width: 80%;
-}
-.ebs_main_colors > div > .wp-picker-container > button {
+}.ebs-admin .ebs_main_colors > div > .wp-picker-container > button {
     height: 125px;
     width: calc(100%);
-}
-.ebs_main_colors {
+}.ebs-admin .ebs_main_colors {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 80%;
-}
-.ebs_main_colors > div{
+}.ebs-admin .ebs_main_colors > div {
     position: relative;
-}
-/* configuration for main_label_group */
-.ebs_main_colors .wp-picker-container .wp-color-result.button {
+}.ebs-admin .ebs_main_colors .wp-picker-container .wp-color-result.button {
     padding: 20px !important;
     margin: 0 !important;
-}
-.main_label_group {
+}.ebs-admin .main_label_group {
     position: absolute;
     width: 80%;
     line-height: 1.5;
     bottom: 0;
     left: 4px;
     pointer-events: none;
-}
-.main_label_group > *:not(svg) {
+}.ebs-admin .main_label_group > *:not(svg) {
     width: calc(100% - 18px);
     white-space: normal;
     text-align: left;
-}
-.main_color_label {
+}.ebs-admin .main_color_label {
     font-weight: bold;
-}
-.hex_code {
+}.ebs-admin .hex_code {
     font-size: small;
-}
-.ebs_advanced_settings_column .hex_code {
+}.ebs-admin .ebs_advanced_settings_column .hex_code {
     font-size: smaller;
-}
-.ebs_main_colors .wrapper_ebsPrimary .main_label_group {
+}.ebs-admin .ebs_main_colors .wrapper_ebsPrimary .main_label_group {
     color: var(--ebsPrimaryButtonText);
-}
-.ebs_main_colors .wrapper_ebsSecondary .main_label_group {
+}.ebs-admin .ebs_main_colors .wrapper_ebsSecondary .main_label_group {
     color: var(--ebsPrimaryText);
-}
-.ebs_main_colors .wrapper_ebsTertiary .main_label_group{
+}.ebs-admin .ebs_main_colors .wrapper_ebsTertiary .main_label_group {
     color: var(--ebsHighlightedText);
-}
-/* config for both label_groups */
-.label_group, .main_label_group {
+}.ebs-admin .label_group,
+.ebs-admin .main_label_group {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-.color_description {
+}.ebs-admin .color_description {
     opacity: 0.8;
-}
-/* config label_group */
-.label_group > label {
+}.ebs-admin .label_group > label {
     font-weight: bold;
     width:150px;
     display: inline;
     cursor:default;
-}
-.label_group > small {
+}.ebs-admin .label_group > small {
     width: 75%;
     line-height: 1.4;
-}
-small {
+}.ebs-admin small {
     color: grey;
     font-weight: normal;
-}
-.ebs_advanced_settings_column .wp-picker-container .wp-color-result.button {
+}.ebs-admin .ebs_advanced_settings_column .wp-picker-container .wp-color-result.button {
     padding: 0 !important;
-}
-.ebs_advanced_settings_column > div {
+}.ebs-admin .ebs_advanced_settings_column > div {
     display: flex;
     margin-bottom: 20px;
     gap: 10px;
-}
-.ebs_submitButton {
+}.ebs-admin .ebs_submitButton {
     vertical-align: middle !important;
     margin-right: 10px !important;
-}
-/* position & color settings for pencil icon  */
-.wrapper_ebsPrimary .pencil_icon,
-.wrapper_ebsSecondary .pencil_icon{
+}.ebs-admin .wrapper_ebsPrimary .pencil_icon,
+.ebs-admin .wrapper_ebsSecondary .pencil_icon {
     fill: var(--ebsPrimaryText);
-}
-.wrapper_ebsTertiary svg {
+}.ebs-admin .wrapper_ebsTertiary svg {
     fill: var(--ebsHighlightedText);
-}
-.main_label_group .pencil_icon {
+}.ebs-admin .main_label_group .pencil_icon {
     position: absolute;
     right: 8px;
     bottom: 5px;
-}
-.ebs_advanced_settings_column .pencil_icon {
+}.ebs-admin .ebs_advanced_settings_column .pencil_icon {
     position: absolute;
     right: 0;
     bottom: 0;
-}
-.ebs_advanced_settings_column .button.wp-color-result::after {
+}.ebs-admin .ebs_advanced_settings_column .button.wp-color-result::after {
     content: "";
     mask-image: url("data:image/svg+xml,%3Csvg class='pencil_icon' viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 16H3.425L13.2 6.225L11.775 4.8L2 14.575V16ZM0 18V13.75L13.2 0.575C13.4 0.391667 13.6208 0.25 13.8625 0.15C14.1042 0.05 14.3583 0 14.625 0C14.8917 0 15.15 0.05 15.4 0.15C15.65 0.25 15.8667 0.4 16.05 0.6L17.425 2C17.625 2.18333 17.7708 2.4 17.8625 2.65C17.9542 2.9 18 3.15 18 3.4C18 3.66667 17.9542 3.92083 17.8625 4.1625C17.7708 4.40417 17.625 4.625 17.425 4.825L4.25 18H0ZM12.475 5.525L11.775 4.8L13.2 6.225L12.475 5.525Z'/%3E%3C/svg%3E");
     mask-repeat: no-repeat;
@@ -203,14 +149,31 @@ small {
     opacity: 0;
     border-left: none;
     background-color: #000000;
-}
-.ebs_advanced_settings_column .button.wp-color-result.is-dark::after {
+}.ebs-admin .ebs_advanced_settings_column .button.wp-color-result.is-dark::after {
     background-color: #ffffff;
-}
-.ebs_advanced_settings_column .button.wp-color-result:hover::after {
+}.ebs-admin .ebs_advanced_settings_column .button.wp-color-result:hover::after {
     opacity: 1;
-}
-.button.wp-color-result {
+}.ebs-admin .button.wp-color-result {
     border-radius: 7px !important;
     border: 1px solid black !important;
 }
+/* Settings layout: preserve picker behavior while keeping labels readable. */
+.ebs-admin .ebs_main_colors { width:100%; gap:24px; margin-top:24px; }
+.ebs-admin .ebs_main_colors .wp-picker-container { width:100%; }
+.ebs-admin .main_label_group { position:static; width:100%; margin-bottom:12px; pointer-events:auto; color:#1d2327 !important; }
+.ebs-admin .main_label_group > *:not(svg) { width:100%; }
+.ebs-admin .main_label_group .color_description { color:#646970; }
+.ebs-admin .ebs_main_colors > div > .wp-picker-container > button { height:100px; }
+.ebs-admin .ebs_advanced_settings_toggle { display:flex; align-items:center; justify-content:space-between; width:100%; border:0; padding:0; margin:0; background:transparent; color:#1d2327; cursor:pointer; font-size:14px; font-weight:600; text-align:start; }
+.ebs-admin .ebs_advanced_settings_toggle:focus-visible { outline:2px solid currentColor; outline-offset:8px; }
+.ebs-admin .ebs_advanced_settings_toggle.active .dashicons { transform:rotate(180deg); }
+.ebs-admin .ebs_advanced_settings { width:100%; margin:20px 0 0; }
+.ebs-admin .ebs_advanced_settings_column { grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:none; grid-auto-flow:row; gap:24px; margin-top:24px; }
+.ebs-admin .ebs_advanced_settings_column > div { margin:0; align-items:flex-start; flex-direction:row-reverse; justify-content:flex-end; }
+.ebs-admin .label_group { flex:1; }
+.ebs-admin .label_group > label, .ebs-admin .label_group > small { width:100%; }
+.ebs-admin .wp-picker-container { position:relative; }
+.ebs-admin .wp-picker-container > .wp-picker-holder { z-index:10; }
+.ebs-admin .wp-picker-container:focus-within { z-index:11; }
+.ebs-admin .button.wp-color-result { border-radius:3px !important; border:1px solid #8c8f94 !important; }
+@media(max-width:782px) { .ebs-admin .ebs_main_colors, .ebs-admin .ebs_advanced_settings_column { grid-template-columns:1fr; } }
