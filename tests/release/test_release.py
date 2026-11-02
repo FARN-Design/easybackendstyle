@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import hashlib
+import json
 import importlib.util
 from pathlib import Path
 import shutil
@@ -46,13 +48,29 @@ class ReleaseTests(unittest.TestCase):
             (root/'vendor/autoload.php').symlink_to(root/'easyBackendStyle.php')
             with self.assertRaises(ValueError): release.build('3.2.6', Path(temp)/'symlink', root)
 
+    def test_public_workflow_snapshots(self):
+        manifest = json.loads((ROOT / '.github/farn-workflows.json').read_text())
+        self.assertEqual(manifest['repository'], 'FARN-Design/ci-workflow')
+        self.assertRegex(manifest['commit'], r'^[a-f0-9]{40}$')
+        expected = {'.github/workflows/farn-plugin-tests.yml', '.github/workflows/farn-plugin-deploy.yml'}
+        self.assertEqual(set(manifest['files']), expected)
+        for filename, entry in manifest['files'].items():
+            data = (ROOT / filename).read_bytes()
+            self.assertEqual(hashlib.sha256(data).hexdigest(), entry['sha256'])
+            self.assertIn((entry['source'] + '@' + manifest['commit']).encode(), data)
+        verify = (ROOT / '.github/workflows/verify.yml').read_text()
+        self.assertIn('uses: ./.github/workflows/farn-plugin-tests.yml', verify)
+        # Remote private reusable calls fail at graph resolution, before any job.
+        for filename in (ROOT / '.github/workflows').glob('*.yml'):
+            self.assertNotIn('uses: FARN-Design/ci-workflow/', filename.read_text())
+
     def test_required_workflow_gates(self):
         workflow = (ROOT/'.github/workflows/release-deploy.yml').read_text()
         self.assertIn('needs: [verify, package, compatibility]', workflow)
         self.assertIn("if: '!github.event.release.prerelease'", workflow)
         self.assertNotIn('git push', workflow)
         self.assertNotIn('types: [published, released, edited]', workflow)
-        self.assertIn('plugin-deploy.yml@', workflow)
+        self.assertIn('uses: ./.github/workflows/farn-plugin-deploy.yml', workflow)
         self.assertIn("release_targets: '[\"wordpress-org\"]'", workflow)
         self.assertFalse((ROOT/'.github/workflows/marketplace.yml').exists())
 

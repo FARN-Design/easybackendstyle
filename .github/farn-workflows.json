@@ -1,0 +1,14 @@
+{
+  "repository": "FARN-Design/ci-workflow",
+  "commit": "f6a62a33d812077ead37f3872e1623756cd64565",
+  "files": {
+    ".github/workflows/farn-plugin-tests.yml": {
+      "source": ".github/workflows/plugin-tests.yml",
+      "sha256": "5b8f22b9afebdb231064fc3e7391001bcad1637bc000d53df5f433f0023320bb"
+    },
+    ".github/workflows/farn-plugin-deploy.yml": {
+      "source": ".github/workflows/plugin-deploy.yml",
+      "sha256": "c6db0115cdcaa2951a3eef666572bb7a41096b8d2e22e4cecd00bca317b1bfad"
+    }
+  }
+}

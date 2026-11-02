@@ -1,0 +1,229 @@
+# Generated from FARN-Design/ci-workflow; do not edit here.
+# Source: .github/workflows/plugin-tests.yml@f6a62a33d812077ead37f3872e1623756cd64565
+# Update with ci-workflow/scripts/sync-plugin-workflows.py.
+name: Plugin tests
+
+on:
+  workflow_call:
+    outputs:
+      wordpress:
+        description: Exact WordPress release used in all test jobs
+        value: ${{ jobs.validate.outputs.wordpress }}
+    inputs:
+      php_versions:
+        type: string
+        default: '["8.2","8.3","8.4","8.5"]'
+      main_plugin_file:
+        type: string
+        required: true
+      blueprint:
+        type: string
+        required: true
+      phpunit_config:
+        type: string
+        default: phpunit.xml.dist
+      vitest_config:
+        type: string
+        default: tests/integration/vitest.config.ts
+      playwright_config:
+        type: string
+        default: tests/end-to-end/playwright.config.ts
+      node_version:
+        type: string
+        default: '22'
+      php_extensions:
+        type: string
+        default: mbstring, intl, mysqli, zip, dom, curl, simplexml, soap
+      wordpress_version:
+        type: string
+        default: latest
+      run_javascript:
+        type: boolean
+        default: true
+      run_browser:
+        type: boolean
+        default: true
+    secrets:
+      FARN_CORE_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.validate.outputs.versions }}
+      wordpress: ${{ steps.wordpress.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate required PHP coverage
+        id: validate
+        env:
+          PHP_VERSIONS: ${{ inputs.php_versions }}
+          MAIN_PLUGIN_FILE: ${{ inputs.main_plugin_file }}
+          BLUEPRINT: ${{ inputs.blueprint }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          versions = json.loads(os.environ['PHP_VERSIONS'])
+          if not isinstance(versions, list) or not versions or any(not isinstance(v, str) or not re.fullmatch(r'\d+\.\d+', v) for v in versions):
+              raise SystemExit('php_versions must be a nonempty JSON array of major.minor strings')
+          if len(set(versions)) != len(versions):
+              raise SystemExit('Duplicate PHP versions')
+          header = Path(os.environ['MAIN_PLUGIN_FILE']).read_text()
+          match = re.search(r'^\s*(?:\*\s*)?Requires PHP:\s*(\d+\.\d+)(?:\.\d+)?\s*$', header, re.M)
+          if not match:
+              raise SystemExit('Missing or invalid Requires PHP header')
+          blueprint = json.loads(Path(os.environ['BLUEPRINT']).read_text())
+          preview = blueprint.get('preferredVersions', {}).get('php')
+          required = {'8.2', '8.3', '8.4', '8.5', match[1], preview}
+          missing = required.difference(versions)
+          if missing:
+              raise SystemExit(f'Missing required PHP coverage: {missing}')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('versions=' + json.dumps(versions) + '\n')
+          PY
+      - name: Resolve WordPress once for all native test jobs
+        id: wordpress
+        env:
+          REQUESTED_WP: ${{ inputs.wordpress_version }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, urllib.request
+          version = os.environ['REQUESTED_WP']
+          if version == 'latest':
+              with urllib.request.urlopen('https://api.wordpress.org/core/version-check/1.7/', timeout=30) as response:
+                  offers = json.load(response)['offers']
+              version = next(o['version'] for o in offers if o.get('response') == 'upgrade')
+          if not re.fullmatch(r'\d+\.\d+(?:\.\d+)?', version):
+              raise SystemExit('Expected a stable WordPress version')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('version=' + version + '\n')
+          PY
+
+  test:
+    name: PHP ${{ matrix.php }}
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ${{ fromJson(needs.validate.outputs.versions) }}
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: wp_test_db
+          MYSQL_USER: wp_test_user
+          MYSQL_PASSWORD: wp_test_password
+          MYSQL_ROOT_PASSWORD: root_password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    env:
+      FARN_TEST_PHP_VERSION: ${{ matrix.php }}
+      FARN_TEST_WP_VERSION: ${{ needs.validate.outputs.wordpress }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Initialize reports
+        run: |
+          mkdir -p test-results
+          echo "WP_TESTS_DIR=$RUNNER_TEMP/wordpress-tests-lib" >> "$GITHUB_ENV"
+          echo "WP_CORE_DIR=$RUNNER_TEMP/wordpress" >> "$GITHUB_ENV"
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ inputs.php_extensions }}
+          coverage: none
+          tools: composer:v2
+          ini-values: memory_limit=512M
+      - name: Verify actual PHP runtime
+        run: |
+          php -r 'if (PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION !== getenv("FARN_TEST_PHP_VERSION")) { fwrite(STDERR, "Wrong PHP runtime\n"); exit(1); } echo "PHP ".PHP_VERSION."\n";' | tee test-results/runtime.txt
+      - uses: actions/setup-node@v6
+        if: inputs.run_javascript || inputs.run_browser
+        with:
+          node-version: ${{ inputs.node_version }}
+          cache: npm
+      - name: Install plugin and optional isolated test dependencies once
+        env:
+          CORE_TOKEN: ${{ secrets.FARN_CORE_TOKEN }}
+        run: |
+          if [ -n "$CORE_TOKEN" ]; then
+            export COMPOSER_AUTH="$(php -r 'echo json_encode(["github-oauth" => ["github.com" => getenv("CORE_TOKEN")]]);')"
+          fi
+          if [ -f tests/composer.json ]; then
+            composer install --no-dev --prefer-dist --no-progress
+            composer install --working-dir=tests --prefer-dist --no-progress
+            echo "PHPUNIT_BIN=tests/vendor/bin/phpunit" >> "$GITHUB_ENV"
+            if [ -f tests/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php ]; then
+              echo "WP_TESTS_PHPUNIT_POLYFILLS_PATH=$GITHUB_WORKSPACE/tests/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php" >> "$GITHUB_ENV"
+            fi
+          else
+            composer install --prefer-dist --no-progress
+            echo "PHPUNIT_BIN=vendor/bin/phpunit" >> "$GITHUB_ENV"
+          fi
+          # Tools must support the target PHP. Never silently switch to another runtime.
+      - name: Install npm dependencies once
+        if: inputs.run_javascript || inputs.run_browser
+        run: npm ci
+      - name: Install browser
+        if: inputs.run_browser
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Install matching WordPress core and PHPUnit library
+        env:
+          WP_VERSION: ${{ needs.validate.outputs.wordpress }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y subversion
+          mkdir -p "$WP_CORE_DIR" "$WP_TESTS_DIR"
+          curl --fail --silent --show-error --location --retry 3 "https://wordpress.org/wordpress-${WP_VERSION}.tar.gz" -o "$RUNNER_TEMP/wordpress.tar.gz"
+          tar --strip-components=1 -xzf "$RUNNER_TEMP/wordpress.tar.gz" -C "$WP_CORE_DIR"
+          test_tag="$WP_VERSION"
+          if [[ "$test_tag" =~ ^[0-9]+\.[0-9]+\.0$ ]]; then
+            test_tag="${test_tag%.0}"
+          fi
+          svn export --quiet "https://develop.svn.wordpress.org/tags/$test_tag/tests/phpunit/includes" "$WP_TESTS_DIR/includes"
+          svn export --quiet "https://develop.svn.wordpress.org/tags/$test_tag/tests/phpunit/data" "$WP_TESTS_DIR/data"
+          curl --fail --silent --show-error --location --retry 3 "https://develop.svn.wordpress.org/tags/$test_tag/wp-tests-config-sample.php" -o "$WP_TESTS_DIR/wp-tests-config.php"
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          config = Path(os.environ['WP_TESTS_DIR']) / 'wp-tests-config.php'
+          text = config.read_text()
+          core = repr(os.environ['WP_CORE_DIR'] + '/')
+          for source in ["dirname( __FILE__ ) . '/src/'", "__DIR__ . '/src/'"]:
+              text = text.replace(source, core)
+          for source, target in [('youremptytestdbnamehere', 'wp_test_db'), ('yourusernamehere', 'wp_test_user'), ('yourpasswordhere', 'wp_test_password'), ('localhost', '127.0.0.1:3306')]:
+              text = text.replace(source, target)
+          if core not in text:
+              raise SystemExit('WordPress test config format changed: ABSPATH not configured')
+          config.write_text(text)
+          PY
+          printf 'WordPress %s\n' "$WP_VERSION" >> test-results/runtime.txt
+      - name: PHPUnit
+        env:
+          PHPUNIT_CONFIG: ${{ inputs.phpunit_config }}
+        run: php "$PHPUNIT_BIN" --configuration "$PHPUNIT_CONFIG" --log-junit test-results/phpunit.xml
+      - name: JavaScript tests
+        if: ${{ !cancelled() && inputs.run_javascript && success() }}
+        env:
+          VITEST_CONFIG: ${{ inputs.vitest_config }}
+        run: npx --no-install vitest run --config="$VITEST_CONFIG" --reporter=default --reporter=junit --outputFile=test-results/vitest.xml
+      - name: Browser tests
+        if: ${{ !cancelled() && inputs.run_browser && success() }}
+        env:
+          PLAYWRIGHT_CONFIG: ${{ inputs.playwright_config }}
+          PLAYWRIGHT_JUNIT_OUTPUT_FILE: test-results/playwright.xml
+        run: npx --no-install playwright test --config="$PLAYWRIGHT_CONFIG" --reporter=line,junit --output=test-results/browser
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: plugin-tests-php-${{ matrix.php }}
+          path: test-results
+          if-no-files-found: error
