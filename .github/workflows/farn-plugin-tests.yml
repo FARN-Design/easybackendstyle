@@ -1,5 +1,5 @@
 # Generated from FARN-Design/ci-workflow; do not edit here.
-# Source: .github/workflows/plugin-tests.yml@75d814ac14a12a748efd80c29e5fe9e7cfd211d3
+# Source: .github/workflows/plugin-tests.yml@f6a62a33d812077ead37f3872e1623756cd64565
 # Update with ci-workflow/scripts/sync-plugin-workflows.py.
 name: Plugin tests
 
@@ -126,6 +126,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     env:
       FARN_TEST_PHP_VERSION: ${{ matrix.php }}
+      FARN_TEST_WP_VERSION: ${{ needs.validate.outputs.wordpress }}
     steps:
       - uses: actions/checkout@v6
       - name: Initialize reports

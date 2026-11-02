@@ -1,5 +1,5 @@
 # Generated from FARN-Design/ci-workflow; do not edit here.
-# Source: .github/workflows/plugin-deploy.yml@75d814ac14a12a748efd80c29e5fe9e7cfd211d3
+# Source: .github/workflows/plugin-deploy.yml@f6a62a33d812077ead37f3872e1623756cd64565
 # Update with ci-workflow/scripts/sync-plugin-workflows.py.
 name: Publish tested plugin package
 on:

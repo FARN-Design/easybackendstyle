@@ -4,7 +4,7 @@ The common PHP/JavaScript/browser test suite comes from `plugin-tests.yml` in
 FARN-Design/ci-workflow. Publication comes from its shared `plugin-deploy.yml`;
 this plugin selects `release_targets: '["wordpress-org"]'`. The same shared
 publisher supports FARN or both destinations. Both shared workflows are generated snapshots pinned to
-`75d814ac14a12a748efd80c29e5fe9e7cfd211d3`. GitHub does not allow a public
+`f6a62a33d812077ead37f3872e1623756cd64565`. GitHub does not allow a public
 repository to call reusable workflows in a private repository, so callers use
 `./.github/workflows/farn-plugin-tests.yml` and `farn-plugin-deploy.yml`.
 The logic remains maintained centrally, and `.github/farn-workflows.json` records

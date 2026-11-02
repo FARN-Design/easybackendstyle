@@ -14,6 +14,9 @@ test('administrator can save a color and reload it without losing the theme', as
   await primary.locator('button.wp-color-result').click();
   await primary.locator('#ebsPrimary').fill('#33258a');
   await primary.locator('#ebsPrimary').press('Tab');
+  // The open WordPress picker overlays the save button at desktop width.
+  await primary.locator('button.wp-color-result').click();
+  await expect(primary.locator('.iris-picker')).toBeHidden();
   await page.locator('#submit').click();
   await expect(page.locator('#ebsPrimary')).toHaveValue('#33258a');
   await page.reload();
