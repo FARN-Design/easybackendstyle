@@ -52,7 +52,7 @@ jobs:
           python3 scripts/build-admin-colors.py --check --wordpress-root /tmp/wordpress
   tests:
     needs: preflight
-    uses: FARN-Design/ci-workflow/.github/workflows/plugin-tests.yml@75d814ac14a12a748efd80c29e5fe9e7cfd211d3
+    uses: ./.github/workflows/farn-plugin-tests.yml
     with:
       main_plugin_file: easyBackendStyle.php
       blueprint: blueprint.json

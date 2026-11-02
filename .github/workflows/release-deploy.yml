@@ -125,7 +125,7 @@ jobs:
           if-no-files-found: error
   publish:
     needs: [verify, package, compatibility]
-    uses: FARN-Design/ci-workflow/.github/workflows/plugin-deploy.yml@75d814ac14a12a748efd80c29e5fe9e7cfd211d3
+    uses: ./.github/workflows/farn-plugin-deploy.yml
     with:
       release_targets: '["wordpress-org"]'
       artifact_name: backendstyle-candidate

@@ -3,7 +3,21 @@
 The common PHP/JavaScript/browser test suite comes from `plugin-tests.yml` in
 FARN-Design/ci-workflow. Publication comes from its shared `plugin-deploy.yml`;
 this plugin selects `release_targets: '["wordpress-org"]'`. The same shared
-publisher supports FARN or both destinations. Both shared workflows are pinned to `75d814ac14a12a748efd80c29e5fe9e7cfd211d3`.
+publisher supports FARN or both destinations. Both shared workflows are generated snapshots pinned to
+`75d814ac14a12a748efd80c29e5fe9e7cfd211d3`. GitHub does not allow a public
+repository to call reusable workflows in a private repository, so callers use
+`./.github/workflows/farn-plugin-tests.yml` and `farn-plugin-deploy.yml`.
+The logic remains maintained centrally, and `.github/farn-workflows.json` records
+its source commit and SHA-256 checksums. CI checks the snapshots before tests.
+Do not edit generated copies; update from the central repository with:
+
+```sh
+python3 ../ci-workflow/scripts/sync-plugin-workflows.py --target . --ref <reviewed-commit>
+python3 ../ci-workflow/scripts/sync-plugin-workflows.py --target . --ref <reviewed-commit> --check
+```
+
+Commit the two generated workflows and their manifest together. Their only
+trigger is `workflow_call`; publication still requires a release event.
 Plugin-specific color builds,
 translation generation and historical migration fixtures stay here.
 

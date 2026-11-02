@@ -1,0 +1,190 @@
+# Generated from FARN-Design/ci-workflow; do not edit here.
+# Source: .github/workflows/plugin-deploy.yml@75d814ac14a12a748efd80c29e5fe9e7cfd211d3
+# Update with ci-workflow/scripts/sync-plugin-workflows.py.
+name: Publish tested plugin package
+on:
+  workflow_call:
+    inputs:
+      release_targets:
+        description: 'JSON array: farn, wordpress-org, or both; empty publishes GitHub assets only'
+        type: string
+        default: '["farn"]'
+      artifact_name:
+        type: string
+        required: true
+      plugin_slug:
+        type: string
+        required: true
+      plugin_name:
+        type: string
+        required: true
+      main_plugin_file:
+        type: string
+        required: true
+      changelog:
+        type: string
+        default: ''
+      wordpress_assets_directory:
+        type: string
+        default: .wordpress-org
+      wordpress_version:
+        description: Exact WordPress release already tested by the caller
+        type: string
+        default: ''
+    secrets:
+      FARN_DEPLOY_AUTH:
+        required: false
+      SVN_USERNAME:
+        required: false
+      SVN_PASSWORD:
+        required: false
+permissions:
+  contents: write
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      sha256: ${{ steps.validate.outputs.sha256 }}
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: artifacts
+      - name: Validate destination, credentials and immutable candidate
+        id: validate
+        env:
+          EVENT: ${{ github.event_name }}
+          PRERELEASE: ${{ github.event.release.prerelease }}
+          DRAFT: ${{ github.event.release.draft }}
+          TAG: ${{ github.event.release.tag_name }}
+          TARGETS: ${{ inputs.release_targets }}
+          SLUG: ${{ inputs.plugin_slug }}
+          MAIN: ${{ inputs.main_plugin_file }}
+          NOTES: ${{ inputs.changelog }}
+          WORDPRESS: ${{ inputs.wordpress_version }}
+          ASSETS: ${{ inputs.wordpress_assets_directory }}
+          FARN_AUTH: ${{ secrets.FARN_DEPLOY_AUTH }}
+          SVN_USER: ${{ secrets.SVN_USERNAME }}
+          SVN_PASS: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, re, zipfile
+          from pathlib import Path, PurePosixPath
+          env = os.environ
+          assert env['EVENT'] == 'release' and env['DRAFT'] == 'false', 'Published release required'
+          assert env['PRERELEASE'] in ('true', 'false'), 'Explicit prerelease flag required'
+          targets = json.loads(env['TARGETS'])
+          assert isinstance(targets, list) and all(isinstance(t, str) for t in targets), 'Expected target array'
+          assert len(set(targets)) == len(targets) and set(targets) <= {'farn', 'wordpress-org'}, 'Unknown or duplicate target'
+          assert re.fullmatch(r'[a-z0-9][a-z0-9-]*', env['SLUG']), 'Invalid plugin slug'
+          version = env['TAG'].removeprefix('v')
+          assert re.fullmatch(r'\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?', version), 'Invalid release tag'
+          stable = env['PRERELEASE'] == 'false'
+          assert not stable or '-' not in version, 'A prerelease tag cannot deploy to production'
+          def relative(value):
+              p = PurePosixPath(value)
+              assert p.parts and not p.is_absolute() and '..' not in p.parts and '\\' not in value, 'Unsafe path'
+          relative(env['MAIN']); relative(env['ASSETS'])
+          if stable and 'farn' in targets:
+              assert env['FARN_AUTH'], 'FARN_DEPLOY_AUTH required for FARN only'
+              assert isinstance(json.loads(env['NOTES']).get('changes'), dict), 'FARN changelog required'
+          if stable and 'wordpress-org' in targets:
+              assert env['SVN_USER'] and env['SVN_PASS'], 'WordPress.org credentials required'
+              assert re.fullmatch(r'\d+\.\d+(?:\.\d+)?', env['WORDPRESS']), 'Tested WordPress version required'
+          archive_path = Path('artifacts', env['SLUG'] + '.zip')
+          digest = hashlib.sha256(archive_path.read_bytes()).hexdigest()
+          with zipfile.ZipFile(archive_path) as archive:
+              assert archive.testzip() is None, 'Corrupt ZIP'
+              seen = set()
+              for item in archive.infolist():
+                  relative(item.filename)
+                  assert item.filename.startswith(env['SLUG'] + '/') and item.filename not in seen, 'Unexpected ZIP entry'
+                  assert (item.external_attr >> 16) & 0o170000 != 0o120000, 'Symlinks are not allowed'
+                  seen.add(item.filename)
+              header = archive.read(env['SLUG'] + '/' + env['MAIN']).decode()
+              assert re.search(r'^Version:\s*' + re.escape(version) + r'\s*$', header, re.M), 'Package version mismatch'
+              if stable and 'wordpress-org' in targets:
+                  readmes = [n for n in seen if n.lower() == env['SLUG'] + '/readme.txt']
+                  assert len(readmes) == 1, 'WordPress.org readme required'
+                  readme = archive.read(readmes[0]).decode()
+                  assert re.search(r'^Stable tag:\s*' + re.escape(version) + r'\s*$', readme, re.M), 'Stable tag mismatch'
+                  tested = re.search(r'^Tested up to:\s*(\S+)', readme, re.M)
+                  assert tested and tested[1] in (env['WORDPRESS'], '.'.join(env['WORDPRESS'].split('.')[:2])), 'Tested up to does not cover tested WordPress'
+          with open(env['GITHUB_OUTPUT'], 'a') as output:
+              output.write('sha256=' + digest + '\n')
+          PY
+  publish:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: artifacts
+      - name: Publish tested ZIP, checksums and translation imports
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.release.tag_name }}
+          SLUG: ${{ inputs.plugin_slug }}
+          EXPECTED: ${{ needs.validate.outputs.sha256 }}
+        run: |
+          cd artifacts
+          printf '%s  %s.zip\n' "$EXPECTED" "$SLUG" | sha256sum --check --strict
+          files=("$SLUG.zip")
+          if [ -d translations ]; then
+            while IFS= read -r -d '' file; do files+=("$file"); done < <(find translations -type f -name '*.po' -print0)
+          fi
+          sha256sum "${files[@]}" > SHA256SUMS
+          gh release upload "$TAG" "${files[@]}" SHA256SUMS --clobber --repo "$GITHUB_REPOSITORY"
+  farn:
+    needs: [validate, publish]
+    if: github.event.release.prerelease == false && contains(fromJson(inputs.release_targets), 'farn')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: artifacts
+      - name: Deploy exact verified package to FARN
+        env:
+          DEPLOY_AUTH: ${{ secrets.FARN_DEPLOY_AUTH }}
+          NOTES: ${{ inputs.changelog }}
+          TAG: ${{ github.event.release.tag_name }}
+          PLUGIN_SLUG: ${{ inputs.plugin_slug }}
+          PLUGIN_NAME: ${{ inputs.plugin_name }}
+          EXPECTED: ${{ needs.validate.outputs.sha256 }}
+        run: |
+          printf '%s  artifacts/%s.zip\n' "$EXPECTED" "$PLUGIN_SLUG" | sha256sum --check --strict
+          printf '%s' "$NOTES" > patch_note.txt
+          curl --fail-with-body --show-error --silent --user "$DEPLOY_AUTH" \
+            --form-string "version=$TAG" --form-string "softwareSlug=$PLUGIN_SLUG" \
+            -F 'patchNote=<patch_note.txt' --form-string "fileName=$PLUGIN_SLUG.zip" \
+            -F "file=@artifacts/$PLUGIN_SLUG.zip" https://services.farnlabs.de/api/v1/updates
+          curl --fail-with-body --show-error --silent --location --max-redirs 3 \
+            --form-string "pluginName=$PLUGIN_NAME" --form-string "pluginVersion=$TAG" \
+            --form-string "pluginSlug=$PLUGIN_SLUG" --form-string "fileName=$PLUGIN_SLUG.zip" \
+            -F "file=@artifacts/$PLUGIN_SLUG.zip" https://www.farnlabs.de/wp-json/farnToolbox/v1/storeRelease
+  wordpress:
+    needs: [validate, publish]
+    if: github.event.release.prerelease == false && contains(fromJson(inputs.release_targets), 'wordpress-org')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v7
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: artifacts
+      - name: Extract exact verified package
+        env:
+          SLUG: ${{ inputs.plugin_slug }}
+          EXPECTED: ${{ needs.validate.outputs.sha256 }}
+        run: |
+          printf '%s  artifacts/%s.zip\n' "$EXPECTED" "$SLUG" | sha256sum --check --strict
+          unzip -q "artifacts/$SLUG.zip" -d output
+      - uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: ${{ inputs.plugin_slug }}
+          BUILD_DIR: ./output/${{ inputs.plugin_slug }}
+          ASSETS_DIR: ${{ inputs.wordpress_assets_directory }}
