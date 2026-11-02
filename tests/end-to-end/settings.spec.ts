@@ -18,9 +18,12 @@ test('administrator can save a color and reload it without losing the theme', as
   await primary.locator('button.wp-color-result').click();
   await expect(primary.locator('.iris-picker')).toBeHidden();
   await page.locator('#submit').click();
+  await expect(page.getByText('Changes saved.', { exact: true })).toBeVisible();
   await expect(page.locator('#ebsPrimary')).toHaveValue('#33258a');
   await page.reload();
   await expect(page.locator('#ebsPrimary')).toHaveValue('#33258a');
+  // Moving away from the button distinguishes its base color from :hover.
+  await page.getByRole('heading', { name: 'Settings', exact: true }).hover();
   await expect(page.locator('#submit')).toHaveCSS('background-color', 'rgb(51, 37, 138)');
   await page.locator('.ebs_advanced_settings_toggle').click();
   await expect(page.locator('.ebs_advanced_settings_toggle')).toHaveAttribute('aria-expanded', 'true');
