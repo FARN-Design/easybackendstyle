@@ -43,7 +43,7 @@ Built by [FARN Labs](https://www.farnlabs.com). See the [documentation](https://
   - Create a new Folder in: `/wp-content/plugins/easyBackendStyle`
   - Move all files into the new `easyBackendStyle` folder
 
-3. Activate the plugin at the Wordpress plugin page http://localhost/wp-admin/plugins.php
+3. In your WordPress dashboard, go to Plugins > Installed Plugins and activate Easy Backend-Style.
 
 #### Install via Wordpress Plugin Store
 
