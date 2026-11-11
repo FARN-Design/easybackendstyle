@@ -86,20 +86,24 @@ class easyBackendStyle {
     /** Schema changes are confined to activation and authorized admin requests. */
     public function initialize(): void {
         $this->color_mapping();
+        if (current_user_can('manage_options')) \Farn\EasyBackendStyle\InitialColors::prepare();
         if (current_user_can('manage_options') && !(new ebs_MigrationHandler())->migration()) {
             \Farn\EasyBackendStyle\AdminSettings::databaseWarning();
         }
+        if (current_user_can('manage_options') && get_option(ebs_MigrationHandler::VERSION_OPTION) === ebs_MigrationHandler::VERSION) \Farn\EasyBackendStyle\InitialColors::initialize($this->dbc);
         $this->checkEbsColorSchemeOption();
         $this->registerColorScheme();
     }
 
     public function activate(): void {
+        \Farn\EasyBackendStyle\InitialColors::prepare();
         $this->color_mapping();
         if (!(new ebs_MigrationHandler())->migration()) {
             \Farn\EasyBackendStyle\AdminSettings::databaseWarning();
             return;
         }
-        $this->changeAdminColorScheme(get_current_user_id());
+        \Farn\EasyBackendStyle\InitialColors::initialize($this->dbc);
+        if (\Farn\EasyBackendStyle\InitialColors::enabled()) $this->changeAdminColorScheme(get_current_user_id());
     }
 
     public function deactivate(): void {
@@ -219,6 +223,7 @@ class easyBackendStyle {
 
     function registerColorScheme(): void
     {
+        if (!\Farn\EasyBackendStyle\InitialColors::enabled()) return;
         $colorsArray = [];
         $colorsArray[] = $this->getColor('ebsPrimary');
         $colorsArray[] = $this->getColor('ebsSecondary');
@@ -242,6 +247,7 @@ class easyBackendStyle {
     }
     function checkEbsColorSchemeOption(): void
     {
+        if (!\Farn\EasyBackendStyle\InitialColors::enabled()) return;
         $user_id = get_current_user_id();
         if (get_user_meta($user_id, 'ebs_scheme_initialized', true) !== '1') {
             $this->changeAdminColorScheme($user_id);

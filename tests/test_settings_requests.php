@@ -8,6 +8,10 @@ function check_admin_referer($action, $field) { if (($_POST[$field] ?? '') !== '
 function sanitize_hex_color($s) { return preg_match('/^#(?:[a-f0-9]{3}|[a-f0-9]{6})$/i', $s) ? $s : null; }
 function wp_unslash($s) { return stripslashes($s); }
 function add_settings_error($setting, $code, $text, $type = 'error') { $GLOBALS['notice'] = [$code, $type]; }
+function update_option($key, $value, $autoload = false) { $GLOBALS[$key] = $value; }
+function get_current_user_id() { return 1; }
+function update_user_option($id, $key, $value, $global = false) { $GLOBALS[$key] = $value; }
+require dirname(__DIR__) . '/src/InitialColors.php';
 require dirname(__DIR__) . '/src/AdminSettings.php';
 $db = new class {
     public array $writes = [];
@@ -29,6 +33,7 @@ $_POST['secondary'] = ['#fff'];
 check(!$db->writes && $GLOBALS['notice'][0] === 'invalid', 'Invalid payload caused partial update');
 $_POST['secondary'] = '#abc';
 \Farn\EasyBackendStyle\AdminSettings::handle($db, $defaults);
+check($GLOBALS['ebs_initial_colors'] === 'ready' && $GLOBALS['admin_color'] === 'fresh', 'Saving must enable colors');
 check($db->writes === ['primary' => '#000', 'secondary' => '#abc'], 'Valid settings not saved');
 $_POST = ['resetDefaults' => '', 'ebs_nonce' => 'valid'];
 $GLOBALS['allowed'] = false;

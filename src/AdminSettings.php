@@ -25,6 +25,7 @@ final class AdminSettings {
         check_admin_referer('ebs_save_colors', 'ebs_nonce');
         if (isset($_POST['resetDefaults'])) {
             if (!$database->resetDefaults()) { self::saveFailure(); return; }
+            InitialColors::saved();
             add_settings_error('ebs_colors', 'reset', __('Default colors restored.', 'easybackendstyle'), 'success');
             return;
         }
@@ -39,6 +40,7 @@ final class AdminSettings {
             $values[$key] = $color;
         }
         if (!$database->saveColors($values)) { self::saveFailure(); return; }
+        InitialColors::saved();
         add_settings_error('ebs_colors', 'saved', __('Changes saved.', 'easybackendstyle'), 'success');
     }
 

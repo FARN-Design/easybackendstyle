@@ -41,6 +41,7 @@ jobs:
           python3 tests/release/test_release.py
           php tests/test_admin_color_runtime.php
           php tests/test_settings_requests.php
+          php tests/test_initial_colors.php
       - name: Verify reviewed color CSS against current WordPress
         env:
           WORDPRESS_VERSION: ${{ steps.wordpress.outputs.version }}

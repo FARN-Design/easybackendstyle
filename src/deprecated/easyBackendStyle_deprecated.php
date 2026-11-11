@@ -41,17 +41,25 @@ class easyBackendStyle_deprecated
     }
 
     public function initialize(): void {
-        if (current_user_can('manage_options') && get_option('ebs_legacy_schema_version') !== '1') $this->activate();
+        if (current_user_can('manage_options')) {
+            if (get_option('ebs_legacy_schema_version') !== '1') $this->activate();
+            else \Farn\EasyBackendStyle\InitialColors::initialize($this->dbc);
+        }
     }
 
     public function activate(): void {
-        if ($this->dbc->setup_Database()) update_option('ebs_legacy_schema_version', '1', false);
+        \Farn\EasyBackendStyle\InitialColors::prepare();
+        if ($this->dbc->setup_Database()) {
+            update_option('ebs_legacy_schema_version', '1', false);
+            \Farn\EasyBackendStyle\InitialColors::initialize($this->dbc);
+        }
         else \Farn\EasyBackendStyle\AdminSettings::databaseWarning();
     }
 
     public function deactivate(): void {}
 
     public function frontendAdminbar(): void {
+        if (!\Farn\EasyBackendStyle\InitialColors::enabled()) return;
         if (!is_user_logged_in() || !is_admin_bar_showing() || get_user_option('admin_color') !== 'fresh') return;
         if (get_option('ebs_legacy_schema_version') !== '1') return;
         wp_enqueue_style('ebsAdminbarFrontend', plugins_url('resources/ebsAdminbarFrontend.css', EBS_PLUGIN_PATH . 'easyBackendStyle.php'), [], filemtime(EBS_PLUGIN_PATH . 'resources/ebsAdminbarFrontend.css'));
@@ -97,6 +105,7 @@ class easyBackendStyle_deprecated
     }
     function ebs_backend_css(): void
     {
+        if (!\Farn\EasyBackendStyle\InitialColors::enabled()) return;
         if (!is_admin() || get_user_option('admin_color') !== 'fresh') {
             return;
         }
