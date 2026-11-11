@@ -23,7 +23,9 @@ jobs:
           php-version: '8.2'
           tools: wp-cli
       - name: Test gettext installer failure handling
-        run: python3 tests/test_ci_gettext.py
+        run: |
+          python3 tests/test_ci_gettext.py
+          python3 tests/test_ci_apt.py
       - name: Install gettext with bounded mirror attempts
         timeout-minutes: 6
         run: bash scripts/install-ci-gettext.sh

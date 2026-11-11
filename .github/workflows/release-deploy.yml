@@ -117,6 +117,9 @@ jobs:
           FARN_TEST_PHP_VERSION: ${{ matrix.php }}
           FARN_TEST_WP_VERSION: ${{ needs.verify.outputs.wordpress }}
         run: node scripts/test-package.mjs artifacts/easybackendstyle.zip
+      - name: Configure Ubuntu sources for browser dependencies
+        timeout-minutes: 4
+        run: bash scripts/configure-ci-apt.sh
       - name: Install browser for theme color regression
         run: npx --no-install playwright install --with-deps chromium
       - name: Import previously saved standard-theme colors and verify browser output
