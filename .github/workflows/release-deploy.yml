@@ -63,7 +63,7 @@ jobs:
           readme-path: README.txt
       - name: Regenerate translations and color CSS
         run: |
-          sudo apt-get update && sudo apt-get install -y gettext
+          bash scripts/install-ci-gettext.sh
           python3 scripts/build-translations.py --check-source
           python3 scripts/build-admin-colors.py
       - name: Install production dependencies

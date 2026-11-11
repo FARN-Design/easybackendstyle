@@ -22,7 +22,9 @@ jobs:
         with:
           php-version: '8.2'
           tools: wp-cli
-      - run: sudo apt-get update && sudo apt-get install -y gettext
+      - name: Install gettext with Ubuntu mirror fallback
+        timeout-minutes: 6
+        run: bash scripts/install-ci-gettext.sh
       - name: Resolve current stable WordPress
         id: wordpress
         run: |
