@@ -38,12 +38,6 @@ class ebs_SettingsSubMenu
     {
 
         if (!$this->dbc->checkFields()) { \Farn\EasyBackendStyle\AdminSettings::saveFailure(); return; }
-        \Farn\EasyBackendStyle\AdminSettings::handle($this->dbc, array_fill_keys(['primaryColor', 'secondaryColor', 'menuText', 'baseMenu', 'subMenu', 'highlight', 'highlightText', 'notification', 'notificationText', 'background', 'links', 'buttons', 'buttonText', 'formInputs', 'linkHover', 'buttonHover', 'disabledButton', 'disabledButtonText', 'icon'], ''));
-
-        if (get_user_option('admin_color') != 'fresh') {
-            echo '<p class="notice notice-warning">' . esc_html__('Please select the default admin color scheme and reload the site to apply changes.', 'easybackendstyle') . '</p>';
-        }
-
         $this->ebs->ebs_backend_css();
     }
 }

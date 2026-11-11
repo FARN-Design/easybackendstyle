@@ -60,3 +60,11 @@ endpoint before plugin activation, then checks imported values, persistence, rea
 and computed browser colors. Run it with `--php=8.2` and `--php=8.5`; Chromium must be
 installed via Playwright (or supplied with `--chromium=/path/to/browser`). Reports and
 screenshots are written to `test-results/`.
+
+
+When a theme supplies no usable palette, the settings start with WordPress Fresh
+colors (blue `#2271b1`, dark menu `#1d2327`, submenu `#2c3338`), verified against
+WordPress 7.1.4. The existing user scheme stays active until saving. Settings saves
+run on the page load hook before WordPress selects its CSS and body classes, so the
+first save applies immediately without changing the user profile manually. Previously
+saved plugin palettes are preserved; unconfirmed historical blue defaults are refreshed.

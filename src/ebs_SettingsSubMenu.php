@@ -4,11 +4,6 @@ namespace Farn\EasyBackendStyle;
 $plugin = $GLOBALS['ebsPlugin'];
 $definitions = $GLOBALS['ebsColorMapping'];
 $defaults = array_map(static fn($definition) => $definition[2], $definitions);
-if (get_option(ebs_MigrationHandler::VERSION_OPTION) === ebs_MigrationHandler::VERSION && $plugin->dbc->checkFields()) {
-    AdminSettings::handle($plugin->dbc, $defaults);
-} elseif (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
-    AdminSettings::saveFailure();
-}
 $plugin->ebs_root_variables_css();
 $main = ['ebsPrimary', 'ebsSecondary', 'ebsTertiary'];
 $renderColor = static function ($key, $definition, $isMain) use ($plugin) {
@@ -29,9 +24,6 @@ $renderColor = static function ($key, $definition, $isMain) use ($plugin) {
 ?>
 <div class="wrap ebs-admin">
     <?php AdminSettings::header(); ?>
-    <?php if (get_user_option('admin_color') !== 'personalizedcolorscheme') : ?>
-        <div class="notice notice-warning inline"><p><?php esc_html_e('Please select the personalized admin color scheme and reload the site to apply changes.', 'easybackendstyle'); ?></p></div>
-    <?php endif; ?>
     <form method="post" id="colorPickForm">
         <?php wp_nonce_field('ebs_save_colors', 'ebs_nonce'); ?>
         <section class="ebs-panel" aria-labelledby="ebs-main-heading">

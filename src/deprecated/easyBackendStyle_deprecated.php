@@ -74,6 +74,7 @@ class easyBackendStyle_deprecated
      */
     public function sub_settings_page(): void
     {
+        add_action('load-settings_page_easyBackendStyle', [\Farn\EasyBackendStyle\AdminSettings::class, 'processPage']);
         add_submenu_page(
             'options-general.php', //name of the general settings file.
             'Easy Backend-Style',// page title

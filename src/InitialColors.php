@@ -18,6 +18,15 @@ final class InitialColors {
     }
 
     public static function initialize($database): void {
+        // Only untouched, unconfirmed defaults may change during an upgrade.
+        if (get_option(self::OPTION) === 'waiting') {
+            $colors = $database->allColors();
+            if (($colors['ebsPrimary'] ?? '') === '#096484' && ($colors['ebsSecondary'] ?? '') === '#52accc'
+                && ($colors['ebsTertiary'] ?? '') === '#096484') {
+                $database->resetDefaults();
+            }
+            return;
+        }
         if (get_option(self::OPTION) !== 'pending') return;
         $base = self::detect();
         if (!$base) {

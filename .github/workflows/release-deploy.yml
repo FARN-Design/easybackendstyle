@@ -127,6 +127,10 @@ jobs:
           FARN_TEST_PHP_VERSION: ${{ matrix.php }}
           FARN_TEST_WP_VERSION: ${{ needs.verify.outputs.wordpress }}
         run: node scripts/test-theme-colors.mjs artifacts/easybackendstyle.zip
+      - name: Verify WordPress fallback palette and immediate first save
+        env:
+          FARN_TEST_PHP_VERSION: ${{ matrix.php }}
+        run: node scripts/test-default-colors.mjs artifacts/easybackendstyle.zip
       - uses: actions/upload-artifact@v6
         if: always()
         with:

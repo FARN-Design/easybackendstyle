@@ -114,23 +114,23 @@ class easyBackendStyle {
         $GLOBALS['ebsColorMapping'] = [
             // key => [name, reserved legacy mapping slot, default value, description].
             // Build-time replacements live in build/admin-colors/source.json.
-            "ebsBackground" => [__('background', 'easybackendstyle'),[],'#f0f0f0', __('Sets the background color of the page', 'easybackendstyle')],
-            "ebsLinks" => [__('links', 'easybackendstyle'),[],'#0073aa', __('Sets the links color of the page', 'easybackendstyle')],
-            "ebsLinksHover" => [__('link hover', 'easybackendstyle'),[],'#0095dd', __('Sets the links hover color of the page', 'easybackendstyle')],
-            "ebsPrimary" => [__('primary', 'easybackendstyle'),[],'#096484', __('Sets the main color for headings and buttons', 'easybackendstyle')],
-            "ebsPrimaryDarker10" => [__('button hover', 'easybackendstyle'),[],'#07526c', __('Sets the button color when hovering over it', 'easybackendstyle')],
-            "ebsPrimaryDarker20" => [__('button click', 'easybackendstyle'),[],'#064054', __('Sets the button color when clicking it', 'easybackendstyle')],
-            "ebsSecondaryLighter" => [__('nested submenu', 'easybackendstyle'),[],'#74a6b9', __('Sets the adaptive accent color for image borders and nested menus', 'easybackendstyle')],
-            "ebsDeleteLinks" => [__('delete links', 'easybackendstyle'),[],'#cc1818', __('Sets the color of links that trigger a deletion', 'easybackendstyle')],
-            "ebsDeleteLinksHover" => [__('delete links hover', 'easybackendstyle'),[],'#e63004', __('Sets the color of delete links when hovering over them', 'easybackendstyle')],
-            "ebsDisabledButtonText" => [__('disabled button text', 'easybackendstyle'),[],'#949494', __('Sets the color of disabled button text', 'easybackendstyle')],
-            "ebsSecondary" => [__('secondary', 'easybackendstyle'),[],'#52accc', __('Sets the color of the menu', 'easybackendstyle')],
-            "ebsTertiary" => [__('tertiary', 'easybackendstyle'),[],'#096484', __('Sets the color used to highlight the current menu item', 'easybackendstyle')],
-            "ebsNotification" => [__('notification', 'easybackendstyle'),[],'#e1a948', __('Sets the color of the notification', 'easybackendstyle')],
-            "ebsIcon" => [__('icon', 'easybackendstyle'),[],'#e5f8ff', __('Sets the color of the icons', 'easybackendstyle')],
-            "ebsPrimaryText" => [__('primary text', 'easybackendstyle'),[],'#ffffff', __('Sets the color of all text', 'easybackendstyle')],
-            "ebsSubMenu" => [__('submenu', 'easybackendstyle'),[],'#4796b3', __('Sets the color of the sub menu', 'easybackendstyle')],
-            "ebsSubMenuText" => [__('submenu text', 'easybackendstyle'),[],'#e2ecf1', __('Sets the color of the sub menu text', 'easybackendstyle')],
+            "ebsBackground" => [__('background', 'easybackendstyle'),[],'#f0f0f1', __('Sets the background color of the page', 'easybackendstyle')],
+            "ebsLinks" => [__('links', 'easybackendstyle'),[],'#2271b1', __('Sets the links color of the page', 'easybackendstyle')],
+            "ebsLinksHover" => [__('link hover', 'easybackendstyle'),[],'#135e96', __('Sets the links hover color of the page', 'easybackendstyle')],
+            "ebsPrimary" => [__('primary', 'easybackendstyle'),[],'#2271b1', __('Sets the main color for headings and buttons', 'easybackendstyle')],
+            "ebsPrimaryDarker10" => [__('button hover', 'easybackendstyle'),[],'#135e96', __('Sets the button color when hovering over it', 'easybackendstyle')],
+            "ebsPrimaryDarker20" => [__('button click', 'easybackendstyle'),[],'#0a4b78', __('Sets the button color when clicking it', 'easybackendstyle')],
+            "ebsSecondaryLighter" => [__('nested submenu', 'easybackendstyle'),[],'#2c3338', __('Sets the adaptive accent color for image borders and nested menus', 'easybackendstyle')],
+            "ebsDeleteLinks" => [__('delete links', 'easybackendstyle'),[],'#b32d2e', __('Sets the color of links that trigger a deletion', 'easybackendstyle')],
+            "ebsDeleteLinksHover" => [__('delete links hover', 'easybackendstyle'),[],'#a00', __('Sets the color of delete links when hovering over them', 'easybackendstyle')],
+            "ebsDisabledButtonText" => [__('disabled button text', 'easybackendstyle'),[],'#a7aaad', __('Sets the color of disabled button text', 'easybackendstyle')],
+            "ebsSecondary" => [__('secondary', 'easybackendstyle'),[],'#1d2327', __('Sets the color of the menu', 'easybackendstyle')],
+            "ebsTertiary" => [__('tertiary', 'easybackendstyle'),[],'#2271b1', __('Sets the color used to highlight the current menu item', 'easybackendstyle')],
+            "ebsNotification" => [__('notification', 'easybackendstyle'),[],'#d63638', __('Sets the color of the notification', 'easybackendstyle')],
+            "ebsIcon" => [__('icon', 'easybackendstyle'),[],'#a7aaad', __('Sets the color of the icons', 'easybackendstyle')],
+            "ebsPrimaryText" => [__('primary text', 'easybackendstyle'),[],'#f0f0f1', __('Sets the color of all text', 'easybackendstyle')],
+            "ebsSubMenu" => [__('submenu', 'easybackendstyle'),[],'#2c3338', __('Sets the color of the sub menu', 'easybackendstyle')],
+            "ebsSubMenuText" => [__('submenu text', 'easybackendstyle'),[],'#c3c4c7', __('Sets the color of the sub menu text', 'easybackendstyle')],
             "ebsHighlightedText" => [__('highlight text', 'easybackendstyle'),[],'#ffffff', __('Sets the color of the highlighted text', 'easybackendstyle')],
             "ebsPrimaryButtonText" => [__('button text', 'easybackendstyle'),[],'#ffffff', __('Sets the color of the button text', 'easybackendstyle')],
         ];
@@ -142,6 +142,7 @@ class easyBackendStyle {
      */
     public function sub_settings_page(): void
     {
+        add_action('load-settings_page_easyBackendStyle', [\Farn\EasyBackendStyle\AdminSettings::class, 'processPage']);
         add_submenu_page(
             'options-general.php', //name of the general settings file.
             'Easy Backend-Style',// page title

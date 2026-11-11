@@ -16,6 +16,14 @@ final class AdminSettings {
         if ($preferred) $wp_textdomain_registry->set('easybackendstyle', $locale, $preferred);
     }
 
+    /** Save before admin-header.php selects the color stylesheet and body classes. */
+    public static function processPage(): void {
+        $plugin = $GLOBALS['ebsPlugin'];
+        if (!$plugin->dbc->checkFields()) { self::saveFailure(); return; }
+        self::handle($plugin->dbc, $plugin->dbc->defaults());
+        if ($plugin instanceof \easyBackendStyle) $plugin->registerColorScheme();
+    }
+
     public static function handle($database, array $defaults): void {
         if (!current_user_can('manage_options')) {
             wp_die(esc_html__('You are not allowed to change these settings.', 'easybackendstyle'));
@@ -62,6 +70,6 @@ final class AdminSettings {
                 <h1><?php esc_html_e('Settings', 'easybackendstyle'); ?></h1></div>
             <a class="ebs-documentation" href="<?php echo esc_url(__('https://www.farnlabs.com/easy-backend-style/documentation', 'easybackendstyle')); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Documentation', 'easybackendstyle'); ?> <span class="dashicons dashicons-external" aria-hidden="true"></span></a>
         </div>
-        <?php settings_errors('ebs_colors');
+        <?php if (!did_action('admin_notices')) settings_errors('ebs_colors');
     }
 }

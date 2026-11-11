@@ -35,6 +35,7 @@ try {
     $GLOBALS['options'][Colors::OPTION] = 'pending';
     $db = new class {
         public $writes = 0;
+        function allColors() { return []; }
         function defaults() { return ['ebsPrimary'=>'#000000','ebsSecondary'=>'#000000','ebsTertiary'=>'#000000','ebsLinks'=>'#000000']; }
         function saveColors($values) { $this->writes++; return true; }
     };

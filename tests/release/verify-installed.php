@@ -13,7 +13,7 @@ if (!is_plugin_active('easybackendstyle/easyBackendStyle.php')) {
 }
 $modern = $plugin instanceof easyBackendStyle;
 $key = $modern ? 'ebsPrimary' : 'primaryColor';
-$expected = get_option('ebs_ci_expected_primary', $modern ? '#096484' : '#2271b1');
+$expected = get_option('ebs_ci_expected_primary', $modern ? '#2271b1' : '#2271b1');
 if ($db->getValueFromDB($key)[0][0] !== $expected) {
     throw new RuntimeException('Stored primary color was lost on install/update');
 }
