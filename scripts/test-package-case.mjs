@@ -16,6 +16,13 @@ const scenario = process.argv[3];
 if (!['fresh', 'existing', 'preview'].includes(scenario)) throw new Error('Invalid package scenario');
 {
   const steps = [{step:'defineWpConfigConsts',consts:{DISABLE_WP_CRON:true}}];
+  if (scenario === 'fresh') steps.push({step:'runPHP',code:`<?php require '/wordpress/wp-load.php';
+    $dir = get_theme_root() . '/ebs-no-colors'; wp_mkdir_p($dir);
+    file_put_contents($dir . '/style.css', "/* Theme Name: EBS no-color test fixture */");
+    file_put_contents($dir . '/index.php', '<?php // No theme palette.');
+    wp_clean_themes_cache(); switch_theme('ebs-no-colors');
+    update_user_option(1, 'admin_color', 'coffee', true);
+    update_option('ebs_ci_fresh', true);`});
   if (scenario === 'existing') steps.push({step:'runPHP',code:`<?php require '/wordpress/wp-load.php';
     global $wpdb; require_once ABSPATH . 'wp-admin/includes/upgrade.php';
     $table = $wpdb->prefix . 'ebs_easyBackendStyle';
@@ -48,6 +55,7 @@ if (!['fresh', 'existing', 'preview'].includes(scenario)) throw new Error('Inval
     process.stdout.write(`PHP ${php}, WordPress ${versions.wordpress}, ${scenario}: passed\n`);
   } catch (error) {
     writeFileSync(report, JSON.stringify({php,wp,scenario,passed:false,error:String(error)},null,2));
-    throw error;
+    console.error(String(error));
+    process.exitCode = 1;
   } finally { await site[Symbol.asyncDispose](); }
 }

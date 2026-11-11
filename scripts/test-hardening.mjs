@@ -26,6 +26,7 @@ try {
  if(count($own)||str_contains($head,'ebs-root')||wp_style_is('ebsAdminbarFrontend','enqueued')) throw new RuntimeException('Guest request ran color SQL or emitted CSS');
  echo 'EBS_OK guest: zero color SQL and zero plugin CSS; PHP '.PHP_VERSION.' WP '.$GLOBALS['wp_version'];`);
  await run('adminbar',`<?php require '/wordpress/wp-load.php'; wp_set_current_user(1); show_admin_bar(true);
+ \\Farn\\EasyBackendStyle\\InitialColors::saved();
  global $wpdb; $start=count($wpdb->queries);
  $p=$GLOBALS['ebsPlugin'];
  if(method_exists($p,'frontendAdminbar')) $p->frontendAdminbar(); else $p->addStylesToFrontendAdminbar();

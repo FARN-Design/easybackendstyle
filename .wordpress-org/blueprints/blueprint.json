@@ -29,7 +29,7 @@
     },
     {
       "step": "runPHP",
-      "code": "<?php require_once '/wordpress/wp-load.php'; global $wpdb; $colors = ['ebsBackground' => '#fafafa', 'ebsSecondary' => '#111336', 'ebsPrimaryDarker10' => '#015b9b', 'ebsPrimary' => '#00ff00', 'ebsPrimaryText' => '#ffffff', 'ebsDisabledButtonText' => '#000000', 'ebsTertiary' => '#00ff00', 'ebsHighlightedText' => '#111336', 'ebsIcon' => '#ffffff', 'ebsLinksHover' => '#015b9b', 'ebsLinks' => '#111336', 'ebsSubMenuText' => '#ffffff', 'ebsNotification' => '#00ff00', 'ebsSubMenu' => '#1d205d']; foreach ($colors as $key => $value) { if (false === $wpdb->replace($wpdb->prefix . 'ebs_easyBackendStyle', ['Variable' => $key, 'Value' => $value], ['%s', '%s'])) { throw new RuntimeException('Could not prepare demo colors'); } }"
+      "code": "<?php require_once '/wordpress/wp-load.php'; global $wpdb; $colors = ['ebsBackground' => '#fafafa', 'ebsSecondary' => '#111336', 'ebsPrimaryDarker10' => '#015b9b', 'ebsPrimary' => '#00ff00', 'ebsPrimaryText' => '#ffffff', 'ebsDisabledButtonText' => '#000000', 'ebsTertiary' => '#00ff00', 'ebsHighlightedText' => '#111336', 'ebsIcon' => '#ffffff', 'ebsLinksHover' => '#015b9b', 'ebsLinks' => '#111336', 'ebsSubMenuText' => '#ffffff', 'ebsNotification' => '#00ff00', 'ebsSubMenu' => '#1d205d']; foreach ($colors as $key => $value) { if (false === $wpdb->replace($wpdb->prefix . 'ebs_easyBackendStyle', ['Variable' => $key, 'Value' => $value], ['%s', '%s'])) { throw new RuntimeException('Could not prepare demo colors'); } } wp_set_current_user(1); \\Farn\\EasyBackendStyle\\InitialColors::saved();"
     }
   ]
 }
