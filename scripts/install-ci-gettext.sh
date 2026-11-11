@@ -13,33 +13,43 @@ if has_gettext; then
   exit 0
 fi
 
-apt_options=(-o Acquire::Retries=2 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 -o APT::Update::Error-Mode=any)
-if sudo apt-get "${apt_options[@]}" update &&
-   sudo apt-get "${apt_options[@]}" install -y --no-install-recommends gettext; then
-  has_gettext
-  exit 0
-fi
-
-echo '::warning::Runner package sources failed; retrying with direct Ubuntu HTTPS repositories.'
+# Avoid the runner's mirror+file list: its DNS retries are not bounded by
+# Acquire::http::Timeout and can consume the entire workflow step.
 . /etc/os-release
 [[ "$ID" == ubuntu && "${VERSION_CODENAME:-}" =~ ^[a-z]+$ ]]
 case "$(dpkg --print-architecture)" in
-  amd64|i386) archive=https://archive.ubuntu.com/ubuntu; security=https://security.ubuntu.com/ubuntu ;;
-  *) archive=https://ports.ubuntu.com/ubuntu-ports; security=$archive ;;
+  amd64|i386) mirrors=(https://mirrors.edge.kernel.org/ubuntu https://archive.ubuntu.com/ubuntu) ;;
+  *) mirrors=(https://ports.ubuntu.com/ubuntu-ports) ;;
 esac
-
-# Use isolated sources and indexes so APT cannot reuse a failed mirror's URLs.
-# Do not alter the runner's sources used by later workflow steps.
 apt_temp=$(mktemp -d)
 trap 'sudo rm -rf -- "$apt_temp"' EXIT
 chmod 755 "$apt_temp"
-cat > "$apt_temp/sources.list" <<EOF
-deb $archive $VERSION_CODENAME main
-deb $archive $VERSION_CODENAME-updates main
-deb $security $VERSION_CODENAME-security main
+
+attempt=0
+for archive in "${mirrors[@]}"; do
+  attempt=$((attempt + 1))
+  echo "Installing gettext from $archive (attempt $attempt/${#mirrors[@]})"
+  # A separate index directory prevents stale package URLs leaking between mirrors.
+  cat > "$apt_temp/sources.list" <<EOF
+deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] $archive $VERSION_CODENAME main
+deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] $archive $VERSION_CODENAME-updates main
+deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] $archive $VERSION_CODENAME-security main
 EOF
-sudo mkdir -p "$apt_temp/lists/partial"
-apt_options+=(-o "Dir::Etc::sourcelist=$apt_temp/sources.list" -o Dir::Etc::sourceparts=- -o "Dir::State::lists=$apt_temp/lists")
-sudo apt-get "${apt_options[@]}" update
-sudo apt-get "${apt_options[@]}" install -y --no-install-recommends gettext
-has_gettext
+  sudo mkdir -p "$apt_temp/lists-$attempt/partial"
+  apt_options=(-o Acquire::Retries=0 -o Acquire::http::Timeout=15 -o Acquire::https::Timeout=15
+    -o APT::Update::Error-Mode=any -o Acquire::Languages=none
+    -o "Dir::Etc::sourcelist=$apt_temp/sources.list" -o Dir::Etc::sourceparts=-
+    -o "Dir::State::lists=$apt_temp/lists-$attempt")
+  # timeout also bounds DNS resolution. Never interrupt dpkg: download first,
+  # then install offline only after every package has arrived successfully.
+  if sudo timeout --kill-after=5s 60s apt-get "${apt_options[@]}" update &&
+     sudo timeout --kill-after=5s 45s apt-get "${apt_options[@]}" install -y --no-install-recommends --download-only gettext; then
+    sudo apt-get "${apt_options[@]}" install -y --no-install-recommends --no-download gettext
+    has_gettext
+    exit 0
+  fi
+  echo "::warning::Package download from $archive failed or timed out."
+done
+
+echo '::error::GNU gettext could not be installed from the available mirrors. Translation validation cannot continue.'
+exit 1

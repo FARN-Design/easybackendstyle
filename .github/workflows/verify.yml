@@ -22,7 +22,9 @@ jobs:
         with:
           php-version: '8.2'
           tools: wp-cli
-      - name: Install gettext with Ubuntu mirror fallback
+      - name: Test gettext installer failure handling
+        run: python3 tests/test_ci_gettext.py
+      - name: Install gettext with bounded mirror attempts
         timeout-minutes: 6
         run: bash scripts/install-ci-gettext.sh
       - name: Resolve current stable WordPress
