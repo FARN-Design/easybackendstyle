@@ -21,9 +21,13 @@ final class InitialColors {
         // Only untouched, unconfirmed defaults may change during an upgrade.
         if (get_option(self::OPTION) === 'waiting') {
             $colors = $database->allColors();
-            if (($colors['ebsPrimary'] ?? '') === '#096484' && ($colors['ebsSecondary'] ?? '') === '#52accc'
-                && ($colors['ebsTertiary'] ?? '') === '#096484') {
-                $database->resetDefaults();
+            $historical = [
+                ['#096484', '#52accc', '#096484'],
+                ['#2271b1', '#1d2327', '#2271b1'],
+            ];
+            $base = [$colors['ebsPrimary'] ?? '', $colors['ebsSecondary'] ?? '', $colors['ebsTertiary'] ?? ''];
+            if (in_array($base, $historical, true)) {
+                if ($database->checkFields()) $database->resetDefaults();
             }
             return;
         }
@@ -128,7 +132,7 @@ final class InitialColors {
             'ebsLinks'=>$p, 'ebsLinksHover'=>$hover, 'ebsPrimaryDarker10'=>self::shift($p, -10),
             'ebsPrimaryDarker20'=>$hover, 'ebsPrimaryText'=>$text, 'ebsIcon'=>$text,
             'ebsSubMenu'=>$submenu, 'ebsSubMenuText'=>$text, 'ebsSecondaryLighter'=>$submenu,
-            'ebsNotification'=>$t, 'ebsHighlightedText'=>$highlight, 'ebsPrimaryButtonText'=>$button];
+            'ebsMenuHover'=>self::shift($p, 10), 'ebsNotification'=>$t, 'ebsHighlightedText'=>$highlight, 'ebsPrimaryButtonText'=>$button];
         $legacy = ['primaryColor'=>$p, 'secondaryColor'=>$s, 'baseMenu'=>$s, 'menuText'=>$text,
             'subMenu'=>$submenu, 'highlight'=>$t, 'highlightText'=>$highlight, 'links'=>$p,
             'buttons'=>$p, 'buttonText'=>$button, 'formInputs'=>$p, 'linkHover'=>$hover,

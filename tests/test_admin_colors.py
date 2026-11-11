@@ -12,7 +12,7 @@ spec.loader.exec_module(colors)
 
 class AdminColorsTest(unittest.TestCase):
     def setUp(self):
-        self.source = (colors.SOURCE / 'blue.css').read_bytes()
+        self.source = (colors.SOURCE / 'modern.css').read_bytes()
         self.manifest = json.loads((colors.SOURCE / 'source.json').read_text())
         self.css = colors.build(self.source, self.manifest)
 

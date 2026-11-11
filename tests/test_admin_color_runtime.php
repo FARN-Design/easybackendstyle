@@ -15,7 +15,7 @@ $p->color_mapping();
 foreach ([[], ['ebsPrimary'=>'#33258a','ebsSecondary'=>'#160038'], ['ebsPrimary'=>'#abc'], ['ebsPrimary'=>'</style>']] as $case) {
     $p->values = $case;
     ob_start(); $p->ebs_root_variables_css(); $css = ob_get_clean();
-    $expected = isset($case['ebsPrimary']) && sanitize_hex_color($case['ebsPrimary']) ? $case['ebsPrimary'] : '#2271b1';
+    $expected = isset($case['ebsPrimary']) && sanitize_hex_color($case['ebsPrimary']) ? $case['ebsPrimary'] : '#3858e9';
     if (strpos($css, '--ebsPrimary: '.$expected.';') === false) throw new Exception('Stored/default color mismatch');
     if (substr_count($css, '</style>') !== 1) throw new Exception('Unsafe output');
     if ($expected === '#33258a' && strpos($css, '--ebsPrimaryRGB: 51, 37, 138;') === false) throw new Exception('RGB mismatch');

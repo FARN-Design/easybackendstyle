@@ -35,7 +35,10 @@ try {
     $GLOBALS['options'][Colors::OPTION] = 'pending';
     $db = new class {
         public $writes = 0;
-        function allColors() { return []; }
+        public array $colors = [];
+        function allColors() { return $this->colors; }
+        function checkFields() { return true; }
+        function resetDefaults() { $this->writes++; $this->colors = $this->defaults(); return true; }
         function defaults() { return ['ebsPrimary'=>'#000000','ebsSecondary'=>'#000000','ebsTertiary'=>'#000000','ebsLinks'=>'#000000']; }
         function saveColors($values) { $this->writes++; return true; }
     };
@@ -49,6 +52,14 @@ try {
     check(Colors::enabled() && $db->writes === 1, 'Valid proposal saved and enabled');
     Colors::initialize($db);
     check($db->writes === 1, 'Existing colors preserved');
+    $old = ['ebsPrimary'=>'#2271b1','ebsSecondary'=>'#1d2327','ebsTertiary'=>'#2271b1'];
+    $db->colors = $old;
+    Colors::initialize($db);
+    check($db->colors === $old && $db->writes === 1, 'Confirmed Fresh palette must be retained');
+    $GLOBALS['options'][Colors::OPTION] = 'waiting';
+    Colors::initialize($db);
+    check($db->colors === $db->defaults() && $db->writes === 2, 'Unconfirmed Fresh palette must upgrade');
+    check(!Colors::enabled(), 'Upgrading fallback must not select a user scheme');
     check(Colors::shift('#ffffff', 10) === '#ffffff' && Colors::shift('#000000', -10) === '#000000', 'Lightness clamping');
     echo 'Initial color detection and lifecycle passed on PHP '.PHP_VERSION."\n";
 } finally {

@@ -1,32 +1,29 @@
 {
   "wordpress": "7.1.4",
-  "path": "wp-admin/css/colors/blue/colors.css",
-  "sha256": "6dbc931fd9b4c186464c3546e4eceff45caa5c86598f0fa2c89268ac856f7712",
+  "path": "wp-admin/css/colors/modern/colors.css",
+  "sha256": "3db11eab2bc1769b0f5a8e5137e54d44d921ae03e1c73d92a364a8626d373c50",
   "license": "GPL-2.0-or-later; WordPress contributors",
   "colors": {
     "#f0f0f0": "ebsBackground",
-    "#0073aa": "ebsLinks",
-    "rgb(0, 149.5, 221)": "ebsLinksHover",
+    "#3858e9": "ebsLinks",
+    "rgb(23.6923076923, 58.1538461538, 214.3076923077)": "ebsLinksHover",
     "#949494": "ebsDisabledButtonText",
     "#cc1818": "ebsDeleteLinks",
     "rgb(158.3684210526, 18.6315789474, 18.6315789474)": "ebsDeleteLinksHover",
-    "#245278": "ebsSecondary",
-    "#437aa8": "ebsTertiary",
-    "#e1a948": "ebsNotification",
-    "rgb(202.5, 152.1, 64.8)": "ebsNotification",
-    "#e5f8ff": "ebsIcon",
+    "#1e1e1e": "ebsSecondary",
     "#fff": "ebsPrimaryText",
     "#ffffff": "ebsPrimaryText",
-    "rgb(27.7615384615, 63.2346153846, 92.5384615385)": "ebsSubMenu",
-    "#e2ecf1": "ebsSubMenuText",
-    "rgb(50.9479615385, 100.1263846154, 140.7520384615)": "ebsSecondaryLighter",
-    "rgb(44.2384615385, 100.7653846154, 147.4615384615)": "ebsSecondaryLighter",
-    "rgb(94.8638297872, 147.2893617021, 191.1361702128)": "ebsSecondaryLighter",
-    "rgb(59.729787234, 108.7617021277, 149.770212766)": "ebsTertiary"
+    "hsl(0, 7%, 95%)": "ebsIcon",
+    "rgb(12.15, 12.15, 12.15)": "ebsSubMenu",
+    "rgb(187.5, 187.5, 187.5)": "ebsSubMenuText",
+    "#7b90ff": "ebsMenuHover",
+    "rgb(47.85, 47.85, 47.85)": "ebsSecondaryLighter"
   },
   "unchanged_colors": [
-    "#1e1e1e",
     "#dddddd",
-    "#fbfbfc"
+    "#fbfbfc",
+    "rgb(101.9230769231, 126.5384615385, 238.0769230769)",
+    "rgb(33.0384615385, 68.7307692308, 230.4615384615)",
+    "rgb(50.4, 79.2, 209.7)"
   ]
 }

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-11T16:30:12+00:00\n"
+"POT-Creation-Date: 2026-11-11T18:08:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: easybackendstyle\n"
@@ -140,72 +140,80 @@ msgid "Sets the color used to highlight the current menu item"
 msgstr ""
 
 #: easyBackendStyle.php:129
+msgid "menu hover"
+msgstr ""
+
+#: easyBackendStyle.php:129
+msgid "Sets the text and icon color when hovering over submenus"
+msgstr ""
+
+#: easyBackendStyle.php:130
 #: src/deprecated/ebs_SettingsSubMenu.php:116
 msgid "notification"
 msgstr ""
 
-#: easyBackendStyle.php:129
+#: easyBackendStyle.php:130
 msgid "Sets the color of the notification"
 msgstr ""
 
-#: easyBackendStyle.php:130
+#: easyBackendStyle.php:131
 #: src/deprecated/ebs_SettingsSubMenu.php:130
 msgid "icon"
 msgstr ""
 
-#: easyBackendStyle.php:130
+#: easyBackendStyle.php:131
 msgid "Sets the color of the icons"
 msgstr ""
 
-#: easyBackendStyle.php:131
+#: easyBackendStyle.php:132
 msgid "primary text"
 msgstr ""
 
-#: easyBackendStyle.php:131
+#: easyBackendStyle.php:132
 msgid "Sets the color of all text"
 msgstr ""
 
-#: easyBackendStyle.php:132
+#: easyBackendStyle.php:133
 msgid "submenu"
 msgstr ""
 
-#: easyBackendStyle.php:132
+#: easyBackendStyle.php:133
 msgid "Sets the color of the sub menu"
 msgstr ""
 
-#: easyBackendStyle.php:133
+#: easyBackendStyle.php:134
 msgid "submenu text"
 msgstr ""
 
-#: easyBackendStyle.php:133
+#: easyBackendStyle.php:134
 msgid "Sets the color of the sub menu text"
 msgstr ""
 
-#: easyBackendStyle.php:134
+#: easyBackendStyle.php:135
 #: src/deprecated/ebs_SettingsSubMenu.php:109
 msgid "highlight text"
 msgstr ""
 
-#: easyBackendStyle.php:134
+#: easyBackendStyle.php:135
 msgid "Sets the color of the highlighted text"
 msgstr ""
 
-#: easyBackendStyle.php:135
+#: easyBackendStyle.php:136
 #: src/deprecated/ebs_SettingsSubMenu.php:183
 msgid "button text"
 msgstr ""
 
-#: easyBackendStyle.php:135
+#: easyBackendStyle.php:136
 msgid "Sets the color of the button text"
 msgstr ""
 
-#: easyBackendStyle.php:170
+#: easyBackendStyle.php:171
 #: src/AdminSettings.php:70
 #: src/deprecated/easyBackendStyle_deprecated.php:104
 msgid "Settings"
 msgstr ""
 
-#: easyBackendStyle.php:235
+#: easyBackendStyle.php:236
 msgid "Personalized Colors"
 msgstr ""
 

@@ -130,7 +130,9 @@ jobs:
       - name: Verify WordPress fallback palette and immediate first save
         env:
           FARN_TEST_PHP_VERSION: ${{ matrix.php }}
-        run: node scripts/test-default-colors.mjs artifacts/easybackendstyle.zip
+        run: |
+          node scripts/test-default-colors.mjs artifacts/easybackendstyle.zip
+          node scripts/test-default-colors.mjs artifacts/easybackendstyle.zip --upgrade-fixture
       - uses: actions/upload-artifact@v6
         if: always()
         with:

@@ -4,7 +4,7 @@ The personalizedcolorscheme registration and saved ebs color keys are unchanged.
 WordPress 7+ loads a packaged stylesheet; activation, saving, and updates never
 rewrite plugin files. The pre-7.0 implementation is unchanged.
 
-`build/admin-colors/blue.css` is a reviewed WordPress 7.1.4 source snapshot
+`build/admin-colors/modern.css` is a reviewed WordPress 7.1.4 source snapshot
 (GPL-2.0-or-later, WordPress contributors). Its original path, SHA-256 and
 explicit palette mapping are in `source.json`. Neutral colors are intentionally
 allowlisted. Text colors for primary buttons and menu highlights are assigned
@@ -62,9 +62,18 @@ installed via Playwright (or supplied with `--chromium=/path/to/browser`). Repor
 screenshots are written to `test-results/`.
 
 
-When a theme supplies no usable palette, the settings start with WordPress Fresh
-colors (blue `#2271b1`, dark menu `#1d2327`, submenu `#2c3338`), verified against
+When a theme supplies no usable palette, the settings start with WordPress Modern
+colors (blue `#3858e9`, dark menu `#1e1e1e`, submenu `#0c0c0c`), verified against
 WordPress 7.1.4. The existing user scheme stays active until saving. Settings saves
 run on the page load hook before WordPress selects its CSS and body classes, so the
 first save applies immediately without changing the user profile manually. Previously
 saved plugin palettes are preserved; unconfirmed historical blue defaults are refreshed.
+
+
+The default-palette browser regression selects WordPress's actual `modern` scheme
+before activation. It compares computed colors before and after an unchanged save
+(background, menu, toolbar, submenu, current menu item, submenu text, buttons and
+links), then checks that editing one advanced color preserves every other field.
+Modern submenu hover text has its own field because its light blue differs from
+normal link-hover blue. Unconfirmed Fresh defaults are upgraded; confirmed palettes
+are retained.

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Easy Backend-Style\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/easybackendstyle\n"
-"POT-Creation-Date: 2026-11-11T16:30:12+00:00\n"
+"POT-Creation-Date: 2026-11-11T18:08:08+00:00\n"
 "PO-Revision-Date: 2026-11-01 00:00+0000\n"
 "Last-Translator: FARN Labs\n"
 "Language-Team: FARN Labs\n"
@@ -138,68 +138,76 @@ msgstr "Tertiärfarbe"
 msgid "Sets the color used to highlight the current menu item"
 msgstr "Legt die Farbe für den aktiven Menüpunkt fest"
 
-#: easyBackendStyle.php:129 src/deprecated/ebs_SettingsSubMenu.php:116
+#: easyBackendStyle.php:129
+msgid "menu hover"
+msgstr "Untermenüs beim Darüberfahren"
+
+#: easyBackendStyle.php:129
+msgid "Sets the text and icon color when hovering over submenus"
+msgstr "Legt die Text- und Iconfarbe beim Darüberfahren über Untermenüs fest"
+
+#: easyBackendStyle.php:130 src/deprecated/ebs_SettingsSubMenu.php:116
 msgid "notification"
 msgstr "Benachrichtigungen"
 
-#: easyBackendStyle.php:129
+#: easyBackendStyle.php:130
 msgid "Sets the color of the notification"
 msgstr "Legt die Farbe von Benachrichtigungen fest"
 
-#: easyBackendStyle.php:130 src/deprecated/ebs_SettingsSubMenu.php:130
+#: easyBackendStyle.php:131 src/deprecated/ebs_SettingsSubMenu.php:130
 msgid "icon"
 msgstr "Icons"
 
-#: easyBackendStyle.php:130
+#: easyBackendStyle.php:131
 msgid "Sets the color of the icons"
 msgstr "Legt die Iconfarbe fest"
 
-#: easyBackendStyle.php:131
+#: easyBackendStyle.php:132
 msgid "primary text"
 msgstr "Haupttext"
 
-#: easyBackendStyle.php:131
+#: easyBackendStyle.php:132
 msgid "Sets the color of all text"
 msgstr "Legt die allgemeine Textfarbe fest"
 
-#: easyBackendStyle.php:132
+#: easyBackendStyle.php:133
 msgid "submenu"
 msgstr "Untermenü"
 
-#: easyBackendStyle.php:132
+#: easyBackendStyle.php:133
 msgid "Sets the color of the sub menu"
 msgstr "Legt die Hintergrundfarbe der Untermenüs fest"
 
-#: easyBackendStyle.php:133
+#: easyBackendStyle.php:134
 msgid "submenu text"
 msgstr "Untermenütext"
 
-#: easyBackendStyle.php:133
+#: easyBackendStyle.php:134
 msgid "Sets the color of the sub menu text"
 msgstr "Legt die Textfarbe der Untermenüs fest"
 
-#: easyBackendStyle.php:134 src/deprecated/ebs_SettingsSubMenu.php:109
+#: easyBackendStyle.php:135 src/deprecated/ebs_SettingsSubMenu.php:109
 msgid "highlight text"
 msgstr "Hervorgehobener Text"
 
-#: easyBackendStyle.php:134
+#: easyBackendStyle.php:135
 msgid "Sets the color of the highlighted text"
 msgstr "Legt die Farbe hervorgehobener Texte fest"
 
-#: easyBackendStyle.php:135 src/deprecated/ebs_SettingsSubMenu.php:183
+#: easyBackendStyle.php:136 src/deprecated/ebs_SettingsSubMenu.php:183
 msgid "button text"
 msgstr "Buttontext"
 
-#: easyBackendStyle.php:135
+#: easyBackendStyle.php:136
 msgid "Sets the color of the button text"
 msgstr "Legt die Textfarbe der Buttons fest"
 
-#: easyBackendStyle.php:170 src/AdminSettings.php:70
+#: easyBackendStyle.php:171 src/AdminSettings.php:70
 #: src/deprecated/easyBackendStyle_deprecated.php:104
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: easyBackendStyle.php:235
+#: easyBackendStyle.php:236
 msgid "Personalized Colors"
 msgstr "Eigene Farben"
 

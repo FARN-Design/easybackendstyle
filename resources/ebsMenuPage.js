@@ -213,6 +213,7 @@ jQuery(document).ready(function ($){
               case "ebsDeleteLinks"             :       newColor = '#cc1818';       break;
               case "ebsDeleteLinksHover"        :       newColor = '#e63004';       break;
               case "ebsPrimaryText"             :       newColor = allText;         break;
+              case "ebsMenuHover"               :       newColor = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] + 10]); break;
               case "ebsNotification"            :       newColor = tc;              break;
               case "ebsIcon"                    :       newColor = allText;         break;
               case "ebsSubMenu"                 :       newColor = subMenu;         break;
