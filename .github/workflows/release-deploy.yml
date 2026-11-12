@@ -85,7 +85,8 @@ jobs:
           if-no-files-found: error
   compatibility:
     needs: [verify, package]
-    runs-on: ubuntu-latest
+    # Keep the browser-test OS compatible with the locked Playwright version.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
