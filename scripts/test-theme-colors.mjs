@@ -39,6 +39,7 @@ async function palette(primary,secondary,tertiary) {
   echo 'EBS_OK Global Styles saved for '.wp_get_theme()->get('Name');`);
 }
 let browser;
+let page;
 try {
  await palette('#5744b8','#4633a2','#362490');
  await run('activation-is-inert',`
@@ -52,16 +53,17 @@ try {
   update_option('ebs_ci_before_import',$colors);
   echo 'EBS_OK unchanged scheme and defaults; PHP '.PHP_VERSION.' WP '.$GLOBALS['wp_version'];`);
  browser=await chromium.launch({headless:true,...(executablePath?{executablePath}:{})});
- const page=await browser.newPage();
+ page=await browser.newPage();
+ page.on('pageerror',error=>report.checks.push({name:'page-error',error:String(error)}));
  await page.goto('http://127.0.0.1:9401/wp-login.php');
  await page.locator('#user_login').fill('admin'); await page.locator('#user_pass').fill('password');
  await Promise.all([page.waitForURL('**/wp-admin/**'),page.locator('#wp-submit').evaluate(el=>el.click())]);
  await page.goto('http://127.0.0.1:9401/wp-admin/options-general.php?page=easyBackendStyle');
  await page.locator('#ebs-import-theme-colors').waitFor();
- const before=await page.locator('#adminmenu').evaluate(el=>getComputedStyle(el).backgroundColor);
+ const before=await page.locator('#menu-settings > a').evaluate(el=>getComputedStyle(el).backgroundColor);
  const denied=await page.request.post('http://127.0.0.1:9401/wp-admin/admin-ajax.php',{form:{action:'ebs_import_theme_colors'}});
  if(denied.status()!==403) throw Error('Import accepted missing nonce');
- async function clickImport(expected) {
+ async function clickImport(expected, activeScheme = true) {
   await page.locator('#ebs-import-theme-colors').evaluate(el=>el.click());
   await page.waitForFunction(value=>document.querySelector('#ebsPrimary').value===value,expected[0]);
   await page.waitForFunction(()=>!document.querySelector('#ebs-import-theme-colors').disabled);
@@ -71,24 +73,44 @@ try {
   }
   const rgb = expected[2].slice(1).match(/../g).map(v=>parseInt(v,16));
   const expectedHighlight = `rgb(${rgb.join(', ')})`;
-  await page.waitForFunction(expected => getComputedStyle(document.querySelector('#menu-settings > a')).backgroundColor === expected, expectedHighlight);
+  if(activeScheme) await page.waitForFunction(expected => getComputedStyle(document.querySelector('#menu-settings > a')).backgroundColor === expected, expectedHighlight, {timeout:5000}).catch(()=>{});
+  const actualHighlight = await page.locator('#menu-settings > a').evaluate(el=>getComputedStyle(el).backgroundColor);
+  const scheme = await page.locator('body').getAttribute('class');
+  const variables = await page.evaluate(() => ({root:getComputedStyle(document.documentElement).getPropertyValue('--ebsTertiary'), inline:document.documentElement.getAttribute('style'), menu:getComputedStyle(document.querySelector('#menu-settings > a')).getPropertyValue('--ebsTertiary')}));
+  report.checks.push({name:'preview-variables',variables});
+  if(activeScheme && actualHighlight !== expectedHighlight) report.checks.push({name:'matched-menu-rules',rules:await page.evaluate(()=>{
+   const el=document.querySelector('#menu-settings > a');const result=[];
+   for(const sheet of document.styleSheets){try{for(const rule of sheet.cssRules){if(rule.selectorText && el.matches(rule.selectorText) && rule.style.background) result.push({href:sheet.href,rule:rule.cssText});}}catch{}}
+   return result;
+  })});
+  report.checks.push({name:'import-preview', expected, activeScheme, actualHighlight, scheme});
+  if(activeScheme) {
+   if(!scheme.includes('admin-color-personalizedcolorscheme')) throw Error('Preview requires the personalized scheme: '+scheme);
+   if(actualHighlight !== expectedHighlight) throw Error(`Menu highlight mismatch: expected ${expectedHighlight}, received ${actualHighlight}; ${scheme}`);
+  } else if(actualHighlight !== before) {
+   throw Error('Import changed the selected Coffee scheme');
+  }
   const preview = await page.locator('html').evaluate(el=>getComputedStyle(el).getPropertyValue('--ebsTertiary').trim());
   if(preview !== expected[2]) throw Error('Import preview retained previous tertiary color');
  }
- await clickImport(['#5744b8','#241b4b','#4633a2']);
+ await clickImport(['#5744b8','#241b4b','#4633a2'], false);
  // Live preview changes this page; persistence is checked separately below.
  await run('import-is-not-a-save',`
   if($GLOBALS['ebsPlugin']->dbc->allColors()!==get_option('ebs_ci_before_import')||get_user_option('admin_color')!=='coffee') throw new Exception('Import persisted colors');
   echo 'EBS_OK form import has no stored side effects';`);
  // Change the editor palette while the settings page is already open.
  await palette('#246b45','#24364b','#557799');
- await clickImport(['#246b45','#113220','#557799']);
+ await clickImport(['#246b45','#113220','#557799'], false);
  await Promise.all([page.waitForNavigation(),page.locator('#submit').evaluate(el=>el.click())]);
  await page.mouse.move(1200,20);
  const button=await page.locator('#submit').evaluate(el=>getComputedStyle(el).backgroundColor);
  if(button!=='rgb(36, 107, 69)') throw Error('Saved import CSS mismatch: '+button);
  const savedHighlight = await page.locator('#menu-settings > a').evaluate(el=>getComputedStyle(el).backgroundColor);
  if(savedHighlight !== 'rgb(85, 119, 153)') throw Error('Saved active menu does not use tertiary: '+savedHighlight);
+ // The first explicit save enables/registers the personalized scheme. Only now
+ // can a subsequent unsaved import preview its real menu colors.
+ await palette('#5744b8','#4633a2','#362490');
+ await clickImport(['#5744b8','#241b4b','#4633a2']);
  await run('save-and-reactivation',`
   require_once ABSPATH.'wp-admin/includes/plugin.php';
   $before=$GLOBALS['ebsPlugin']->dbc->allColors();
@@ -99,6 +121,13 @@ try {
   echo 'EBS_OK saved imports and inert reactivation';`);
  report.passed=true;
  console.log('EBS_OK current Site Editor palette, read-only import, nonce, explicit save and unchanged activation');
+} catch (error) {
+ report.error = String(error);
+ if(page) {
+  await page.screenshot({path:join(root,`test-results/theme-colors-${theme}-php-${php}-failure.png`),fullPage:true}).catch(()=>{});
+  report.page = await page.locator('body').innerText().catch(()=>null);
+ }
+ throw error;
 } finally {
  writeFileSync(join(root,`test-results/theme-colors-${theme}-php-${php}.json`),JSON.stringify(report,null,2));
  if(browser) await browser.close(); await site[Symbol.asyncDispose]();
