@@ -4,8 +4,8 @@
   "files": {
     ".github/workflows/farn-plugin-tests.yml": {
       "source": ".github/workflows/plugin-tests.yml",
-      "sha256": "57b908b86474eedc2679f8e81b6ecefbdd7d66b013193d71dc77ff89a3cc1e70",
-      "local_patch": "Persistent Ubuntu mirrors; also applied to ci-workflow/.github/workflows/plugin-tests.yml"
+      "sha256": "8681b34833505b416eaddbb576dc72be4db64a536013a1049b899c74e50d9e61",
+      "local_patch": "Persistent Ubuntu mirrors and Ubuntu 24.04 browser-test runner; also applied to ci-workflow/.github/workflows/plugin-tests.yml"
     },
     ".github/workflows/farn-plugin-deploy.yml": {
       "source": ".github/workflows/plugin-deploy.yml",
