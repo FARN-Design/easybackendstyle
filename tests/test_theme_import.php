@@ -50,6 +50,11 @@ try {
  }
  $GLOBALS['palettes']['theme']=palette(['#254b80','#26303d']);
  check(Colors::detect()['secondary']==='#26303d', 'Prefer an existing calm related dark theme color');
+ // Complete browser fixture: the darker menu makes this tonal accent eligible.
+ $GLOBALS['palettes']=['theme'=>palette(['#5744b8','#4633a2','#362490','#7bf1b2'])];
+ check(Colors::detect()===['primary'=>'#5744b8','secondary'=>'#241b4b','tertiary'=>'#4633a2'], 'Browser fixture must prefer the eligible related violet');
+ $GLOBALS['palettes']=['theme'=>palette(['#246b45','#24364b','#557799','#7bf1b2'])];
+ check(Colors::detect()===['primary'=>'#246b45','secondary'=>'#113220','tertiary'=>'#557799'], 'Changed browser palette must retain its expected accent');
  $GLOBALS['palettes']['theme']=palette(['invalid']);
  file_put_contents($GLOBALS['theme'].'/style.css',':root { --brand: #246b45; --primary: var(--brand); --secondary: #fff; }');
  check(Colors::detect()['primary']==='#246b45','CSS variable fallback resolves local declarations');

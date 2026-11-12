@@ -66,7 +66,8 @@ try {
   await page.waitForFunction(value=>document.querySelector('#ebsPrimary').value===value,expected[0]);
   await page.waitForFunction(()=>!document.querySelector('#ebs-import-theme-colors').disabled);
   for(const [index,key] of ['ebsPrimary','ebsSecondary','ebsTertiary'].entries()) {
-   if(await page.locator('#'+key).inputValue()!==expected[index]) throw Error('Wrong imported '+key);
+   const actual = await page.locator('#'+key).inputValue();
+   if(actual!==expected[index]) throw Error(`Wrong imported ${key}: expected ${expected[index]}, received ${actual} (PHP ${php}, theme ${theme})`);
   }
   const rgb = expected[2].slice(1).match(/../g).map(v=>parseInt(v,16));
   const expectedHighlight = `rgb(${rgb.join(', ')})`;
@@ -74,7 +75,7 @@ try {
   const preview = await page.locator('html').evaluate(el=>getComputedStyle(el).getPropertyValue('--ebsTertiary').trim());
   if(preview !== expected[2]) throw Error('Import preview retained previous tertiary color');
  }
- await clickImport(['#5744b8','#241b4b','#5744b8']);
+ await clickImport(['#5744b8','#241b4b','#4633a2']);
  // Live preview changes this page; persistence is checked separately below.
  await run('import-is-not-a-save',`
   if($GLOBALS['ebsPlugin']->dbc->allColors()!==get_option('ebs_ci_before_import')||get_user_option('admin_color')!=='coffee') throw new Exception('Import persisted colors');
