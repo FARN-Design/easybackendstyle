@@ -102,7 +102,7 @@ def check_package(package):
     for locale in ('de_DE', 'de_DE_formal'):
         for extension in ('po', 'mo', 'l10n.php'):
             assert (package / f'src/languages/easybackendstyle-{locale}.{extension}').is_file()
-        assert len(list((package / 'src/languages').glob(f'easybackendstyle-{locale}-*.json'))) == 2
+        assert len(list((package / 'src/languages').glob(f'easybackendstyle-{locale}-*.json'))) == 3
 
 
 if __name__ == '__main__':

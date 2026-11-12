@@ -8,3 +8,6 @@
 .ebs-admin .ebs-panel h2 { margin:0 0 10px; }
 .ebs-admin .ebs-actions { display:flex; gap:12px; align-items:center; }
 @media(max-width:782px) { .ebs-admin .ebs-page-header { gap:12px; } .ebs-admin .ebs-panel { padding:18px; } }
+
+.ebs-admin .ebs-theme-import { margin:0 0 20px; }
+.ebs-admin #ebs-import-status:empty { display:none; }

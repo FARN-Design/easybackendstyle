@@ -63,6 +63,22 @@ final class AdminSettings {
         });
     }
 
+    public static function enqueueThemeImport(): void {
+        wp_enqueue_script('ebs_themeImport', plugins_url('resources/theme-import.js', EBS_PLUGIN_PATH . 'easyBackendStyle.php'), ['jquery', 'wp-color-picker', 'wp-i18n'], filemtime(EBS_PLUGIN_PATH . 'resources/theme-import.js'), true);
+        wp_set_script_translations('ebs_themeImport', 'easybackendstyle', EBS_PLUGIN_PATH . 'src/languages');
+    }
+
+    /** Read-only: import prepares the form; only the normal save handler persists it. */
+    public static function importThemeColors(): void {
+        if (!current_user_can('manage_options')) wp_send_json_error([], 403);
+        check_ajax_referer('ebs_import_theme_colors');
+        $base = InitialColors::detect();
+        if (!$base) wp_send_json_error([], 422);
+        $plugin = $GLOBALS['ebsPlugin'];
+        if ($plugin instanceof \easyBackendStyle) $plugin->color_mapping();
+        wp_send_json_success(InitialColors::generate($base, $plugin->dbc->defaults()));
+    }
+
     public static function header(): void {
         ?>
         <div class="ebs-page-header">
@@ -70,6 +86,10 @@ final class AdminSettings {
                 <h1><?php esc_html_e('Settings', 'easybackendstyle'); ?></h1></div>
             <a class="ebs-documentation" href="<?php echo esc_url(__('https://www.farnlabs.com/easy-backend-style/documentation', 'easybackendstyle')); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Documentation', 'easybackendstyle'); ?> <span class="dashicons dashicons-external" aria-hidden="true"></span></a>
         </div>
+        <?php if (InitialColors::detect()) : ?>
+            <p class="ebs-theme-import"><button type="button" class="button button-secondary" id="ebs-import-theme-colors" data-nonce="<?php echo esc_attr(wp_create_nonce('ebs_import_theme_colors')); ?>"><?php esc_html_e('Import colors from theme', 'easybackendstyle'); ?></button></p>
+            <p id="ebs-import-status" role="status" aria-live="polite"></p>
+        <?php endif; ?>
         <?php if (!did_action('admin_notices')) settings_errors('ebs_colors');
     }
 }

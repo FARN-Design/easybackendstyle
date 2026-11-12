@@ -28,6 +28,7 @@ if (!['fresh', 'existing', 'preview'].includes(scenario)) throw new Error('Inval
     $table = $wpdb->prefix . 'ebs_easyBackendStyle';
     dbDelta("CREATE TABLE $table (id mediumint(9) NOT NULL AUTO_INCREMENT, Variable varchar(128) NOT NULL UNIQUE, Value varchar(128) NOT NULL, UNIQUE KEY id (id)) " . $wpdb->get_charset_collate() . ';');
     $wpdb->insert($table, ['Variable'=>'ebsPrimary', 'Value'=>'#33258a']);
+    update_user_option(1, 'admin_color', 'personalizedcolorscheme', true);
     update_option('ebs_ci_expected_primary', '#33258a');`});
   if (scenario === 'preview') {
     steps.push(...publicPreview.steps.map(step => step.step === 'installPlugin' ? {...step, pluginData:install.pluginData} : step));

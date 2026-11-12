@@ -41,6 +41,16 @@ def build(source, manifest):
     for suffix, key in [('', 'ebsPrimary'), ('-darker-10', 'ebsPrimaryDarker10'), ('-darker-20', 'ebsPrimaryDarker20')]:
         css = css.replace('var(--wp-admin-theme-color'+suffix+')', 'var(--'+key+')')
         css = css.replace('var(--wp-admin-theme-color'+suffix+'--rgb)', 'var(--'+key+'RGB)')
+    # Outline and text buttons use readable text accents, not the fill color.
+    def text_button(match):
+        selectors, declarations = match.groups()
+        if '.button' in selectors and '.button-primary' not in selectors and '.is-primary' not in selectors:
+            declarations = re.sub(
+                r'(?<![\w-])(color|border-color): var\(--ebsPrimary(Darker10|Darker20)?\);',
+                lambda m: m[1] + ': var(--' + ('ebsLinksHover' if m[2] else 'ebsLinks') + ');', declarations)
+            declarations = declarations.replace('border: 1px solid var(--ebsPrimary)', 'border: 1px solid var(--ebsLinks)')
+        return selectors + '{' + declarations + '}'
+    css = re.sub(r'([^{}]+)\{([^{}]*)\}', text_button, css)
     css = '\n'.join(line.rstrip() for line in css.splitlines())
     aliases = ('body.admin-color-personalizedcolorscheme,\n'
                'body.admin-color-personalizedcolorscheme .editor-editor-interface,\n'

@@ -33,31 +33,42 @@ flags can remain in the database; the runtime no longer reads them.
 
 ## First installation
 
-New installations keep the user's existing admin color scheme until colors are saved,
-unless the active theme supplies distinct `primary` and `secondary` colors. Existing
-plugin installations retain their stored colors. Detection runs only during initial
-setup; later theme changes and plugin reactivation do not overwrite saved choices.
+Activation never selects a different admin scheme, including reactivation. New
+installations start with the WordPress Modern field defaults and keep the current
+user scheme until an explicit save. Existing confirmed plugin colors are preserved.
 
-Theme palette slugs in `theme.json` (including parent themes and classic editor palette
-support) take precedence over CSS. Global Styles saved in the Site Editor override
-theme defaults; custom user palette entries override theme entries with the same slug.
-The built-in WordPress core palette is not treated as a theme color proposal. The fallback reads parent and child `style.css`
-custom properties named `--wp--preset--color--primary`, `--color-primary`,
-`--primary-color`, or `--primary`, with the same patterns for secondary and tertiary.
-Hex colors and local CSS variable references are supported. Unnamed palette entries,
-remote stylesheets, and ambiguous colors are not guessed.
+The optional **Import colors from theme** button appears below the page heading only
+when the active theme provides at least one usable color. It requests the latest
+Global Styles palette on each click, fills the form (including derived colors), and
+never saves or selects a scheme. The normal Save button applies the result. Theme
+updates or palette edits do not silently overwrite the user's backend settings.
 
-Primary is darkened while retaining its hue until its relative sRGB luminance is no
-higher than `#00bc6f`. Equal primary and secondary colors are rejected both before and
-after adjustment. Missing tertiary uses secondary plus 10 HSL lightness percentage
-points, clamped at white. Remaining colors are generated using the settings page's
-lightness rules. Invalid or incomplete proposals leave the original scheme active.
+Theme palette order is preserved. Global Styles and custom presets override matching
+theme slugs. Core default colors are never imported. Presets are resolved through local
+CSS variables; named CSS colors provide a fallback only when no usable presets exist.
+Website background colors are not interpreted as backend menu colors.
+
+Selection first excludes near-black, neutral and very pale colors when usable chromatic
+colors exist. It prefers darker candidates, preserving their palette order. Primary is
+capped at the existing luminance limit. Secondary is a darker HSL variation of primary,
+with HSL lightness capped at 20%, saturation at 55%, and relative luminance at 0.08.
+An existing dark, muted theme color within 25 hue degrees takes precedence. Tertiary prefers the closest hue within 65 degrees
+(including tonal variations), with palette order breaking ties; otherwise it reuses
+primary. This is a restrained design heuristic, not a perceptual color-distance metric.
+A single usable theme color is sufficient. Pastel-only palettes retain their first
+chromatic hue and darken it instead of using a preceding white surface. Neutral-only
+palettes remain supported.
+
+The Perspektive Übermorgen regression expects violet `#33258a`, dark violet `#1e164d`
+and lavender `#837ac9`. Without the lavender swatch, cyan `#009bdc` is preferred to red
+or yellow. The import still only fills the form; saving remains explicit.
 
 
 The real WordPress regression test `scripts/test-theme-colors.mjs <plugin.zip>` installs
-Twenty Twenty-Three, saves its palette through the Site Editor's Global Styles REST
-endpoint before plugin activation, then checks imported values, persistence, reactivation,
-and computed browser colors. Run it with `--php=8.2` and `--php=8.5`; Chromium must be
+the selected standard theme, saves its palette through the Site Editor's Global Styles REST
+endpoint before plugin activation, then checks inert activation, form-only import, palette
+changes while the settings page is open, explicit saving and computed browser colors.
+It defaults to Twenty Twenty-Five; `--theme=twentytwentythree` covers named roles. Run it with `--php=8.2` and `--php=8.5`; Chromium must be
 installed via Playwright (or supplied with `--chromium=/path/to/browser`). Reports and
 screenshots are written to `test-results/`.
 

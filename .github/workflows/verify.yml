@@ -48,6 +48,8 @@ jobs:
           php tests/test_admin_color_runtime.php
           php tests/test_settings_requests.php
           php tests/test_initial_colors.php
+          php tests/test_theme_import.php
+          node tests/test_preview_sync.mjs
       - name: Verify reviewed color CSS against current WordPress
         env:
           WORDPRESS_VERSION: ${{ steps.wordpress.outputs.version }}

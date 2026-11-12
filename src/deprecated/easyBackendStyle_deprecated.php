@@ -140,6 +140,7 @@ class easyBackendStyle_deprecated
     {
         // Load assets only on this plugin's Settings submenu.
         if ($hook === 'settings_page_easyBackendStyle') {
+            \Farn\EasyBackendStyle\AdminSettings::enqueueThemeImport();
             wp_enqueue_style('wp-color-picker');
             wp_enqueue_script('ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__), array('wp-color-picker', 'wp-i18n'), filemtime(__DIR__ . '/resources/ebsMenuPage.js'), true);
             wp_set_script_translations('ebs_menuPageJS', 'easybackendstyle', EBS_PLUGIN_PATH . '/src/languages');

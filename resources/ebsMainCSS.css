@@ -40,16 +40,16 @@ span.wp-media-buttons-icon:before {
 
 .wp-core-ui .button-link,
 .wp-core-ui .button.button-link {
-  color: var(--ebsPrimary);
+  color: var(--ebsLinks);
 }
 .wp-core-ui .button-link:hover, .wp-core-ui .button-link:active,
 .wp-core-ui .button.button-link:hover,
 .wp-core-ui .button.button-link:active {
-  color: var(--ebsPrimaryDarker20);
+  color: var(--ebsLinksHover);
 }
 .wp-core-ui .button-link:focus,
 .wp-core-ui .button.button-link:focus {
-  color: var(--ebsPrimary);
+  color: var(--ebsLinks);
   border-radius: 2px;
   box-shadow: 0 0 0 var(--wp-admin-border-width-focus, 1.5px) var(--ebsPrimary);
   outline: 1px solid transparent;
@@ -137,7 +137,7 @@ input[type=radio]:focus {
 }
 
 .mailserver-pass-wrap .button.wp-hide-pw:focus {
-  border-color: var(--ebsPrimary);
+  border-color: var(--ebsLinks);
   box-shadow: 0 0 0 var(--wp-admin-border-width-focus, 1.5px) var(--ebsPrimary);
 }
 
@@ -148,26 +148,26 @@ input[type=radio]:focus {
 }
 .wp-core-ui .button:where(:not(.button-link)) {
   background: transparent;
-  border: 1px solid var(--ebsPrimary);
+  border: 1px solid var(--ebsLinks);
   border-radius: 2px;
-  color: var(--ebsPrimary);
+  color: var(--ebsLinks);
 }
 .wp-core-ui .button:where(:not(.button-link)):hover {
   background: rgba(var(--ebsPrimaryRGB), 0.04);
-  border-color: var(--ebsPrimaryDarker20);
-  color: var(--ebsPrimaryDarker20);
+  border-color: var(--ebsLinksHover);
+  color: var(--ebsLinksHover);
 }
 .wp-core-ui .button:where(:not(.button-link)):focus {
   background: transparent;
-  border-color: var(--ebsPrimary);
-  color: var(--ebsPrimary);
+  border-color: var(--ebsLinks);
+  color: var(--ebsLinks);
   box-shadow: 0 0 0 var(--wp-admin-border-width-focus, 1.5px) var(--ebsPrimary);
   outline: 1px solid transparent;
 }
 .wp-core-ui .button:where(:not(.button-link)):active {
   background: rgba(var(--ebsPrimaryRGB), 0.08);
-  border-color: var(--ebsPrimaryDarker20);
-  color: var(--ebsPrimaryDarker20);
+  border-color: var(--ebsLinksHover);
+  color: var(--ebsLinksHover);
   box-shadow: none;
 }
 .wp-core-ui .button:where(:not(.button-link)):disabled, .wp-core-ui .button:where(:not(.button-link)).disabled {
@@ -181,26 +181,26 @@ input[type=radio]:focus {
 }
 .wp-core-ui .button-secondary {
   background: transparent;
-  border: 1px solid var(--ebsPrimary);
+  border: 1px solid var(--ebsLinks);
   border-radius: 2px;
-  color: var(--ebsPrimary);
+  color: var(--ebsLinks);
 }
 .wp-core-ui .button-secondary:hover {
   background: rgba(var(--ebsPrimaryRGB), 0.04);
-  border-color: var(--ebsPrimaryDarker20);
-  color: var(--ebsPrimaryDarker20);
+  border-color: var(--ebsLinksHover);
+  color: var(--ebsLinksHover);
 }
 .wp-core-ui .button-secondary:focus {
   background: transparent;
-  border-color: var(--ebsPrimary);
-  color: var(--ebsPrimary);
+  border-color: var(--ebsLinks);
+  color: var(--ebsLinks);
   box-shadow: 0 0 0 var(--wp-admin-border-width-focus, 1.5px) var(--ebsPrimary);
   outline: 1px solid transparent;
 }
 .wp-core-ui .button-secondary:active {
   background: rgba(var(--ebsPrimaryRGB), 0.08);
-  border-color: var(--ebsPrimaryDarker20);
-  color: var(--ebsPrimaryDarker20);
+  border-color: var(--ebsLinksHover);
+  color: var(--ebsLinksHover);
   box-shadow: none;
 }
 .wp-core-ui .button-secondary:disabled, .wp-core-ui .button-secondary.disabled {
@@ -250,7 +250,7 @@ input[type=radio]:focus {
   box-shadow: none;
 }
 .wp-core-ui .button-group > .button.active {
-  border-color: var(--ebsPrimary);
+  border-color: var(--ebsLinks);
   background: rgba(var(--ebsPrimaryRGB), 0.08);
 }
 .wp-core-ui .wp-ui-primary {

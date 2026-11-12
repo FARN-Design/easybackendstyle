@@ -35,6 +35,7 @@ try {
   for (const [key,value] of Object.entries({ebsPrimary:'#3858e9',ebsSecondary:'#1e1e1e',ebsTertiary:'#3858e9'})) {
     if (await page.locator('#'+key).inputValue() !== value) throw Error('Wrong default '+key);
   }
+  if (await page.locator('#ebs-import-theme-colors').count()) throw Error('Import button shown for a theme without usable colors');
   if (await page.getByText(/Please select.*admin color scheme/).count()) throw Error('Obsolete profile warning');
   // Compare the actual Modern UI, not values copied from our implementation.
   const snapshot = async () => {

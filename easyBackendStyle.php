@@ -33,6 +33,7 @@ use Farn\EasyBackendStyle\ebs_MigrationHandler;
 
 include_once __DIR__ . "/vendor/autoload.php";
 require_once __DIR__ . "/src/AdminSettings.php";
+add_action('wp_ajax_ebs_import_theme_colors', [\Farn\EasyBackendStyle\AdminSettings::class, 'importThemeColors']);
 
 
 add_action('init', static function () {
@@ -91,7 +92,6 @@ class easyBackendStyle {
             \Farn\EasyBackendStyle\AdminSettings::databaseWarning();
         }
         if (current_user_can('manage_options') && get_option(ebs_MigrationHandler::VERSION_OPTION) === ebs_MigrationHandler::VERSION) \Farn\EasyBackendStyle\InitialColors::initialize($this->dbc);
-        $this->checkEbsColorSchemeOption();
         $this->registerColorScheme();
     }
 
@@ -103,7 +103,6 @@ class easyBackendStyle {
             return;
         }
         \Farn\EasyBackendStyle\InitialColors::initialize($this->dbc);
-        if (\Farn\EasyBackendStyle\InitialColors::enabled()) $this->changeAdminColorScheme(get_current_user_id());
     }
 
     public function deactivate(): void {
@@ -204,6 +203,7 @@ class easyBackendStyle {
     {
         // Load assets only on this plugin's Settings submenu.
         if ($hook === 'settings_page_easyBackendStyle') {
+            \Farn\EasyBackendStyle\AdminSettings::enqueueThemeImport();
             wp_enqueue_style('wp-color-picker');
             wp_enqueue_script('ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__), array('wp-color-picker', 'wp-i18n'), filemtime(EBS_PLUGIN_PATH . '/resources/ebsMenuPage.js'), true);
             wp_set_script_translations('ebs_menuPageJS', 'easybackendstyle', EBS_PLUGIN_PATH . '/src/languages');
@@ -247,14 +247,7 @@ class easyBackendStyle {
             update_user_meta($user_id, 'ebs_scheme_initialized', true);
         }
     }
-    function checkEbsColorSchemeOption(): void
-    {
-        if (!\Farn\EasyBackendStyle\InitialColors::enabled()) return;
-        $user_id = get_current_user_id();
-        if (get_user_meta($user_id, 'ebs_scheme_initialized', true) !== '1') {
-            $this->changeAdminColorScheme($user_id);
-        }
-    }
+
 
 
 }

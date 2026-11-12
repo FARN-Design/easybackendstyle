@@ -121,6 +121,21 @@ jQuery(document).ready(function ($){
       return l <= 65 ? "dark" : "light";
   }
 
+  function readableLink(hex) {
+    const luminance = value => {
+      const channels = value.replace('#', '').match(/.{2}/g).map(c => {
+        const v = parseInt(c, 16) / 255;
+        return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+    };
+    while ((luminance('#f0f0f0') + 0.05) / (luminance(hex) + 0.05) < 4.5) {
+      const hsl = convertHexToHSL(hex);
+      hex = convertHSLToHex([hsl[0], hsl[1], Math.max(0, hsl[2] - 1)]);
+    }
+    return hex;
+  }
+
   function colorPreview(colorInputName, newColor){
     $(':root').css('--'+colorInputName, newColor);
     if (['ebsPrimary', 'ebsPrimaryDarker10', 'ebsPrimaryDarker20'].includes(colorInputName)) {
@@ -205,8 +220,8 @@ jQuery(document).ready(function ($){
 
           switch(colorInputName) {
               case "ebsBackground"              :       newColor = '#f0f0f0';       break;
-              case "ebsLinks"                   :       newColor = pc;              break;
-              case "ebsLinksHover"              :       newColor = pcDarker20;      break;
+              case "ebsLinks"                   :       newColor = readableLink(pc); break;
+              case "ebsLinksHover"              :       newColor = readableLink(pcDarker20);      break;
               case "ebsPrimaryDarker20"         :       newColor = pcDarker20;      break;
               case "ebsPrimaryDarker10"         :       newColor = pcDarker10;      break;
               case "ebsDisabledButtonText"      :       newColor = '#949494';       break;
@@ -227,6 +242,16 @@ jQuery(document).ready(function ($){
           colorPreview(colorInputName, newColor);
       });
   }
+  // Imports update multiple pickers. Refresh from their final values without
+  // recalculating advanced colors returned by the server.
+  form.addEventListener('ebs:colors-imported', function () {
+    $('.ebs_mainColorPicker, .ebs_colorPicker').each(function () {
+      colorPreview(this.name, this.value);
+    });
+    updateHexCodeLabel();
+    updatePencilIconColor();
+  });
+
   // init all color pickers and listen to changes
   $(".ebs_colorPicker").wpColorPicker({
     change: function (event, ui) {
@@ -247,6 +272,8 @@ jQuery(document).ready(function ($){
   });
   $(".ebs_mainColorPicker").wpColorPicker({
     change: function (event, ui) {
+      // Iris may emit change before the text input contains the new color.
+      $(this).val(ui.color.toString());
       autofillColors();
       updateHexCodeLabel();
       updatePencilIconColor();
