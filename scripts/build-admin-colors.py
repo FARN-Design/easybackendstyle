@@ -52,7 +52,10 @@ def build(source, manifest):
         return selectors + '{' + declarations + '}'
     css = re.sub(r'([^{}]+)\{([^{}]*)\}', text_button, css)
     css = '\n'.join(line.rstrip() for line in css.splitlines())
-    aliases = ('body.admin-color-personalizedcolorscheme,\n'
+    aliases = ('body.ebs-color-preview,\n'
+               'body.ebs-color-preview .editor-editor-interface,\n'
+               'body.ebs-color-preview .components-button,\n'
+               'body.admin-color-personalizedcolorscheme,\n'
                'body.admin-color-personalizedcolorscheme .editor-editor-interface,\n'
                'body.admin-color-personalizedcolorscheme .components-button {\n')
     for suffix, key in [('', 'ebsPrimary'), ('-darker-10', 'ebsPrimaryDarker10'), ('-darker-20', 'ebsPrimaryDarker20')]:

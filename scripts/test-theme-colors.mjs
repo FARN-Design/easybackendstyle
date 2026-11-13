@@ -60,10 +60,9 @@ try {
  await Promise.all([page.waitForURL('**/wp-admin/**'),page.locator('#wp-submit').evaluate(el=>el.click())]);
  await page.goto('http://127.0.0.1:9401/wp-admin/options-general.php?page=easyBackendStyle');
  await page.locator('#ebs-import-theme-colors').waitFor();
- const before=await page.locator('#menu-settings > a').evaluate(el=>getComputedStyle(el).backgroundColor);
  const denied=await page.request.post('http://127.0.0.1:9401/wp-admin/admin-ajax.php',{form:{action:'ebs_import_theme_colors'}});
  if(denied.status()!==403) throw Error('Import accepted missing nonce');
- async function clickImport(expected, activeScheme = true) {
+ async function clickImport(expected) {
   await page.locator('#ebs-import-theme-colors').evaluate(el=>el.click());
   await page.waitForFunction(value=>document.querySelector('#ebsPrimary').value===value,expected[0]);
   await page.waitForFunction(()=>!document.querySelector('#ebs-import-theme-colors').disabled);
@@ -73,42 +72,47 @@ try {
   }
   const rgb = expected[2].slice(1).match(/../g).map(v=>parseInt(v,16));
   const expectedHighlight = `rgb(${rgb.join(', ')})`;
-  if(activeScheme) await page.waitForFunction(expected => getComputedStyle(document.querySelector('#menu-settings > a')).backgroundColor === expected, expectedHighlight, {timeout:5000}).catch(()=>{});
+  await page.waitForFunction(expected => getComputedStyle(document.querySelector('#menu-settings > a')).backgroundColor === expected, expectedHighlight, {timeout:5000}).catch(()=>{});
   const actualHighlight = await page.locator('#menu-settings > a').evaluate(el=>getComputedStyle(el).backgroundColor);
   const scheme = await page.locator('body').getAttribute('class');
   const variables = await page.evaluate(() => ({root:getComputedStyle(document.documentElement).getPropertyValue('--ebsTertiary'), inline:document.documentElement.getAttribute('style'), menu:getComputedStyle(document.querySelector('#menu-settings > a')).getPropertyValue('--ebsTertiary')}));
   report.checks.push({name:'preview-variables',variables});
-  if(activeScheme && actualHighlight !== expectedHighlight) report.checks.push({name:'matched-menu-rules',rules:await page.evaluate(()=>{
+  if(actualHighlight !== expectedHighlight) report.checks.push({name:'matched-menu-rules',rules:await page.evaluate(()=>{
    const el=document.querySelector('#menu-settings > a');const result=[];
    for(const sheet of document.styleSheets){try{for(const rule of sheet.cssRules){if(rule.selectorText && el.matches(rule.selectorText) && rule.style.background) result.push({href:sheet.href,rule:rule.cssText});}}catch{}}
    return result;
   })});
-  report.checks.push({name:'import-preview', expected, activeScheme, actualHighlight, scheme});
-  if(activeScheme) {
-   if(!scheme.includes('admin-color-personalizedcolorscheme')) throw Error('Preview requires the personalized scheme: '+scheme);
-   if(actualHighlight !== expectedHighlight) throw Error(`Menu highlight mismatch: expected ${expectedHighlight}, received ${actualHighlight}; ${scheme}`);
-  } else if(actualHighlight !== before) {
-   throw Error('Import changed the selected Coffee scheme');
-  }
+  report.checks.push({name:'import-preview', expected, actualHighlight, scheme});
+  if(!scheme.includes('ebs-color-preview')) throw Error('Settings preview class missing: '+scheme);
+  if(actualHighlight !== expectedHighlight) throw Error(`Menu highlight mismatch: expected ${expectedHighlight}, received ${actualHighlight}; ${scheme}`);
   const preview = await page.locator('html').evaluate(el=>getComputedStyle(el).getPropertyValue('--ebsTertiary').trim());
   if(preview !== expected[2]) throw Error('Import preview retained previous tertiary color');
  }
- await clickImport(['#5744b8','#241b4b','#4633a2'], false);
+ await clickImport(['#5744b8','#241b4b','#4633a2']);
  // Live preview changes this page; persistence is checked separately below.
  await run('import-is-not-a-save',`
   if($GLOBALS['ebsPlugin']->dbc->allColors()!==get_option('ebs_ci_before_import')||get_user_option('admin_color')!=='coffee') throw new Exception('Import persisted colors');
   echo 'EBS_OK form import has no stored side effects';`);
+ // Manual primary changes must preview before the first save as well.
+ await page.getByRole('button', {name:'primary',exact:true}).click();
+ await page.locator('#ebsPrimary').fill('#bc8aff');
+ await page.locator('#ebsPrimary').press('ArrowLeft');
+ await page.waitForFunction(()=>getComputedStyle(document.querySelector('#submit')).backgroundColor==='rgb(188, 138, 255)');
+ await page.getByRole('button', {name:'primary',exact:true}).click();
+ await page.screenshot({path:join(root,`test-results/first-preview-php-${php}.png`),fullPage:true});
+ await run('manual-preview-is-not-a-save',`
+  if($GLOBALS['ebsPlugin']->dbc->allColors()!==get_option('ebs_ci_before_import')||get_user_option('admin_color')!=='coffee') throw new Exception('Manual preview persisted colors');
+  echo 'EBS_OK manual preview has no stored side effects';`);
  // Change the editor palette while the settings page is already open.
  await palette('#246b45','#24364b','#557799');
- await clickImport(['#246b45','#113220','#557799'], false);
+ await clickImport(['#246b45','#113220','#557799']);
  await Promise.all([page.waitForNavigation(),page.locator('#submit').evaluate(el=>el.click())]);
  await page.mouse.move(1200,20);
  const button=await page.locator('#submit').evaluate(el=>getComputedStyle(el).backgroundColor);
  if(button!=='rgb(36, 107, 69)') throw Error('Saved import CSS mismatch: '+button);
  const savedHighlight = await page.locator('#menu-settings > a').evaluate(el=>getComputedStyle(el).backgroundColor);
  if(savedHighlight !== 'rgb(85, 119, 153)') throw Error('Saved active menu does not use tertiary: '+savedHighlight);
- // The first explicit save enables/registers the personalized scheme. Only now
- // can a subsequent unsaved import preview its real menu colors.
+ // A subsequent unsaved import must also preview correctly after saving.
  await palette('#5744b8','#4633a2','#362490');
  await clickImport(['#5744b8','#241b4b','#4633a2']);
  await run('save-and-reactivation',`

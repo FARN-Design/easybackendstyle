@@ -2,6 +2,9 @@
  * WordPress 7.1.4 modern scheme; GPL-2.0-or-later; WordPress contributors.
  * Source SHA-256: 3db11eab2bc1769b0f5a8e5137e54d44d921ae03e1c73d92a364a8626d373c50
  */
+body.ebs-color-preview,
+body.ebs-color-preview .editor-editor-interface,
+body.ebs-color-preview .components-button,
 body.admin-color-personalizedcolorscheme,
 body.admin-color-personalizedcolorscheme .editor-editor-interface,
 body.admin-color-personalizedcolorscheme .components-button {

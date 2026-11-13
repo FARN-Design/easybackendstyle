@@ -170,9 +170,11 @@ class easyBackendStyle {
         $links[] = '<a href="' . esc_url(admin_url('options-general.php?page=easyBackendStyle')) . '">' . esc_html__('Settings', 'easybackendstyle') . '</a>';
         return $links;
     }
+    private bool $settingsPreview = false;
+
     function ebs_root_variables_css(): void
     {
-        if (!is_admin() || get_user_option('admin_color') !== 'personalizedcolorscheme') return;
+        if (!is_admin() || (!$this->settingsPreview && get_user_option('admin_color') !== 'personalizedcolorscheme')) return;
         $this->renderVariables(':root');
     }
 
@@ -203,6 +205,10 @@ class easyBackendStyle {
     {
         // Load assets only on this plugin's Settings submenu.
         if ($hook === 'settings_page_easyBackendStyle') {
+            // Preview is local to this page; do not persist a user scheme or colors.
+            $this->settingsPreview = true;
+            add_filter('admin_body_class', static fn($classes) => $classes . ' ebs-color-preview');
+            wp_enqueue_style('ebs_settingsPreview', plugins_url('resources/ebsMainCSS.css', __FILE__), ['colors'], filemtime(EBS_PLUGIN_PATH . '/resources/ebsMainCSS.css'));
             \Farn\EasyBackendStyle\AdminSettings::enqueueThemeImport();
             wp_enqueue_style('wp-color-picker');
             wp_enqueue_script('ebs_menuPageJS', plugins_url('resources/ebsMenuPage.js', __FILE__), array('wp-color-picker', 'wp-i18n'), filemtime(EBS_PLUGIN_PATH . '/resources/ebsMenuPage.js'), true);

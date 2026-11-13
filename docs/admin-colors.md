@@ -88,3 +88,9 @@ links), then checks that editing one advanced color preserves every other field.
 Modern submenu hover text has its own field because its light blue differs from
 normal link-hover blue. Unconfirmed Fresh defaults are upgraded; confirmed palettes
 are retained.
+
+The settings page loads a page-local preview stylesheet and variables even before
+the first save or while another user scheme is selected. Importing or manually
+changing a main color immediately updates this preview. Neither the stored palette
+nor the user scheme changes until Save. Other admin pages keep the selected scheme.
+The browser regression checks first-import and manual-primary previews before saving.
