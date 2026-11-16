@@ -48,6 +48,10 @@ class ebs_DatabaseConnector {
         $colors = $this->allColors();
         if ($this->wpdb->last_error) return false;
         foreach ($this->defaults() as $key => $value) {
+            if ($key === 'ebsMenuHover') {
+                $defaults = $this->defaults();
+                $value = InitialColors::submenuHover($colors['ebsSubMenu'] ?? $defaults['ebsSubMenu'], $colors['ebsSubMenuText'] ?? $defaults['ebsSubMenuText']);
+            }
             if (!array_key_exists($key, $colors) && false === $this->wpdb->insert($this->tableName, ['Variable' => $key, 'Value' => $value], ['%s', '%s'])) {
                 $this->colors = null;
                 return false;

@@ -12,6 +12,7 @@ function check($ok, $message) { if (!$ok) throw new RuntimeException($message); 
 function palette($hexes) { return array_map(static fn($hex,$i)=>['slug'=>'color-'.$i,'color'=>$hex],$hexes,array_keys($hexes)); }
 $GLOBALS['theme']=sys_get_temp_dir().'/ebs-import-'.uniqid(); mkdir($GLOBALS['theme']);
 try {
+ check(Colors::submenuHover('#40ae98','#ffffff') === '#b3dfd6', 'Submenu hover uses 40 percent background and 60 percent text');
  $GLOBALS['palettes']=['default'=>palette(['#ff0000','#00ff00'])];
  check(Colors::detect() === [], 'Core palette must not supply a scheme');
  $hexes=['#1e1b30','#33258a','#ca4963','#009bdc','#fbb800','#837ac9','#61c3b6','#f76d4b','#f5f2ed','#fbf9f7','#cccada'];

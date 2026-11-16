@@ -22,7 +22,7 @@ function ebs_hardening_checks(): void {
     add_filter('query', $filter);
     ebs_assert(!(new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Failed migration must report failure');
     remove_filter('query', $filter);
-    ebs_assert(get_option('ebs_schema_version') !== '2', 'Failed migration must not be marked complete');
+    ebs_assert(get_option('ebs_schema_version') !== \Farn\EasyBackendStyle\ebs_MigrationHandler::VERSION, 'Failed migration must not be marked complete');
     ebs_assert(get_option('ebs_migration_pending') === '1', 'Failed migration must remain retryable');
     $backup = get_option('ebs_legacy_colors_backup');
     ebs_assert($backup['primaryColor'] === '#33258a' && isset($backup['disabledButton']), 'Backup includes all original keys');
@@ -53,6 +53,16 @@ function ebs_hardening_checks(): void {
     delete_option('ebs_schema_version');
     ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Adopt existing modern table');
     ebs_assert((new \Farn\EasyBackendStyle\ebs_DatabaseConnector())->allColors()['ebsPrimary'] === '#654321', 'Existing modern values not overwritten');
+    // Repair the version-2 blue sentinel once, without replacing custom values.
+    ebs_assert($db->saveColors(['ebsSubMenu'=>'#40ae98','ebsSubMenuText'=>'#ffffff','ebsMenuHover'=>'#7b90ff']), 'Seed broken hover');
+    update_option('ebs_schema_version', '2');
+    ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Repair hover migration');
+    $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
+    ebs_assert($db->allColors()['ebsMenuHover'] === '#b3dfd6', 'Exact requested hover mixture');
+    ebs_assert($db->saveColors(['ebsMenuHover'=>'#abcdef']), 'Seed custom hover');
+    update_option('ebs_schema_version', '2');
+    ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Upgrade custom hover');
+    ebs_assert((new \Farn\EasyBackendStyle\ebs_DatabaseConnector())->allColors()['ebsMenuHover'] === '#abcdef', 'Custom hover preserved');
     // A denied CREATE must fail once, not recurse until the request runs out of memory.
     $broken = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
     $broken->tableName = $wpdb->prefix . 'ebs_test_denied_create';

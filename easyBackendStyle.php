@@ -125,7 +125,7 @@ class easyBackendStyle {
             "ebsDisabledButtonText" => [__('disabled button text', 'easybackendstyle'),[],'#949494', __('Sets the color of disabled button text', 'easybackendstyle')],
             "ebsSecondary" => [__('secondary', 'easybackendstyle'),[],'#1e1e1e', __('Sets the color of the menu', 'easybackendstyle')],
             "ebsTertiary" => [__('tertiary', 'easybackendstyle'),[],'#3858e9', __('Sets the color used to highlight the current menu item', 'easybackendstyle')],
-            "ebsMenuHover" => [__('menu hover', 'easybackendstyle'),[],'#7b90ff', __('Sets the text and icon color when hovering over submenus', 'easybackendstyle')],
+            "ebsMenuHover" => [__('menu hover', 'easybackendstyle'),[],'#767676', __('Sets the text and icon color when hovering over submenus', 'easybackendstyle')],
             "ebsNotification" => [__('notification', 'easybackendstyle'),[],'#3858e9', __('Sets the color of the notification', 'easybackendstyle')],
             "ebsIcon" => [__('icon', 'easybackendstyle'),[],'#f3f1f1', __('Sets the color of the icons', 'easybackendstyle')],
             "ebsPrimaryText" => [__('primary text', 'easybackendstyle'),[],'#ffffff', __('Sets the color of all text', 'easybackendstyle')],

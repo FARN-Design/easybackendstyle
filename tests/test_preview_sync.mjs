@@ -51,3 +51,7 @@ const tertiary=inputs[2];
 tertiary.picker.change.call(tertiary,{}, {color:{toString:()=>'#009bdc'}});
 assert.equal(styles['--ebsTertiary'],'#009bdc','Manual picker change must preview the event color before Iris updates the input');
 console.log('Import and manual picker preview synchronization passed');
+
+const menuSource = readFileSync(new URL('../resources/ebsMenuPage.js', import.meta.url), 'utf8');
+const mixer = menuSource.slice(menuSource.indexOf('  function mixSubmenuHover('), menuSource.indexOf('  function readableLink('));
+assert.equal(vm.runInNewContext(mixer + "\nmixSubmenuHover('#40ae98', '#ffffff')"), '#b3dfd6', 'Live preview uses the same submenu mixture as PHP');

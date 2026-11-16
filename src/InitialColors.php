@@ -202,6 +202,15 @@ final class InitialColors {
         return (max($rgb) + min($rgb)) / 510 <= 0.65 ? '#ffffff' : '#000000';
     }
 
+    /** 40% submenu background and 60% submenu text, mixed in sRGB. */
+    public static function submenuHover(string $background, string $text): string {
+        $background = self::hex($background);
+        $text = self::hex($text);
+        return '#' . implode('', array_map(static fn($b, $t) => sprintf('%02x',
+            (int) round(hexdec($b) * 0.4 + hexdec($t) * 0.6)),
+            str_split(substr($background, 1), 2), str_split(substr($text, 1), 2)));
+    }
+
     public static function generate(array $base, array $defaults): array {
         ['primary' => $p, 'secondary' => $s, 'tertiary' => $t] = $base;
         $text = self::text($s); $button = self::text($p); $highlight = self::text($t);
@@ -213,7 +222,7 @@ final class InitialColors {
             'ebsLinks'=>$link, 'ebsLinksHover'=>$linkHover, 'ebsPrimaryDarker10'=>self::shift($p, -10),
             'ebsPrimaryDarker20'=>$hover, 'ebsPrimaryText'=>$text, 'ebsIcon'=>$text,
             'ebsSubMenu'=>$submenu, 'ebsSubMenuText'=>$text, 'ebsSecondaryLighter'=>$submenu,
-            'ebsMenuHover'=>self::shift($p, 10), 'ebsNotification'=>$t, 'ebsHighlightedText'=>$highlight, 'ebsPrimaryButtonText'=>$button];
+            'ebsMenuHover'=>self::submenuHover($submenu, $text), 'ebsNotification'=>$t, 'ebsHighlightedText'=>$highlight, 'ebsPrimaryButtonText'=>$button];
         $legacy = ['primaryColor'=>$p, 'secondaryColor'=>$s, 'baseMenu'=>$s, 'menuText'=>$text,
             'subMenu'=>$submenu, 'highlight'=>$t, 'highlightText'=>$highlight, 'links'=>$link,
             'buttons'=>$p, 'buttonText'=>$button, 'formInputs'=>$p, 'linkHover'=>$linkHover,

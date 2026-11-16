@@ -94,3 +94,8 @@ the first save or while another user scheme is selected. Importing or manually
 changing a main color immediately updates this preview. Neither the stored palette
 nor the user scheme changes until Save. Other admin pages keep the selected scheme.
 The browser regression checks first-import and manual-primary previews before saving.
+
+Submenu hover text is derived in sRGB from 40% submenu background and 60%
+submenu text (for example #40ae98 and #ffffff produce #b3dfd6). Schema upgrade 3
+repairs the old #7b90ff placeholder once; other stored hover colors are preserved.
+Legacy migrations and newly added fields derive the value from the submenu colors.

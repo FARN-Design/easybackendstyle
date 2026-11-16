@@ -121,6 +121,12 @@ jQuery(document).ready(function ($){
       return l <= 65 ? "dark" : "light";
   }
 
+  function mixSubmenuHover(background, text) {
+    return '#' + background.slice(1).match(/../g).map((channel, i) =>
+      Math.round(parseInt(channel, 16) * 0.4 + parseInt(text.slice(1 + i * 2, 3 + i * 2), 16) * 0.6).toString(16).padStart(2, '0')
+    ).join('');
+  }
+
   function readableLink(hex) {
     const luminance = value => {
       const channels = value.replace('#', '').match(/.{2}/g).map(c => {
@@ -228,7 +234,7 @@ jQuery(document).ready(function ($){
               case "ebsDeleteLinks"             :       newColor = '#cc1818';       break;
               case "ebsDeleteLinksHover"        :       newColor = '#e63004';       break;
               case "ebsPrimaryText"             :       newColor = allText;         break;
-              case "ebsMenuHover"               :       newColor = convertHSLToHex([pcHSL[0], pcHSL[1], pcHSL[2] + 10]); break;
+              case "ebsMenuHover"               :       newColor = mixSubmenuHover(subMenu, allText); break;
               case "ebsNotification"            :       newColor = tc;              break;
               case "ebsIcon"                    :       newColor = allText;         break;
               case "ebsSubMenu"                 :       newColor = subMenu;         break;
