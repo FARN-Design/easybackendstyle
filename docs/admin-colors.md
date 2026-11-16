@@ -99,3 +99,7 @@ Submenu hover text is derived in sRGB from 40% submenu background and 60%
 submenu text (for example #40ae98 and #ffffff produce #b3dfd6). Schema upgrade 3
 repairs the old #7b90ff placeholder once; other stored hover colors are preserved.
 Legacy migrations and newly added fields derive the value from the submenu colors.
+
+Schema version 4 repairs the historical nested-menu default `#74a6b9` using the saved submenu background. Other custom nested-menu colors are preserved. Legacy migrations and missing nested-menu fields also inherit the submenu background.
+
+Schema version 5 also migrates the legacy button-hover color into the pressed-button field. Existing non-default palettes with the omitted field's `#183ad6` sentinel inherit their saved button-hover color. Other values are preserved. Historical data cannot distinguish an intentionally chosen exact sentinel from an automatically inserted default. Focus rings, pointer borders and recovery-mode hover colors now reference saved link accents instead of fixed blue literals.

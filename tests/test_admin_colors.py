@@ -37,6 +37,19 @@ class AdminColorsTest(unittest.TestCase):
         self.assertIn('--wp-components-color-accent: var(--ebsPrimary)', self.css)
         self.assertIn('body.admin-color-personalizedcolorscheme .editor-editor-interface', self.css)
 
+    def test_no_fixed_chromatic_colors(self):
+        # Neutral structural grays may remain; accents must follow the palette.
+        literals = set(re.findall(r'#[0-9a-fA-F]{3,8}\b|(?:rgb|hsl)\([\d.% ,]+\)', self.css))
+        self.assertEqual(literals, {'#dddddd', '#fbfbfc'})
+        checks = {
+            '.nav-menus-php .item-edit:focus:before': '1px var(--ebsLinks)',
+            '.wp-pointer .wp-pointer-content h3': 'border-color: var(--ebsLinksHover)',
+            '#wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode:hover > .ab-item': 'background-color: var(--ebsLinksHover)',
+            '.wp-core-ui .button-primary:active': 'background: var(--ebsPrimaryDarker20)',
+        }
+        for selector, expected in checks.items():
+            self.assertTrue(any(expected in d for d in self.declarations(selector)), selector)
+
     def test_upstream_change_requires_review(self):
         with self.assertRaisesRegex(ValueError, 'WordPress CSS changed'):
             colors.build(self.source + b'\n', self.manifest)

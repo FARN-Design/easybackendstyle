@@ -3,7 +3,7 @@ namespace Farn\EasyBackendStyle;
 
 /** Recoverable upgrade; never drops the original table or replaces existing modern colors. */
 class ebs_MigrationHandler {
-    public const VERSION = '3';
+    public const VERSION = '5';
     public const VERSION_OPTION = 'ebs_schema_version';
     private const PENDING = 'ebs_migration_pending';
     private const BACKUP = 'ebs_legacy_colors_backup';
@@ -48,12 +48,12 @@ class ebs_MigrationHandler {
             $map = [
                 'ebsPrimary' => 'primaryColor', 'ebsSecondary' => 'secondaryColor',
                 'ebsPrimaryText' => 'menuText', 'ebsSubMenuText' => 'menuText',
-                'ebsSubMenu' => 'subMenu', 'ebsNotification' => 'notification',
+                'ebsSecondaryLighter' => 'subMenu', 'ebsSubMenu' => 'subMenu', 'ebsNotification' => 'notification',
                 'ebsIcon' => 'icon', 'ebsBackground' => 'background',
                 'ebsLinks' => 'links', 'ebsLinksHover' => 'linkHover',
                 'ebsDisabledButtonText' => 'disabledButtonText', 'ebsTertiary' => 'highlight',
                 'ebsHighlightedText' => 'highlightText', 'ebsPrimaryDarker10' => 'buttonHover',
-                'ebsPrimaryButtonText' => 'buttonText',
+                'ebsPrimaryButtonText' => 'buttonText', 'ebsPrimaryDarker20' => 'buttonHover',
             ];
             $values = [];
             foreach ($map as $destination => $source) {
@@ -69,6 +69,16 @@ class ebs_MigrationHandler {
         $colors = $new->allColors();
         if (strtolower($colors['ebsMenuHover'] ?? '') === '#7b90ff') {
             if (!$new->saveColors(['ebsMenuHover' => InitialColors::submenuHover($colors['ebsSubMenu'], $colors['ebsSubMenuText'])])) return false;
+        }
+        // Older releases persisted an unrelated blue-gray default for nested menus.
+        if (strtolower($colors['ebsSecondaryLighter'] ?? '') === '#74a6b9') {
+            if (!$new->saveColors(['ebsSecondaryLighter' => $colors['ebsSubMenu']])) return false;
+        }
+        // The pressed-button field was omitted from the legacy mapping.
+        // Keep custom values; replace only the historical modern-blue sentinel.
+        if (strtolower($colors['ebsPrimaryDarker20'] ?? '') === '#183ad6'
+            && strtolower($colors['ebsPrimary'] ?? '') !== '#3858e9') {
+            if (!$new->saveColors(['ebsPrimaryDarker20' => $colors['ebsPrimaryDarker10']])) return false;
         }
         // A failed marker write must not turn a partial upgrade into a completed one.
         update_option(self::VERSION_OPTION, self::VERSION, false);

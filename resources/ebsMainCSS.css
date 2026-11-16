@@ -577,7 +577,7 @@ ul#adminmenu > li.current > a.current:after {
 #wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode:hover > .ab-item,
 #wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode > .ab-item:focus {
   color: var(--ebsPrimaryText);
-  background-color: rgb(50.4, 79.2, 209.7);
+  background-color: var(--ebsLinksHover);
 }
 
 
@@ -601,7 +601,7 @@ ul#adminmenu > li.current > a.current:after {
 
 .wp-pointer .wp-pointer-content h3 {
   background-color: var(--ebsLinks);
-  border-color: rgb(33.0384615385, 68.7307692308, 230.4615384615);
+  border-color: var(--ebsLinksHover);
 }
 
 .wp-pointer .wp-pointer-content h3:before {
@@ -684,7 +684,7 @@ body.more-filters-opened .more-filters:focus:before {
 
 
 .nav-menus-php .item-edit:focus:before {
-  box-shadow: 0 0 0 1px rgb(101.9230769231, 126.5384615385, 238.0769230769), 0 0 2px 1px var(--ebsLinks);
+  box-shadow: 0 0 0 1px var(--ebsLinks), 0 0 2px 1px var(--ebsLinks);
 }
 
 
@@ -751,7 +751,7 @@ div#wp-responsive-toggle a:before {
 .wp-core-ui #available-menu-items .item-add:focus:before,
 .wp-core-ui #customize-save-button-wrapper .save:focus,
 .wp-core-ui #publish-settings:focus {
-  box-shadow: 0 0 0 1px rgb(101.9230769231, 126.5384615385, 238.0769230769), 0 0 2px 1px var(--ebsLinks);
+  box-shadow: 0 0 0 1px var(--ebsLinks), 0 0 2px 1px var(--ebsLinks);
 }
 .wp-core-ui #customize-controls .customize-info.open .customize-help-toggle,
 .wp-core-ui #customize-controls .customize-info .customize-help-toggle:focus,
@@ -800,7 +800,7 @@ div#wp-responsive-toggle a:before {
 }
 .wp-core-ui .wp-full-overlay .collapse-sidebar:hover .collapse-sidebar-arrow,
 .wp-core-ui .wp-full-overlay .collapse-sidebar:focus .collapse-sidebar-arrow {
-  box-shadow: 0 0 0 1px rgb(101.9230769231, 126.5384615385, 238.0769230769), 0 0 2px 1px var(--ebsLinks);
+  box-shadow: 0 0 0 1px var(--ebsLinks), 0 0 2px 1px var(--ebsLinks);
 }
 .wp-core-ui.wp-customizer .theme-overlay .theme-header .close:focus, .wp-core-ui.wp-customizer .theme-overlay .theme-header .close:hover, .wp-core-ui.wp-customizer .theme-overlay .theme-header .right:focus, .wp-core-ui.wp-customizer .theme-overlay .theme-header .right:hover, .wp-core-ui.wp-customizer .theme-overlay .theme-header .left:focus, .wp-core-ui.wp-customizer .theme-overlay .theme-header .left:hover {
   border-bottom-color: var(--ebsLinks);

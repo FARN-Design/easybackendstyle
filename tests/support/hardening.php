@@ -11,7 +11,7 @@ function ebs_hardening_checks(): void {
     $old = new \Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector();
     ebs_assert($db->setup_Database(), 'Modern table setup');
     ebs_assert($old->setup_Database(), 'Legacy table setup');
-    ebs_assert($old->saveColors(['primaryColor'=>'#33258a','menuText'=>'#123456','buttonText'=>'#abcdef']), 'Seed legacy colors');
+    ebs_assert($old->saveColors(['primaryColor'=>'#33258a','menuText'=>'#123456','buttonText'=>'#abcdef','buttonHover'=>'#276b58']), 'Seed legacy colors');
     // Simulate an old active installation upgrading; the old table remains the backup.
     $wpdb->query("DROP TABLE {$db->tableName}");
     foreach (['ebs_schema_version','ebs_migration_pending','ebs_migration_lock','ebs_legacy_colors_backup'] as $key) delete_option($key);
@@ -30,6 +30,8 @@ function ebs_hardening_checks(): void {
     ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Retry migration');
     $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
     $colors = $db->allColors();
+    ebs_assert($colors['ebsSecondaryLighter'] === $colors['ebsSubMenu'], 'Legacy nested menu inherits submenu');
+    ebs_assert($colors['ebsPrimaryDarker20'] === '#276b58', 'Legacy pressed button inherits saved button hover');
     ebs_assert($colors['ebsPrimary'] === '#33258a', 'Primary preserved');
     ebs_assert($colors['ebsPrimaryText'] === '#123456' && $colors['ebsSubMenuText'] === '#123456', 'Both text mappings preserved');
     ebs_assert($colors['ebsPrimaryButtonText'] === '#abcdef', 'Button text preserved');
@@ -63,6 +65,36 @@ function ebs_hardening_checks(): void {
     update_option('ebs_schema_version', '2');
     ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Upgrade custom hover');
     ebs_assert((new \Farn\EasyBackendStyle\ebs_DatabaseConnector())->allColors()['ebsMenuHover'] === '#abcdef', 'Custom hover preserved');
+    // Version 3 sites also need the nested-menu repair.
+    ebs_assert($db->saveColors(['ebsSecondaryLighter'=>'#74a6b9']), 'Seed blue-gray nested menu');
+    update_option('ebs_schema_version', '3');
+    ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Repair nested menu');
+    $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
+    ebs_assert($db->allColors()['ebsSecondaryLighter'] === '#40ae98', 'Nested menu inherits submenu background');
+    ebs_assert($db->saveColors(['ebsSecondaryLighter'=>'#123456']), 'Seed custom nested menu');
+    update_option('ebs_schema_version', '3');
+    ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Upgrade custom nested menu');
+    ebs_assert((new \Farn\EasyBackendStyle\ebs_DatabaseConnector())->allColors()['ebsSecondaryLighter'] === '#123456', 'Custom nested menu preserved');
+    foreach (['2', '3', '4'] as $version) {
+        ebs_assert($db->saveColors(['ebsPrimary'=>'#40ae98','ebsPrimaryDarker10'=>'#276b58','ebsPrimaryDarker20'=>'#183ad6']), 'Seed broken pressed button');
+        update_option('ebs_schema_version', $version);
+        ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Repair pressed button from schema ' . $version);
+        $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
+        ebs_assert($db->allColors()['ebsPrimaryDarker20'] === '#276b58', 'Pressed button uses saved hover');
+        $custom = ['ebsMenuHover'=>'#abcdef','ebsSecondaryLighter'=>'#123456','ebsPrimaryDarker20'=>'#654321'];
+        ebs_assert($db->saveColors($custom), 'Seed custom colors');
+        $before = $db->allColors();
+        update_option('ebs_schema_version', $version);
+        ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Preserve custom palette');
+        $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
+        ebs_assert($db->allColors() === $before, 'Every custom palette field preserved');
+        ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Repeated migration succeeds');
+        ebs_assert((new \Farn\EasyBackendStyle\ebs_DatabaseConnector())->allColors() === $before, 'Repeated migration changes nothing');
+    }
+    $wpdb->delete($db->tableName, ['Variable'=>'ebsPrimaryDarker20']);
+    $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
+    ebs_assert($db->checkFields(), 'Repair missing pressed-button field');
+    ebs_assert($db->allColors()['ebsPrimaryDarker20'] === '#276b58', 'Missing pressed-button field uses saved hover');
     // A denied CREATE must fail once, not recurse until the request runs out of memory.
     $broken = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
     $broken->tableName = $wpdb->prefix . 'ebs_test_denied_create';

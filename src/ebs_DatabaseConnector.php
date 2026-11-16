@@ -48,6 +48,12 @@ class ebs_DatabaseConnector {
         $colors = $this->allColors();
         if ($this->wpdb->last_error) return false;
         foreach ($this->defaults() as $key => $value) {
+            if ($key === 'ebsPrimaryDarker20') {
+                $value = $colors['ebsPrimaryDarker10'] ?? InitialColors::shift($colors['ebsPrimary'] ?? $this->defaults()['ebsPrimary'], -20);
+            }
+            if ($key === 'ebsSecondaryLighter') {
+                $value = $colors['ebsSubMenu'] ?? $this->defaults()['ebsSubMenu'];
+            }
             if ($key === 'ebsMenuHover') {
                 $defaults = $this->defaults();
                 $value = InitialColors::submenuHover($colors['ebsSubMenu'] ?? $defaults['ebsSubMenu'], $colors['ebsSubMenuText'] ?? $defaults['ebsSubMenuText']);

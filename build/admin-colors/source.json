@@ -17,13 +17,13 @@
     "rgb(12.15, 12.15, 12.15)": "ebsSubMenu",
     "rgb(187.5, 187.5, 187.5)": "ebsSubMenuText",
     "#7b90ff": "ebsMenuHover",
-    "rgb(47.85, 47.85, 47.85)": "ebsSecondaryLighter"
+    "rgb(47.85, 47.85, 47.85)": "ebsSecondaryLighter",
+    "rgb(101.9230769231, 126.5384615385, 238.0769230769)": "ebsLinks",
+    "rgb(33.0384615385, 68.7307692308, 230.4615384615)": "ebsLinksHover",
+    "rgb(50.4, 79.2, 209.7)": "ebsLinksHover"
   },
   "unchanged_colors": [
     "#dddddd",
-    "#fbfbfc",
-    "rgb(101.9230769231, 126.5384615385, 238.0769230769)",
-    "rgb(33.0384615385, 68.7307692308, 230.4615384615)",
-    "rgb(50.4, 79.2, 209.7)"
+    "#fbfbfc"
   ]
 }
