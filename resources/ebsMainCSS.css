@@ -806,3 +806,21 @@ div#wp-responsive-toggle a:before {
   border-bottom-color: var(--ebsLinks);
   color: var(--ebsLinks);
 }
+
+#adminmenu li.current > a.menu-top,
+#adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu,
+#adminmenu li.menu-top:hover > a.menu-top,
+#adminmenu li.opensub > a.menu-top,
+#adminmenu li > a.menu-top:focus,
+#adminmenu li.wp-has-current-submenu .wp-submenu .wp-submenu-head,
+.folded #adminmenu li.current.menu-top {
+  color: var(--ebsCurrentMenuText);
+}
+
+#adminmenu li.current > a.menu-top div.wp-menu-image:before,
+#adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu div.wp-menu-image:before,
+#adminmenu li.menu-top:hover > a.menu-top div.wp-menu-image:before,
+#adminmenu li.opensub > a.menu-top div.wp-menu-image:before,
+#adminmenu li > a.menu-top:focus div.wp-menu-image:before {
+  color: var(--ebsCurrentMenuText);
+}

@@ -132,7 +132,10 @@ class easyBackendStyle {
             "ebsSubMenu" => [__('submenu', 'easybackendstyle'),[],'#0c0c0c', __('Sets the color of the sub menu', 'easybackendstyle')],
             "ebsSubMenuText" => [__('submenu text', 'easybackendstyle'),[],'#bcbcbc', __('Sets the color of the sub menu text', 'easybackendstyle')],
             "ebsHighlightedText" => [__('highlight text', 'easybackendstyle'),[],'#ffffff', __('Sets the color of the highlighted text', 'easybackendstyle')],
+            "ebsCurrentMenuText" => [__('current menu text and icon', 'easybackendstyle'),[],'#ffffff', __('Sets the text and icon color of the current main menu item', 'easybackendstyle')],
             "ebsPrimaryButtonText" => [__('button text', 'easybackendstyle'),[],'#ffffff', __('Sets the color of the button text', 'easybackendstyle')],
+            "ebsListOdd" => [__('odd list rows', 'easybackendstyle'),[],'#f6f7f7', __('Sets the background color of odd rows in admin lists', 'easybackendstyle')],
+            "ebsListEven" => [__('even list rows', 'easybackendstyle'),[],'#ffffff', __('Sets the background color of even rows in admin lists', 'easybackendstyle')],
         ];
     }
 
@@ -203,6 +206,9 @@ class easyBackendStyle {
 
     function addScriptsAndStylesToMenuPages($hook): void
     {
+        if ($hook === 'settings_page_easyBackendStyle' || get_user_option('admin_color') === 'personalizedcolorscheme') {
+            wp_enqueue_style('ebs_adminLists', plugins_url('resources/admin-lists.css', __FILE__), ['colors'], filemtime(EBS_PLUGIN_PATH . '/resources/admin-lists.css'));
+        }
         // Load assets only on this plugin's Settings submenu.
         if ($hook === 'settings_page_easyBackendStyle') {
             // Preview is local to this page; do not persist a user scheme or colors.
@@ -257,5 +263,3 @@ class easyBackendStyle {
 
 
 }
-
-

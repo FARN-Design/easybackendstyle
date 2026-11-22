@@ -29,6 +29,17 @@ class AdminColorsTest(unittest.TestCase):
     def test_separate_button_and_highlight_text(self):
         self.assertTrue(any('color: var(--ebsPrimaryButtonText)' in d for d in self.declarations('.wp-core-ui .button-primary')))
         self.assertTrue(any('color: var(--ebsHighlightedText)' in d for d in self.declarations('#adminmenu li.current a.menu-top')))
+        for selector in ('#adminmenu li.current > a.menu-top',
+                         '#adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu',
+                         '#adminmenu li.menu-top:hover > a.menu-top',
+                         '#adminmenu li.opensub > a.menu-top',
+                         '#adminmenu li > a.menu-top:focus',
+                         '#adminmenu li.current > a.menu-top div.wp-menu-image:before',
+                         '#adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu div.wp-menu-image:before',
+                         '#adminmenu li.menu-top:hover > a.menu-top div.wp-menu-image:before',
+                         '#adminmenu li > a.menu-top:focus div.wp-menu-image:before'):
+            self.assertTrue(any('color: var(--ebsCurrentMenuText)' in d for d in self.declarations(selector)), selector)
+        self.assertTrue(any('color: var(--ebsHighlightedText)' in d for d in self.declarations('#adminmenu .wp-submenu li.current a')))
 
     def test_rgb_channels_and_core_aliases(self):
         self.assertIn('rgba(var(--ebsPrimaryRGB), 0.04)', self.css)
@@ -63,6 +74,17 @@ class AdminColorsTest(unittest.TestCase):
         self.assertNotIn('file_put_contents', php)
         self.assertNotIn('generateColorsCss', php)
         self.assertNotIn('colors/blue/colors.css', php)
+
+    def test_list_row_colors_apply_to_plugin_scheme_and_settings_preview(self):
+        css = (ROOT / 'resources/admin-lists.css').read_text()
+        for scope in ('body.admin-color-personalizedcolorscheme', 'body.ebs-color-preview', 'body.admin-color-fresh'):
+            self.assertIn(scope, css)
+        for parity, color in [('odd', 'ebsListOdd'), ('even', 'ebsListEven')]:
+            self.assertIn(f'.wp-list-table:not(.plugins) > tbody > tr:nth-child({parity})', css)
+            self.assertIn(f':nth-child({parity} of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) > :is(th, td)', css)
+            self.assertIn(f':nth-child({parity} of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr > td.plugin-update', css)
+            self.assertIn(f':nth-child({parity} of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr + tr.plugin-update-tr > td.plugin-update', css)
+            self.assertIn(f'background-color: var(--{color})', css)
 
 if __name__ == '__main__':
     unittest.main()

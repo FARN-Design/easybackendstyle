@@ -122,6 +122,10 @@ jQuery(document).ready(function ($){
   }
 
   function colorPreview(colorInputName, newColor){
+    if (colorInputName === 'listOddColor' || colorInputName === 'listEvenColor') {
+      $(':root').css(colorInputName === 'listOddColor' ? '--ebsListOdd' : '--ebsListEven', newColor);
+      return;
+    }
     $(':root').css('--'+colorInputName+'Color', newColor);
   }
 
@@ -163,12 +167,15 @@ jQuery(document).ready(function ($){
               case "notification"       :       newColor = '#d63638';               break;
               case "notificationText"   :       newColor = '#f0f0f1';               break;
               case "highlightText"     :       newColor = buttonTextColor;         break;
+              case "currentMenuText"    :       newColor = buttonTextColor;         break;
               case "background"         :       newColor = '#f0f0f1';               break;
               case "buttonText"         :       newColor = buttonTextColor;         break;
               case "linkHover"          :       newColor = linkHoverColor;          break;
               case "buttonHover"        :       newColor = linkHoverColor;          break;
               case "disabledButton"     :       newColor = '#969696';               break;
               case "disabledButtonText" :       newColor = '#000000';               break;
+              case "listOddColor"       :       newColor = '#f6f7f7';               break;
+              case "listEvenColor"      :       newColor = '#ffffff';               break;
               case "icon"               :       newColor = menuTextColor;           break;
           }
           $(this).val(newColor);
@@ -202,4 +209,3 @@ jQuery(document).ready(function ($){
   });
 
 });
-

@@ -3,7 +3,7 @@ namespace Farn\EasyBackendStyle;
 
 /** Recoverable upgrade; never drops the original table or replaces existing modern colors. */
 class ebs_MigrationHandler {
-    public const VERSION = '5';
+    public const VERSION = '7';
     public const VERSION_OPTION = 'ebs_schema_version';
     private const PENDING = 'ebs_migration_pending';
     private const BACKUP = 'ebs_legacy_colors_backup';
@@ -53,6 +53,8 @@ class ebs_MigrationHandler {
                 'ebsLinks' => 'links', 'ebsLinksHover' => 'linkHover',
                 'ebsDisabledButtonText' => 'disabledButtonText', 'ebsTertiary' => 'highlight',
                 'ebsHighlightedText' => 'highlightText', 'ebsPrimaryDarker10' => 'buttonHover',
+                'ebsCurrentMenuText' => 'currentMenuText',
+                'ebsListOdd' => 'listOddColor', 'ebsListEven' => 'listEvenColor',
                 'ebsPrimaryButtonText' => 'buttonText', 'ebsPrimaryDarker20' => 'buttonHover',
             ];
             $values = [];
@@ -61,6 +63,7 @@ class ebs_MigrationHandler {
                 if (!is_string($value) || !sanitize_hex_color($value)) return false;
                 $values[$destination] = $value;
             }
+            if (!isset($snapshot['currentMenuText'])) $values['ebsCurrentMenuText'] = $values['ebsHighlightedText'];
             $values['ebsMenuHover'] = InitialColors::submenuHover($values['ebsSubMenu'], $values['ebsSubMenuText']);
             if (!$new->saveColors($values)) return false;
         }

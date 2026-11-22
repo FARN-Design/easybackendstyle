@@ -11,6 +11,7 @@ class ebs_DatabaseConnector extends \Farn\EasyBackendStyle\ebs_DatabaseConnector
         'subMenu' => '#2c3338',
         'highlight' => '#2271b1',
         'highlightText' => '#f0f0f1',
+        'currentMenuText' => '#f0f0f1',
         'notification' => '#d63638',
         'notificationText' => '#f0f0f1',
         'background' => '#f0f0f1',
@@ -22,6 +23,8 @@ class ebs_DatabaseConnector extends \Farn\EasyBackendStyle\ebs_DatabaseConnector
         'buttonHover' => '#195785',
         'disabledButton' => '#969696',
         'disabledButtonText' => '#000000',
+        'listOddColor' => '#f6f7f7',
+        'listEvenColor' => '#ffffff',
         'icon' => '#c9c9c9'];
 
     public function __construct() {

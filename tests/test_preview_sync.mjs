@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 const mainNames = ['ebsPrimary','ebsSecondary','ebsTertiary'];
 const inputs = mainNames.map((name,i)=>({id:name,name,value:['#33258a','#1d154e','#a2a2a2'][i],main:true}));
 inputs.push({id:'ebsHighlightedText',name:'ebsHighlightedText',value:'#ffffff'});
+inputs.push({id:'ebsCurrentMenuText',name:'ebsCurrentMenuText',value:'#ffffff'});
 for (const x of inputs) x.classList={contains:n=>n==='ebs_mainColorPicker' && x.main};
 const styles={},listeners={};
 const form={querySelectorAll:()=>inputs,addEventListener:(name,fn)=>listeners[name]=fn,dispatchEvent:e=>listeners[e.type]?.(e)};
@@ -41,12 +42,13 @@ function $(s){
  if(s==='.ebs_colorPicker'||s==='.ebs_advanced_settings input[type=text]')return wrap(inputs.filter(x=>!x.main));
  return wrap();
 }
-const imported={ebsPrimary:'#33258a',ebsSecondary:'#1d154e',ebsTertiary:'#837ac9',ebsHighlightedText:'#ffffff'};
+const imported={ebsPrimary:'#33258a',ebsSecondary:'#1d154e',ebsTertiary:'#837ac9',ebsHighlightedText:'#ffffff',ebsCurrentMenuText:'#123456'};
 const context=vm.createContext({jQuery:$,document,window:{addEventListener(){}},wp:{i18n:{__:s=>s}},Event:class{constructor(type){this.type=type;}},ajaxurl:'/ajax',URLSearchParams,fetch:async()=>({ok:true,json:async()=>({success:true,data:imported})})});
 for(const file of ['ebsMenuPage.js','theme-import.js'])vm.runInContext(readFileSync(new URL('../resources/'+file,import.meta.url),'utf8'),context);
 await listeners['button:click']();
 assert.equal(styles['--ebsTertiary'],imported.ebsTertiary,'Preview must use final imported tertiary, not previous picker value');
 assert.equal(styles['--ebsHighlightedText'],'#ffffff','Server-provided advanced values must survive final synchronization');
+assert.equal(styles['--ebsCurrentMenuText'],'#123456','Current main menu text must preview independently');
 const tertiary=inputs[2];
 tertiary.picker.change.call(tertiary,{}, {color:{toString:()=>'#009bdc'}});
 assert.equal(styles['--ebsTertiary'],'#009bdc','Manual picker change must preview the event color before Iris updates the input');

@@ -7,6 +7,7 @@
     --subMenuColor: #2c3338;
     --highlightColor: #2271b1;
     --highlightTextColor: #f0f0f1;
+    --currentMenuTextColor: #f0f0f1;
     --notificationColor: #d63638;
     --notificationTextColor: #f0f0f1;
     --backgroundColor: #f0f0f1;
@@ -368,6 +369,24 @@ ul#adminmenu > li.current > a.current:after {
 #adminmenu li.opensub div.wp-menu-image:before,
 .ie8 #adminmenu li.opensub div.wp-menu-image:before {
     color: var(--highlightTextColor) !important;
+}
+
+#adminmenu li.current > a.menu-top,
+#adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu,
+#adminmenu li.menu-top:hover > a.menu-top,
+#adminmenu li.opensub > a.menu-top,
+#adminmenu li > a.menu-top:focus,
+#adminmenu li.wp-has-current-submenu .wp-submenu .wp-submenu-head,
+.folded #adminmenu li.current.menu-top {
+    color: var(--currentMenuTextColor);
+}
+
+#adminmenu li.current > a.menu-top div.wp-menu-image:before,
+#adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu div.wp-menu-image:before,
+#adminmenu li.menu-top:hover > a.menu-top div.wp-menu-image:before,
+#adminmenu li.opensub > a.menu-top div.wp-menu-image:before,
+#adminmenu li > a.menu-top:focus div.wp-menu-image:before {
+    color: var(--currentMenuTextColor) !important;
 }
 
 /* Admin Menu: bubble */

@@ -112,6 +112,13 @@ class ebs_SettingsSubMenu
                                class="ebs_colorPicker"
                                data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("highlightText")); ?>"/>
                     </div>
+                    <div class="wrapper_currentMenuText">
+                        <label for="currentMenuText"><?php _e('current menu text and icon', 'easybackendstyle') ?></label>
+                        <input type="text" name="currentMenuText" id="currentMenuText"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("currentMenuText")); ?>"
+                               class="ebs_colorPicker"
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("currentMenuText")); ?>"/>
+                    </div>
                     <div class="wrapper_notification">
                         <label for="notification"><?php _e('notification', 'easybackendstyle') ?></label>
                         <input type="text" name="notification" id="notification"
@@ -201,6 +208,20 @@ class ebs_SettingsSubMenu
                                class="ebs_colorPicker"
                                data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("disabledButtonText")); ?>"/>
                     </div>
+                    <div class="wrapper_listOddColor">
+                        <label for="listOddColor"><?php _e('odd list rows', 'easybackendstyle') ?></label>
+                        <input type="text" name="listOddColor" id="listOddColor"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("listOddColor")); ?>"
+                               class="ebs_colorPicker"
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("listOddColor")); ?>"/>
+                    </div>
+                    <div class="wrapper_listEvenColor">
+                        <label for="listEvenColor"><?php _e('even list rows', 'easybackendstyle') ?></label>
+                        <input type="text" name="listEvenColor" id="listEvenColor"
+                               value="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("listEvenColor")); ?>"
+                               class="ebs_colorPicker"
+                               data-default-color="<?php echo esc_attr($GLOBALS['ebsPlugin']->getColor("listEvenColor")); ?>"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -212,5 +233,3 @@ class ebs_SettingsSubMenu
     </form>
 
 </div><!-- .wrap -->
-
-

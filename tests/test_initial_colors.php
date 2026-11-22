@@ -61,6 +61,10 @@ try {
     check($db->colors === $db->defaults() && $db->writes === 1, 'Unconfirmed Fresh palette must upgrade');
     check(!Colors::enabled(), 'Upgrading fallback must not select a user scheme');
     check(Colors::shift('#ffffff', 10) === '#ffffff' && Colors::shift('#000000', -10) === '#000000', 'Lightness clamping');
+    $generated = Colors::generate(['primary'=>'#33258a', 'secondary'=>'#160038', 'tertiary'=>'#a5e5d0'],
+        ['ebsHighlightedText'=>'#ffffff', 'ebsCurrentMenuText'=>'#ffffff', 'highlightText'=>'#ffffff', 'currentMenuText'=>'#ffffff']);
+    check($generated['ebsCurrentMenuText'] === '#000000' && $generated['ebsHighlightedText'] === '#000000', 'Theme import derives both modern highlight text colors');
+    check($generated['currentMenuText'] === '#000000' && $generated['highlightText'] === '#000000', 'Theme import derives both legacy highlight text colors');
     echo 'Initial color detection and lifecycle passed on PHP '.PHP_VERSION."\n";
 } finally {
     unlink($GLOBALS['theme'].'/style.css');

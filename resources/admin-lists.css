@@ -1,0 +1,25 @@
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table:not(.plugins) > tbody > tr:nth-child(odd) {
+  background-color: var(--ebsListOdd);
+}
+
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table:not(.plugins) > tbody > tr:nth-child(even) {
+  background-color: var(--ebsListEven);
+}
+
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(odd of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)),
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(odd of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) > :is(th, td),
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(odd of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr,
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(odd of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr > td.plugin-update,
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(odd of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr + tr.plugin-update-tr,
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(odd of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr + tr.plugin-update-tr > td.plugin-update {
+  background-color: var(--ebsListOdd);
+}
+
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(even of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)),
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(even of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) > :is(th, td),
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(even of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr,
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(even of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr > td.plugin-update,
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(even of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr + tr.plugin-update-tr,
+:is(body.admin-color-personalizedcolorscheme, body.ebs-color-preview, body.admin-color-fresh) .wp-list-table.plugins > tbody > tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr):nth-child(even of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr + tr.plugin-update-tr > td.plugin-update {
+  background-color: var(--ebsListEven);
+}

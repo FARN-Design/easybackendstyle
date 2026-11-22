@@ -233,6 +233,8 @@ jQuery(document).ready(function ($){
               case "ebsDisabledButtonText"      :       newColor = '#949494';       break;
               case "ebsDeleteLinks"             :       newColor = '#cc1818';       break;
               case "ebsDeleteLinksHover"        :       newColor = '#e63004';       break;
+              case "ebsListOdd"                 :       newColor = '#f6f7f7';       break;
+              case "ebsListEven"                :       newColor = '#ffffff';       break;
               case "ebsPrimaryText"             :       newColor = allText;         break;
               case "ebsMenuHover"               :       newColor = mixSubmenuHover(subMenu, allText); break;
               case "ebsNotification"            :       newColor = tc;              break;
@@ -241,6 +243,7 @@ jQuery(document).ready(function ($){
               case "ebsSubMenuText"             :       newColor = allText;         break;
               case "ebsSecondaryLighter"        :       newColor = subMenu;         break;
               case "ebsHighlightedText"         :       newColor = highlightedText; break;
+              case "ebsCurrentMenuText"         :       newColor = highlightedText; break;
               case "ebsPrimaryButtonText"       :       newColor = buttonText;      break;
           }
           $(this).val(newColor);
@@ -306,4 +309,3 @@ jQuery(document).ready(function ($){
         if (innerContainer) innerContainer.prepend(button);
     })
 });
-

@@ -42,7 +42,7 @@ class easyBackendStyle_deprecated
 
     public function initialize(): void {
         if (current_user_can('manage_options')) {
-            if (get_option('ebs_legacy_schema_version') !== '1') $this->activate();
+            if (get_option('ebs_legacy_schema_version') !== '2') $this->activate();
             else \Farn\EasyBackendStyle\InitialColors::initialize($this->dbc);
         }
     }
@@ -50,7 +50,7 @@ class easyBackendStyle_deprecated
     public function activate(): void {
         \Farn\EasyBackendStyle\InitialColors::prepare();
         if ($this->dbc->setup_Database()) {
-            update_option('ebs_legacy_schema_version', '1', false);
+            update_option('ebs_legacy_schema_version', '2', false);
             \Farn\EasyBackendStyle\InitialColors::initialize($this->dbc);
         }
         else \Farn\EasyBackendStyle\AdminSettings::databaseWarning();
@@ -61,7 +61,7 @@ class easyBackendStyle_deprecated
     public function frontendAdminbar(): void {
         if (!\Farn\EasyBackendStyle\InitialColors::enabled()) return;
         if (!is_user_logged_in() || !is_admin_bar_showing() || get_user_option('admin_color') !== 'fresh') return;
-        if (get_option('ebs_legacy_schema_version') !== '1') return;
+        if (get_option('ebs_legacy_schema_version') !== '2') return;
         wp_enqueue_style('ebsAdminbarFrontend', plugins_url('resources/ebsAdminbarFrontend.css', EBS_PLUGIN_PATH . 'easyBackendStyle.php'), [], filemtime(EBS_PLUGIN_PATH . 'resources/ebsAdminbarFrontend.css'));
         $map = ['ebsSecondary' => 'baseMenu', 'ebsPrimaryText' => 'menuText', 'ebsIcon' => 'icon', 'ebsSubMenu' => 'subMenu'];
         $css = '#wpadminbar {';
@@ -110,7 +110,7 @@ class easyBackendStyle_deprecated
         if (!is_admin() || get_user_option('admin_color') !== 'fresh') {
             return;
         }
-        echo '<link rel="stylesheet" href="' . plugin_dir_url(__FILE__) . '/resources/ebsMainCSS.css">';
+        echo '<link rel="stylesheet" href="' . esc_url(plugins_url('resources/ebsMainCSS.css', __FILE__) . '?ver=' . filemtime(__DIR__ . '/resources/ebsMainCSS.css')) . '">';
         echo '	
 			<style>
                 :root{
@@ -119,6 +119,7 @@ class easyBackendStyle_deprecated
 				    --subMenuColor: ' . $this->getColor("subMenu") . '; 
 				    --highlightColor: ' . $this->getColor("highlight") . ';
 					--highlightTextColor: ' . $this->getColor("highlightText") . '; 
+				    --currentMenuTextColor: ' . $this->getColor("currentMenuText") . ';
 				    --notificationColor: ' . $this->getColor("notification") . '; 
 				    --notificationTextColor: ' . $this->getColor("notificationText") . '; 
 				    --backgroundColor: ' . $this->getColor("background") . '; 
@@ -130,6 +131,8 @@ class easyBackendStyle_deprecated
 				    --buttonHoverColor: ' . $this->getColor("buttonHover") . ';
 				    --disabledButtonColor: ' . $this->getColor("disabledButton") . ';
 				    --disabledButtonTextColor: ' . $this->getColor("disabledButtonText") . ';
+				    --ebsListOdd: ' . $this->getColor("listOddColor") . ';
+				    --ebsListEven: ' . $this->getColor("listEvenColor") . ';
 				    --iconColor: ' . $this->getColor("icon") . ';
                 }
             </style>';
@@ -138,6 +141,9 @@ class easyBackendStyle_deprecated
 
     function addScriptsAndStylesToMenuPages($hook)
     {
+        if (\Farn\EasyBackendStyle\InitialColors::enabled() && get_user_option('admin_color') === 'fresh') {
+            wp_enqueue_style('ebs_adminLists', plugins_url('resources/admin-lists.css', EBS_PLUGIN_PATH . 'easyBackendStyle.php'), ['colors'], filemtime(EBS_PLUGIN_PATH . 'resources/admin-lists.css'));
+        }
         // Load assets only on this plugin's Settings submenu.
         if ($hook === 'settings_page_easyBackendStyle') {
             \Farn\EasyBackendStyle\AdminSettings::enqueueThemeImport();

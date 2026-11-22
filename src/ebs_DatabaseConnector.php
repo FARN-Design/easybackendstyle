@@ -58,6 +58,12 @@ class ebs_DatabaseConnector {
                 $defaults = $this->defaults();
                 $value = InitialColors::submenuHover($colors['ebsSubMenu'] ?? $defaults['ebsSubMenu'], $colors['ebsSubMenuText'] ?? $defaults['ebsSubMenuText']);
             }
+            if ($key === 'ebsCurrentMenuText') {
+                $value = $colors['ebsHighlightedText'] ?? $value;
+            }
+            if ($key === 'currentMenuText') {
+                $value = $colors['highlightText'] ?? $value;
+            }
             if (!array_key_exists($key, $colors) && false === $this->wpdb->insert($this->tableName, ['Variable' => $key, 'Value' => $value], ['%s', '%s'])) {
                 $this->colors = null;
                 return false;

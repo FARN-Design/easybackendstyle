@@ -222,9 +222,10 @@ final class InitialColors {
             'ebsLinks'=>$link, 'ebsLinksHover'=>$linkHover, 'ebsPrimaryDarker10'=>self::shift($p, -10),
             'ebsPrimaryDarker20'=>$hover, 'ebsPrimaryText'=>$text, 'ebsIcon'=>$text,
             'ebsSubMenu'=>$submenu, 'ebsSubMenuText'=>$text, 'ebsSecondaryLighter'=>$submenu,
-            'ebsMenuHover'=>self::submenuHover($submenu, $text), 'ebsNotification'=>$t, 'ebsHighlightedText'=>$highlight, 'ebsPrimaryButtonText'=>$button];
+            'ebsMenuHover'=>self::submenuHover($submenu, $text), 'ebsNotification'=>$t, 'ebsHighlightedText'=>$highlight,
+            'ebsCurrentMenuText'=>$highlight, 'ebsPrimaryButtonText'=>$button];
         $legacy = ['primaryColor'=>$p, 'secondaryColor'=>$s, 'baseMenu'=>$s, 'menuText'=>$text,
-            'subMenu'=>$submenu, 'highlight'=>$t, 'highlightText'=>$highlight, 'links'=>$link,
+            'subMenu'=>$submenu, 'highlight'=>$t, 'highlightText'=>$highlight, 'currentMenuText'=>$highlight, 'links'=>$link,
             'buttons'=>$p, 'buttonText'=>$button, 'formInputs'=>$p, 'linkHover'=>$linkHover,
             'buttonHover'=>$hover, 'icon'=>$text];
         return array_replace($defaults, array_intersect_key($modern + $legacy, $defaults));

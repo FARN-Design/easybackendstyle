@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Easy Backend-Style\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/easybackendstyle\n"
-"POT-Creation-Date: 2026-11-11T19:45:04+00:00\n"
+"POT-Creation-Date: 2026-11-20T16:11:57+00:00\n"
 "PO-Revision-Date: 2026-11-01 00:00+0000\n"
 "Last-Translator: FARN Labs\n"
 "Language-Team: FARN Labs\n"
@@ -42,7 +42,7 @@ msgstr "FARN Labs"
 msgid "https://www.farnlabs.com"
 msgstr "https://www.farnlabs.de"
 
-#: easyBackendStyle.php:116 src/deprecated/ebs_SettingsSubMenu.php:139
+#: easyBackendStyle.php:116 src/deprecated/ebs_SettingsSubMenu.php:146
 msgid "background"
 msgstr "Hintergrund"
 
@@ -50,7 +50,7 @@ msgstr "Hintergrund"
 msgid "Sets the background color of the page"
 msgstr "Legt die Hintergrundfarbe der Seite fest"
 
-#: easyBackendStyle.php:117 src/deprecated/ebs_SettingsSubMenu.php:146
+#: easyBackendStyle.php:117 src/deprecated/ebs_SettingsSubMenu.php:153
 msgid "links"
 msgstr "Links"
 
@@ -58,7 +58,7 @@ msgstr "Links"
 msgid "Sets the links color of the page"
 msgstr "Legt die Linkfarbe der Seite fest"
 
-#: easyBackendStyle.php:118 src/deprecated/ebs_SettingsSubMenu.php:153
+#: easyBackendStyle.php:118 src/deprecated/ebs_SettingsSubMenu.php:160
 msgid "link hover"
 msgstr "Links beim Darüberfahren"
 
@@ -74,7 +74,7 @@ msgstr "Primärfarbe"
 msgid "Sets the main color for headings and buttons"
 msgstr "Legt die Hauptfarbe für Überschriften und Buttons fest"
 
-#: easyBackendStyle.php:120 src/deprecated/ebs_SettingsSubMenu.php:176
+#: easyBackendStyle.php:120 src/deprecated/ebs_SettingsSubMenu.php:183
 msgid "button hover"
 msgstr "Buttons beim Darüberfahren"
 
@@ -146,7 +146,7 @@ msgstr "Untermenüs beim Darüberfahren"
 msgid "Sets the text and icon color when hovering over submenus"
 msgstr "Legt die Text- und Iconfarbe beim Darüberfahren über Untermenüs fest"
 
-#: easyBackendStyle.php:129 src/deprecated/ebs_SettingsSubMenu.php:116
+#: easyBackendStyle.php:129 src/deprecated/ebs_SettingsSubMenu.php:123
 msgid "notification"
 msgstr "Benachrichtigungen"
 
@@ -154,7 +154,7 @@ msgstr "Benachrichtigungen"
 msgid "Sets the color of the notification"
 msgstr "Legt die Farbe von Benachrichtigungen fest"
 
-#: easyBackendStyle.php:130 src/deprecated/ebs_SettingsSubMenu.php:130
+#: easyBackendStyle.php:130 src/deprecated/ebs_SettingsSubMenu.php:137
 msgid "icon"
 msgstr "Icons"
 
@@ -194,20 +194,44 @@ msgstr "Hervorgehobener Text"
 msgid "Sets the color of the highlighted text"
 msgstr "Legt die Farbe hervorgehobener Texte fest"
 
-#: easyBackendStyle.php:135 src/deprecated/ebs_SettingsSubMenu.php:183
+#: easyBackendStyle.php:135 src/deprecated/ebs_SettingsSubMenu.php:116
+msgid "current menu text and icon"
+msgstr "Text und Icon des aktuellen Menüpunktes"
+
+#: easyBackendStyle.php:135
+msgid "Sets the text and icon color of the current main menu item"
+msgstr "Legt die Text- und Iconfarbe des aktuellen Hauptmenüpunktes fest"
+
+#: easyBackendStyle.php:136 src/deprecated/ebs_SettingsSubMenu.php:190
 msgid "button text"
 msgstr "Buttontext"
 
-#: easyBackendStyle.php:135
+#: easyBackendStyle.php:136
 msgid "Sets the color of the button text"
 msgstr "Legt die Textfarbe der Buttons fest"
 
-#: easyBackendStyle.php:170 src/AdminSettings.php:86
+#: easyBackendStyle.php:137 src/deprecated/ebs_SettingsSubMenu.php:212
+msgid "odd list rows"
+msgstr "Ungerade Listenzeilen"
+
+#: easyBackendStyle.php:137
+msgid "Sets the background color of odd rows in admin lists"
+msgstr "Legt die Hintergrundfarbe ungerader Zeilen in Admin-Listen fest"
+
+#: easyBackendStyle.php:138 src/deprecated/ebs_SettingsSubMenu.php:219
+msgid "even list rows"
+msgstr "Gerade Listenzeilen"
+
+#: easyBackendStyle.php:138
+msgid "Sets the background color of even rows in admin lists"
+msgstr "Legt die Hintergrundfarbe gerader Zeilen in Admin-Listen fest"
+
+#: easyBackendStyle.php:173 src/AdminSettings.php:86
 #: src/deprecated/easyBackendStyle_deprecated.php:104
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: easyBackendStyle.php:236
+#: easyBackendStyle.php:248
 msgid "Personalized Colors"
 msgstr "Eigene Farben"
 
@@ -300,31 +324,31 @@ msgstr "Untermenü"
 msgid "highlight"
 msgstr "Hervorhebung"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:123
+#: src/deprecated/ebs_SettingsSubMenu.php:130
 msgid "notification text"
 msgstr "Benachrichtigungstext"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:160
+#: src/deprecated/ebs_SettingsSubMenu.php:167
 msgid "form inputs"
 msgstr "Formularfelder"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:169
+#: src/deprecated/ebs_SettingsSubMenu.php:176
 msgid "button"
 msgstr "Buttons"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:191
+#: src/deprecated/ebs_SettingsSubMenu.php:198
 msgid "disabled button"
 msgstr "Deaktivierte Buttons"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:198
+#: src/deprecated/ebs_SettingsSubMenu.php:205
 msgid "disabled button color"
 msgstr "Text deaktivierter Buttons"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:209
+#: src/deprecated/ebs_SettingsSubMenu.php:230
 msgid "Save"
 msgstr "Speichern"
 
-#: src/deprecated/ebs_SettingsSubMenu.php:211
+#: src/deprecated/ebs_SettingsSubMenu.php:232
 msgid "Reset Defaults"
 msgstr "Standardwerte wiederherstellen"
 
@@ -363,14 +387,16 @@ msgstr "Standardwerte wiederherstellen"
 msgid "Restore all default colors?"
 msgstr "Alle Standardfarben wiederherstellen?"
 
-#: resources/theme-import.js:27
+#: resources/theme-import.js:28
 msgid "Theme colors imported. Save changes to apply them."
 msgstr "Theme-Farben importiert. Speichere die Änderungen, um sie anzuwenden."
 
-#: resources/theme-import.js:29
+#: resources/theme-import.js:30
 msgid ""
 "No suitable theme colors could be imported. Reload the page and try again."
-msgstr "Es konnten keine geeigneten Theme-Farben importiert werden. Lade die Seite neu und versuche es erneut."
+msgstr ""
+"Es konnten keine geeigneten Theme-Farben importiert werden. Lade die Seite "
+"neu und versuche es erneut."
 
 #~ msgid ""
 #~ "Please select the default admin color scheme and reload the site to apply "

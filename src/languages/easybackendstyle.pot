@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-11T19:45:04+00:00\n"
+"POT-Creation-Date: 2026-11-20T16:11:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: easybackendstyle\n"
@@ -40,7 +40,7 @@ msgid "https://www.farnlabs.com"
 msgstr ""
 
 #: easyBackendStyle.php:116
-#: src/deprecated/ebs_SettingsSubMenu.php:139
+#: src/deprecated/ebs_SettingsSubMenu.php:146
 msgid "background"
 msgstr ""
 
@@ -49,7 +49,7 @@ msgid "Sets the background color of the page"
 msgstr ""
 
 #: easyBackendStyle.php:117
-#: src/deprecated/ebs_SettingsSubMenu.php:146
+#: src/deprecated/ebs_SettingsSubMenu.php:153
 msgid "links"
 msgstr ""
 
@@ -58,7 +58,7 @@ msgid "Sets the links color of the page"
 msgstr ""
 
 #: easyBackendStyle.php:118
-#: src/deprecated/ebs_SettingsSubMenu.php:153
+#: src/deprecated/ebs_SettingsSubMenu.php:160
 msgid "link hover"
 msgstr ""
 
@@ -75,7 +75,7 @@ msgid "Sets the main color for headings and buttons"
 msgstr ""
 
 #: easyBackendStyle.php:120
-#: src/deprecated/ebs_SettingsSubMenu.php:176
+#: src/deprecated/ebs_SettingsSubMenu.php:183
 msgid "button hover"
 msgstr ""
 
@@ -148,7 +148,7 @@ msgid "Sets the text and icon color when hovering over submenus"
 msgstr ""
 
 #: easyBackendStyle.php:129
-#: src/deprecated/ebs_SettingsSubMenu.php:116
+#: src/deprecated/ebs_SettingsSubMenu.php:123
 msgid "notification"
 msgstr ""
 
@@ -157,7 +157,7 @@ msgid "Sets the color of the notification"
 msgstr ""
 
 #: easyBackendStyle.php:130
-#: src/deprecated/ebs_SettingsSubMenu.php:130
+#: src/deprecated/ebs_SettingsSubMenu.php:137
 msgid "icon"
 msgstr ""
 
@@ -199,21 +199,48 @@ msgid "Sets the color of the highlighted text"
 msgstr ""
 
 #: easyBackendStyle.php:135
-#: src/deprecated/ebs_SettingsSubMenu.php:183
-msgid "button text"
+#: src/deprecated/ebs_SettingsSubMenu.php:116
+msgid "current menu text and icon"
 msgstr ""
 
 #: easyBackendStyle.php:135
+msgid "Sets the text and icon color of the current main menu item"
+msgstr ""
+
+#: easyBackendStyle.php:136
+#: src/deprecated/ebs_SettingsSubMenu.php:190
+msgid "button text"
+msgstr ""
+
+#: easyBackendStyle.php:136
 msgid "Sets the color of the button text"
 msgstr ""
 
-#: easyBackendStyle.php:170
+#: easyBackendStyle.php:137
+#: src/deprecated/ebs_SettingsSubMenu.php:212
+msgid "odd list rows"
+msgstr ""
+
+#: easyBackendStyle.php:137
+msgid "Sets the background color of odd rows in admin lists"
+msgstr ""
+
+#: easyBackendStyle.php:138
+#: src/deprecated/ebs_SettingsSubMenu.php:219
+msgid "even list rows"
+msgstr ""
+
+#: easyBackendStyle.php:138
+msgid "Sets the background color of even rows in admin lists"
+msgstr ""
+
+#: easyBackendStyle.php:173
 #: src/AdminSettings.php:86
 #: src/deprecated/easyBackendStyle_deprecated.php:104
 msgid "Settings"
 msgstr ""
 
-#: easyBackendStyle.php:236
+#: easyBackendStyle.php:248
 msgid "Personalized Colors"
 msgstr ""
 
@@ -289,31 +316,31 @@ msgstr ""
 msgid "highlight"
 msgstr ""
 
-#: src/deprecated/ebs_SettingsSubMenu.php:123
+#: src/deprecated/ebs_SettingsSubMenu.php:130
 msgid "notification text"
 msgstr ""
 
-#: src/deprecated/ebs_SettingsSubMenu.php:160
+#: src/deprecated/ebs_SettingsSubMenu.php:167
 msgid "form inputs"
 msgstr ""
 
-#: src/deprecated/ebs_SettingsSubMenu.php:169
+#: src/deprecated/ebs_SettingsSubMenu.php:176
 msgid "button"
 msgstr ""
 
-#: src/deprecated/ebs_SettingsSubMenu.php:191
+#: src/deprecated/ebs_SettingsSubMenu.php:198
 msgid "disabled button"
 msgstr ""
 
-#: src/deprecated/ebs_SettingsSubMenu.php:198
+#: src/deprecated/ebs_SettingsSubMenu.php:205
 msgid "disabled button color"
 msgstr ""
 
-#: src/deprecated/ebs_SettingsSubMenu.php:209
+#: src/deprecated/ebs_SettingsSubMenu.php:230
 msgid "Save"
 msgstr ""
 
-#: src/deprecated/ebs_SettingsSubMenu.php:211
+#: src/deprecated/ebs_SettingsSubMenu.php:232
 msgid "Reset Defaults"
 msgstr ""
 
@@ -346,10 +373,10 @@ msgstr ""
 msgid "Restore all default colors?"
 msgstr ""
 
-#: resources/theme-import.js:27
+#: resources/theme-import.js:28
 msgid "Theme colors imported. Save changes to apply them."
 msgstr ""
 
-#: resources/theme-import.js:29
+#: resources/theme-import.js:30
 msgid "No suitable theme colors could be imported. Reload the page and try again."
 msgstr ""

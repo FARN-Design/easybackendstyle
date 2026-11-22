@@ -1,8 +1,7 @@
 # Admin color stylesheet
 
-The personalizedcolorscheme registration and saved ebs color keys are unchanged.
 WordPress 7+ loads a packaged stylesheet; activation, saving, and updates never
-rewrite plugin files. The pre-7.0 implementation is unchanged.
+rewrite plugin files. WordPress 6 uses its legacy stylesheet and settings.
 
 `build/admin-colors/modern.css` is a reviewed WordPress 7.1.4 source snapshot
 (GPL-2.0-or-later, WordPress contributors). Its original path, SHA-256 and
@@ -94,6 +93,20 @@ the first save or while another user scheme is selected. Importing or manually
 changing a main color immediately updates this preview. Neither the stored palette
 nor the user scheme changes until Save. Other admin pages keep the selected scheme.
 The browser regression checks first-import and manual-primary previews before saving.
+
+The personalized scheme also provides separate odd/even background colors for
+WordPress admin list-table rows, including Media and Plugins. These colors are
+available in the advanced settings and are applied throughout the admin area.
+Plugin update notices do not count as plugin entries. Their surrounding rows
+use the corresponding plugin's color, while the active-plugin border and the
+notice itself remain visible.
+
+The current and hovered or focused main menu item's text and icon have their own
+advanced color, independent of highlighted submenu text. Existing installations inherit the
+previous highlighted text color when the new field is added, preserving their
+appearance until it is changed. Main-color changes and theme imports initially
+derive both fields from the highlight background. Choose colors that keep text
+legible against both the highlight and submenu backgrounds.
 
 Submenu hover text is derived in sRGB from 40% submenu background and 60%
 submenu text (for example #40ae98 and #ffffff produce #b3dfd6). Schema upgrade 3

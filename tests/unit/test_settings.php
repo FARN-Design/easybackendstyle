@@ -41,4 +41,39 @@ class EBS_Settings_Test extends WP_UnitTestCase {
             $this->assertStringContainsString('farnlabs.de', $catalog['messages']['https://www.farnlabs.com/easy-backend-style/documentation']);
         }
     }
+
+    public function test_list_row_colors_have_independent_defaults_and_persist() {
+        $plugin = $GLOBALS['ebsPlugin'];
+        $modern = $plugin instanceof easyBackendStyle;
+        if ($modern) $plugin->color_mapping();
+        $db = $modern ? new \Farn\EasyBackendStyle\ebs_DatabaseConnector() : new \Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector();
+        $odd = $modern ? 'ebsListOdd' : 'listOddColor';
+        $even = $modern ? 'ebsListEven' : 'listEvenColor';
+        $this->assertTrue($db->setup_Database());
+        $this->assertSame('#f6f7f7', $db->getValueFromDB($odd)[0][0]);
+        $this->assertSame('#ffffff', $db->getValueFromDB($even)[0][0]);
+        $this->assertTrue($db->saveColors([$odd => '#eeeeee', $even => '#ffffff']));
+        $this->assertSame('#eeeeee', $db->getValueFromDB($odd)[0][0]);
+        $this->assertSame('#ffffff', $db->getValueFromDB($even)[0][0]);
+    }
+
+    public function test_missing_current_menu_color_inherits_existing_highlight_once() {
+        global $wpdb;
+        $plugin = $GLOBALS['ebsPlugin'];
+        $modern = $plugin instanceof easyBackendStyle;
+        if ($modern) $plugin->color_mapping();
+        $db = $modern ? new \Farn\EasyBackendStyle\ebs_DatabaseConnector() : new \Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector();
+        $current = $modern ? 'ebsCurrentMenuText' : 'currentMenuText';
+        $highlight = $modern ? 'ebsHighlightedText' : 'highlightText';
+        $this->assertTrue($db->setup_Database());
+        $this->assertTrue($db->saveColors([$highlight => '#123456']));
+        $wpdb->delete($db->tableName, ['Variable' => $current]);
+        $db = $modern ? new \Farn\EasyBackendStyle\ebs_DatabaseConnector() : new \Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector();
+        $this->assertTrue($db->checkFields());
+        $this->assertSame('#123456', $db->getValueFromDB($current)[0][0]);
+        $this->assertTrue($db->saveColors([$current => '#abcdef', $highlight => '#ffffff']));
+        $this->assertTrue($db->checkFields());
+        $this->assertSame('#abcdef', $db->getValueFromDB($current)[0][0]);
+        $this->assertSame('#ffffff', $db->getValueFromDB($highlight)[0][0]);
+    }
 }

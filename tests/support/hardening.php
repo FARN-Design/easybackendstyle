@@ -11,7 +11,8 @@ function ebs_hardening_checks(): void {
     $old = new \Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector();
     ebs_assert($db->setup_Database(), 'Modern table setup');
     ebs_assert($old->setup_Database(), 'Legacy table setup');
-    ebs_assert($old->saveColors(['primaryColor'=>'#33258a','menuText'=>'#123456','buttonText'=>'#abcdef','buttonHover'=>'#276b58']), 'Seed legacy colors');
+    ebs_assert($old->saveColors(['primaryColor'=>'#33258a','menuText'=>'#123456','buttonText'=>'#abcdef','buttonHover'=>'#276b58',
+        'highlightText'=>'#ffffff','currentMenuText'=>'#123456','listOddColor'=>'#eeeeee','listEvenColor'=>'#ffffff']), 'Seed legacy colors');
     // Simulate an old active installation upgrading; the old table remains the backup.
     $wpdb->query("DROP TABLE {$db->tableName}");
     foreach (['ebs_schema_version','ebs_migration_pending','ebs_migration_lock','ebs_legacy_colors_backup'] as $key) delete_option($key);
@@ -35,6 +36,8 @@ function ebs_hardening_checks(): void {
     ebs_assert($colors['ebsPrimary'] === '#33258a', 'Primary preserved');
     ebs_assert($colors['ebsPrimaryText'] === '#123456' && $colors['ebsSubMenuText'] === '#123456', 'Both text mappings preserved');
     ebs_assert($colors['ebsPrimaryButtonText'] === '#abcdef', 'Button text preserved');
+    ebs_assert($colors['ebsCurrentMenuText'] === '#123456' && $colors['ebsHighlightedText'] === '#ffffff', 'Separate legacy menu colors preserved');
+    ebs_assert($colors['ebsListOdd'] === '#eeeeee' && $colors['ebsListEven'] === '#ffffff', 'Legacy list colors preserved');
     ebs_assert((new \Farn\EasyBackendStyle\deprecated\ebs_DatabaseConnector())->tableExists(), 'Original table retained after success');
     ebs_assert($db->saveColors(['ebsPrimary'=>'#aabbcc','ebsSecondary'=>'#112233']), 'Batch save');
     add_filter('query', $filter);
@@ -46,10 +49,12 @@ function ebs_hardening_checks(): void {
     // A missing old field uses its historical default without notices or a TypeError.
     $wpdb->query("DROP TABLE {$db->tableName}");
     $wpdb->delete($old->tableName, ['Variable'=>'menuText']);
+    $wpdb->delete($old->tableName, ['Variable'=>'currentMenuText']);
     foreach (['ebs_schema_version','ebs_migration_pending','ebs_migration_lock','ebs_legacy_colors_backup'] as $key) delete_option($key);
     ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Missing old fields must not crash upgrade');
     $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
     ebs_assert($db->allColors()['ebsPrimaryText'] === $old->defaults()['menuText'], 'Historical default used');
+    ebs_assert($db->allColors()['ebsCurrentMenuText'] === '#ffffff', 'Missing legacy current menu color inherits highlighted text');
     // Existing modern values take precedence, even when a retained legacy table exists.
     ebs_assert($db->saveColors(['ebsPrimary'=>'#654321']), 'Seed modern value');
     delete_option('ebs_schema_version');
@@ -95,6 +100,17 @@ function ebs_hardening_checks(): void {
     $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
     ebs_assert($db->checkFields(), 'Repair missing pressed-button field');
     ebs_assert($db->allColors()['ebsPrimaryDarker20'] === '#276b58', 'Missing pressed-button field uses saved hover');
+    ebs_assert($db->saveColors(['ebsHighlightedText'=>'#123456']), 'Seed existing highlighted text');
+    $wpdb->delete($db->tableName, ['Variable'=>'ebsCurrentMenuText']);
+    update_option('ebs_schema_version', '6');
+    ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Upgrade missing current menu color');
+    $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
+    ebs_assert($db->allColors()['ebsCurrentMenuText'] === '#123456', 'New current menu field inherits the saved highlight');
+    ebs_assert($db->saveColors(['ebsCurrentMenuText'=>'#abcdef','ebsHighlightedText'=>'#ffffff']), 'Save independent menu colors');
+    update_option('ebs_schema_version', '6');
+    ebs_assert((new \Farn\EasyBackendStyle\ebs_MigrationHandler())->migration(), 'Retry current menu upgrade');
+    $db = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
+    ebs_assert($db->allColors()['ebsCurrentMenuText'] === '#abcdef' && $db->allColors()['ebsHighlightedText'] === '#ffffff', 'Independent menu colors survive upgrade');
     // A denied CREATE must fail once, not recurse until the request runs out of memory.
     $broken = new \Farn\EasyBackendStyle\ebs_DatabaseConnector();
     $broken->tableName = $wpdb->prefix . 'ebs_test_denied_create';
