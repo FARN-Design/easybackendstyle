@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { checkPluginUpdateColors } from './list-color-checks';
+import { checkListColors } from './list-color-checks';
 
-test('legacy WordPress keeps menu and plugin row colors independent', async ({ page }) => {
+test('legacy WordPress keeps plugin list styling and independent menu colors', async ({ page }) => {
   test.skip(!process.env.FARN_TEST_WP_VERSION?.startsWith('6.'), 'Requires WordPress 6');
   test.setTimeout(90000);
   await page.goto('/wp-login.php');
@@ -17,7 +17,7 @@ test('legacy WordPress keeps menu and plugin row colors independent', async ({ p
     currentMenuText: '#123456',
     menuText: '#ffffff',
     listOddColor: '#edf4fa',
-    listEvenColor: '#ffffff',
+    listEvenColor: '#e4f2dc',
   })) {
     await page.locator('#' + name).evaluate((input, color) => {
       const { jQuery } = window as Window & {
@@ -44,10 +44,8 @@ test('legacy WordPress keeps menu and plugin row colors independent', async ({ p
   await expect.poll(() => otherMenu.locator('.wp-menu-image').evaluate(el => getComputedStyle(el, '::before').color)).toBe('rgb(18, 52, 86)');
   await otherMenu.focus();
   await expect(otherMenu).toHaveCSS('color', 'rgb(18, 52, 86)');
-  const active = page.locator('.wp-list-table.plugins > tbody > tr.active[data-plugin]:not(.plugin-update-tr)').first();
-  await expect(active.locator('td').first()).toHaveCSS('background-color', await active.evaluate(el => getComputedStyle(el).backgroundColor));
-  await checkPluginUpdateColors(page);
+  await checkListColors(page);
   await page.goto('/wp-admin/options-general.php?page=easyBackendStyle');
   await expect(page.locator('#currentMenuText')).toHaveValue('#123456');
-  await expect(page.locator('#listEvenColor')).toHaveValue('#ffffff');
+  await expect(page.locator('#listEvenColor')).toHaveValue('#e4f2dc');
 });

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { checkPluginUpdateColors } from './list-color-checks';
+import { checkListColors } from './list-color-checks';
 test('administrator can save a color and reload it without losing the theme', async ({ page }) => {
   test.setTimeout(90000);
   await page.goto('/wp-login.php');
@@ -39,7 +39,7 @@ test('public visitors receive no backend color assets', async ({ page }) => {
   await expect(page.locator('link[href*="ebsAdminbarFrontend"], link[href*="ebsMainCSS"], #ebs-root-variables')).toHaveCount(0);
 });
 
-test('plugin row colors and current menu text are independent', async ({ page }) => {
+test('plugin lists keep WordPress colors and current menu text is independent', async ({ page }) => {
   test.setTimeout(90000);
   await page.goto('/wp-login.php');
   await page.locator('#loginform').evaluate((form: HTMLFormElement) => {
@@ -53,7 +53,7 @@ test('plugin row colors and current menu text are independent', async ({ page })
   for (const [name, value] of Object.entries({
     ebsTertiary: '#a5e5d0',
     ebsListOdd: '#edf4fa',
-    ebsListEven: '#ffffff',
+    ebsListEven: '#e4f2dc',
     ebsCurrentMenuText: '#123456',
     ebsHighlightedText: '#ffffff',
     ebsMenuHover: '#aa3355',
@@ -97,11 +97,9 @@ test('plugin row colors and current menu text are independent', async ({ page })
   await subMenu.hover();
   await expect(subMenu).toHaveCSS('color', 'rgb(170, 51, 85)');
 
-  const activeRow = page.locator('.wp-list-table.plugins > tbody > tr.active[data-plugin]:not(.plugin-update-tr)').first();
-  await expect(activeRow.locator('td').first()).toHaveCSS('background-color', await activeRow.evaluate(el => getComputedStyle(el).backgroundColor));
-  await checkPluginUpdateColors(page);
+  await checkListColors(page);
   await page.goto('/wp-admin/options-general.php?page=easyBackendStyle');
   await expect(page.locator('#ebsCurrentMenuText')).toHaveValue('#123456');
   await expect(page.locator('#ebsHighlightedText')).toHaveValue('#ffffff');
-  await expect(page.locator('#ebsListEven')).toHaveValue('#ffffff');
+  await expect(page.locator('#ebsListEven')).toHaveValue('#e4f2dc');
 });

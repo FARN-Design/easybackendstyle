@@ -1,33 +1,44 @@
 import { expect, type Page } from '@playwright/test';
 
-export async function checkPluginUpdateColors(page: Page) {
+export async function checkListColors(page: Page) {
   await page.evaluate(() => {
     const table = document.createElement('table');
     table.className = 'wp-list-table widefat plugins';
-    table.id = 'ebs-row-test';
+    table.id = 'ebs-plugin-row-test';
     table.innerHTML = `<tbody>
       <tr class="active" data-plugin="first"><th class="check-column"></th><td>First</td></tr>
-      <tr class="active plugin-update-tr" data-plugin="first"><td class="plugin-update colspanchange"><div class="update-message notice notice-warning" style="background-color: rgb(255, 244, 204)">Update</div></td></tr>
-      <tr class="active" data-plugin="second"><th class="check-column"></th><td>Second</td></tr>
-      <tr class="plugin-update-tr"><td class="plugin-update colspanchange"><div class="update-message notice notice-error">Incompatible</div></td></tr>
-      <tr class="active plugin-update-tr" data-plugin="second"><td class="plugin-update colspanchange"><div class="update-message notice notice-warning">Update</div></td></tr>
-      <tr class="inactive" data-plugin="third"><th class="check-column"></th><td>Third</td></tr>
-      <tr class="plugin-update-tr" data-plugin="third"><td class="plugin-update colspanchange"><div class="update-message notice notice-warning">Update</div></td></tr>
-      <tr class="plugin-deleted-tr inactive" data-plugin="deleted"><td>Deleted</td></tr>
-      <tr class="inactive" data-plugin="fourth"><th class="check-column"></th><td>Fourth</td></tr>
-      <tr class="plugin-update-tr" data-plugin="fourth"><td class="plugin-update colspanchange"><div class="update-message notice notice-warning">Update</div></td></tr>
+      <tr class="active plugin-update-tr" data-plugin="first"><td class="plugin-update colspanchange"><div class="update-message notice notice-warning">Update</div></td></tr>
+      <tr class="inactive" data-plugin="second"><th class="check-column"></th><td>Second</td></tr>
+      <tr class="plugin-update-tr" data-plugin="second"><td class="plugin-update colspanchange"><div class="update-message notice notice-warning">Update</div></td></tr>
     </tbody>`;
-    document.querySelector('#wpbody-content')!.append(table);
+    const other = document.createElement('table');
+    other.className = 'wp-list-table widefat striped';
+    other.id = 'ebs-other-row-test';
+    other.innerHTML = '<tbody><tr><td>First</td></tr><tr><td>Second</td></tr></tbody>';
+    document.querySelector('#wpbody-content')!.append(table, other);
   });
-  for (const [name, expected] of [['first', 'rgb(237, 244, 250)'], ['second', 'rgb(255, 255, 255)'], ['third', 'rgb(237, 244, 250)'], ['fourth', 'rgb(255, 255, 255)']]) {
-    const row = page.locator(`#ebs-row-test tr[data-plugin="${name}"]:not(.plugin-update-tr)`);
-    await expect(row.locator('th')).toHaveCSS('background-color', expected);
-    await expect(row.locator('td')).toHaveCSS('background-color', expected);
-    const update = page.locator(`#ebs-row-test tr.plugin-update-tr[data-plugin="${name}"]`);
-    await expect(update).toHaveCSS('background-color', expected);
-    await expect(update.locator('td.plugin-update')).toHaveCSS('background-color', expected);
-  }
-  await expect(page.locator('#ebs-row-test tr.plugin-update-tr:not([data-plugin]) td.plugin-update')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  await expect(page.locator('#ebs-row-test .active th.check-column').first()).toHaveCSS('border-left-width', '4px');
-  await expect(page.locator('#ebs-row-test tr.plugin-update-tr').first().locator('.update-message')).toHaveCSS('background-color', 'rgb(255, 244, 204)');
+
+  const stylesheet = page.locator('link[href*="admin-lists.css"]');
+  await expect(stylesheet).toHaveCount(1);
+  const pluginStyles = () => page.locator('#ebs-plugin-row-test tr, #ebs-plugin-row-test th, #ebs-plugin-row-test td, #ebs-plugin-row-test .update-message')
+    .evaluateAll(nodes => nodes.map(node => {
+      const style = getComputedStyle(node);
+      return [style.backgroundColor, style.borderLeftColor, style.borderLeftWidth];
+    }));
+  await stylesheet.evaluate((link: HTMLLinkElement) => { link.disabled = true; });
+  const coreStyles = await pluginStyles();
+  await stylesheet.evaluate((link: HTMLLinkElement) => { link.disabled = false; });
+  expect(await pluginStyles()).toEqual(coreStyles);
+  await expect(page.locator('#ebs-plugin-row-test .active th.check-column').first()).toHaveCSS('border-left-width', '4px');
+
+  const rows = page.locator('#ebs-other-row-test tr');
+  await expect(rows.nth(0)).toHaveCSS('background-color', 'rgb(237, 244, 250)');
+  await expect(rows.nth(1)).toHaveCSS('background-color', 'rgb(228, 242, 220)');
+  await page.evaluate(() => {
+    document.documentElement.style.setProperty('--ebsListOdd', '#ff00ff');
+    document.documentElement.style.setProperty('--ebsListEven', '#00ff00');
+  });
+  await expect(rows.nth(0)).toHaveCSS('background-color', 'rgb(255, 0, 255)');
+  await expect(rows.nth(1)).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+  expect(await pluginStyles()).toEqual(coreStyles);
 }

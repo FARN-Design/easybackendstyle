@@ -95,11 +95,9 @@ nor the user scheme changes until Save. Other admin pages keep the selected sche
 The browser regression checks first-import and manual-primary previews before saving.
 
 The personalized scheme also provides separate odd/even background colors for
-WordPress admin list-table rows, including Media and Plugins. These colors are
-available in the advanced settings and are applied throughout the admin area.
-Plugin update notices do not count as plugin entries. Their surrounding rows
-use the corresponding plugin's color, while the active-plugin border and the
-notice itself remain visible.
+WordPress admin list-table rows, including Media. These colors are available in
+the advanced settings. The Plugins list is excluded so WordPress can distinguish
+active plugins and update notices using its own styling.
 
 The current and hovered or focused main menu item's text and icon have their own
 advanced color, independent of highlighted submenu text. Existing installations inherit the

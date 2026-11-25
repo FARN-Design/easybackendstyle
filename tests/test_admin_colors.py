@@ -81,10 +81,8 @@ class AdminColorsTest(unittest.TestCase):
             self.assertIn(scope, css)
         for parity, color in [('odd', 'ebsListOdd'), ('even', 'ebsListEven')]:
             self.assertIn(f'.wp-list-table:not(.plugins) > tbody > tr:nth-child({parity})', css)
-            self.assertIn(f':nth-child({parity} of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) > :is(th, td)', css)
-            self.assertIn(f':nth-child({parity} of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr > td.plugin-update', css)
-            self.assertIn(f':nth-child({parity} of tr[data-plugin]:not(.plugin-update-tr):not(.plugin-deleted-tr)) + tr.plugin-update-tr + tr.plugin-update-tr > td.plugin-update', css)
             self.assertIn(f'background-color: var(--{color})', css)
+        self.assertNotIn('.wp-list-table.plugins', css)
 
 if __name__ == '__main__':
     unittest.main()
